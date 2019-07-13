@@ -1,0 +1,36 @@
+.headerStyle {
+  background-color: #F3F3F3;
+  width: 100%;
+  min-width: 800px;
+  height: 80px;
+  display: inline-block;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.imageStyle {
+  height: 100%;
+  vertical-align: middle;
+}
+.showStyle {
+  display: inline;
+}
+
+.specialFontStyle{
+  font-size: 22px;
+  font-family: "Arial Unicode MS";
+  font-weight: bold;
+  color: #00005f;
+  margin-left: -10px;
+}
+
+.normalFontStyle{
+  font-size: 30px;
+  font-family: "Adobe 楷体 Std R";
+}
+
+.fontStyle {
+  font-size: 40px;
+}
+
+
