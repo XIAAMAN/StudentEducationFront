@@ -5,30 +5,42 @@
 
    <div class="loginStyle">
      <div class="loginLabelStyle">用户登录</div>
-      <form #loginForm ="ngForm">
+      <form #loginForm ="ngForm" action="" (ngSubmit)="onSubmit(loginForm.value)" >
 <!--        <span><mat-icon class="matStyle">account_box</mat-icon></span>-->
         <div  class="userNameStyle">
           <span class="material-icons matStyle">account_box</span>
-          <input type="text" name="userName" placeholder="请输入用户名" [(ngModel)]="user.userName">
+          <input type="text" required minlength="2"  #name="ngModel" name="userName" placeholder="请输入用户名" [(ngModel)]="user.userName">
+
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMessage">
+            <div *ngIf="name.errors.required">
+              请输入名字
+            </div>
+            <div *ngIf="name.errors.minlength">
+              名字最少两个字符
+            </div>
+          </div>
         </div>
 
         <div class="userNameStyle">
           <span class="material-icons matStyle">lock</span>
-          <input type="password" name="password" placeholder="请输入密码" [(ngModel)]="user.password">
+          <input type="password" name="password" required minlength="6" #password="ngModel" placeholder="请输入密码" [(ngModel)]="user.password">
+
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="errorMessage">
+            <div *ngIf="password.errors.required">
+              请输入密码
+            </div>
+            <div *ngIf="password.errors.minlength">
+              请输入6个及以上字符
+            </div>
+          </div>
+
         </div>
 
         <div>
-          <button class="loginButtonStyle">登录</button>
+          <button type="submit" class="loginButtonStyle">登录</button>
         </div>
 
       </form>
    </div>
  </div>
-
-
-
-
-
-
-
 

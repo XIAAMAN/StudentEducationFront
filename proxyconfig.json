@@ -1,0 +1,11 @@
+{
+  "/apidata":{
+    "target":"http://localhost:8848",
+    "secure":false,
+    "changeOrigin":true,
+    "pathRewrite":{
+      "^/apidata":""
+    }
+
+  }
+}
