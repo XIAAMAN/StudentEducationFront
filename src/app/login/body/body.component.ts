@@ -13,16 +13,12 @@ export class BodyComponent implements OnInit {
     password: ''
   };
   onSubmit(value: any): void {
-    // if (value.userName.length > 2 && value.password.length >= 6 ) {
-    //   console.log(value);
-    // } else {
-    //   alert('请输入正确的账号');
-    // }
-    this.loginService.init(this.user);
-    // console.log(this.message);
-    // console.log(this.loginService.state);
+    // 当登录输入框输入的数据符合格式要求时，再请求后台验证请求
+    if (value.userName.length > 2 && value.password.length >= 6 ) {
+      this.loginService.init(this.user);
+    }
   }
-  constructor(public loginService: LoginRequestService) { }
+  constructor(private loginService: LoginRequestService) { }
 
   ngOnInit() {
   }

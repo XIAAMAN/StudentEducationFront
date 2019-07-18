@@ -1,3 +1,5 @@
+
+
 <div class="headerStyle">
   <div class="showStyle">
     <img src="././assets/images/school_logo.png" class="imageStyle">
@@ -8,7 +10,14 @@
     <span class="specialFontStyle">南昌航空大学软件学院</span>
     <span class="fontStyle"> | </span>
     <span class="normalFontStyle">在线实验课程中心</span>
-  </div>
 
+
+    <div *ngIf="userName" class="loginState">
+      <span >xiaaman</span>
+      <a href="/login" title="注销"><img id="log_out" src="assets/images/log_out_black.png"
+                                  (mouseout)="huanyuan()" (mouseover)="jiaohuan()" (click)="logOut()"></a>
+    </div>
+
+  </div>
 
 </div>

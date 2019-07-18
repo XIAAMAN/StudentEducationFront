@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {Routes, RouterModule} from '@angular/router';
 import {LoginPageComponent} from './login/login-page/login-page.component';
-import {HomeComponent} from './home/home.component';
 import {CanActivateGuard} from './interceptor/can-activate-guard';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {HomeComponent} from './main/home/home.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},

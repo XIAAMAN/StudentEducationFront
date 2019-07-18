@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {of} from 'rxjs/internal/observable/of';
 import {NotificationService} from '../utils/notification.service';
 
+// 网络服务拦截器，当http请求出错时，会被拦截到这里
 const CODEMESSAGE = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -31,7 +32,6 @@ export class LoginInterceptorService implements HttpInterceptor {
   constructor(private router: Router, private notify: NotificationService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('booting');
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => this.handleData(err))
     );

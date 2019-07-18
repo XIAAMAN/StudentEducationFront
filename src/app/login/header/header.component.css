@@ -33,4 +33,21 @@
   font-size: 40px;
 }
 
+.loginState {
+  height: 80px;
+  line-height: 80px;
+  float: right;
+  display: inline-block;
+  margin-right: 50px;
+  font-size: 20px;
+  /*position: relative;*/
+  /*margin-top: 10px;*/
+  vertical-align: middle;
+  /*border: 1px solid red;*/
+}
+
+.loginState img {
+  padding-left: 10px;
+}
+
 
