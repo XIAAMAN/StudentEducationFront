@@ -8,6 +8,26 @@ import {LoginRequestService} from '../login-request.service';
 })
 export class BodyComponent implements OnInit {
   message: string;
+  parentPermisList: [{
+    permisId: null,
+    permisParentId: null,
+    permisName: null,
+    permisNameValue: null,
+    permisType: null,
+    permisIcon: null,
+    permisUrl: null,
+    permisDescription: null,
+    childrenPermisList: [{
+      permisId: null,
+      permisParentId: null,
+      permisName: null,
+      permisNameValue: null,
+      permisType: null,
+      permisIcon: null,
+      permisUrl: null,
+      permisDescription: null
+    }]
+  }];
   user = {
     userName: '',
     password: ''

@@ -1,13 +1,18 @@
 .mainStyle {
-  bottom: 0;
-  height: 145px;
-  position: fixed;
+  /*bottom: 0;*/
+  /*margin-top: -1px;*/
+  /*height: 145px;*/
+  position: absolute;
   width: 100%;
   min-width: 1000px;
-  /*left: 0;*/
+  top: 600px;
+  bottom: 0px;
+  left: 0;
   text-align: center;
 
-  background-color: #F3F3F3;
+  /*border: 1px solid red;*/
+  /*background-color: #F3F3F3;*/
+  background-color: lightblue;
 }
 /*body {*/
 /*  position: relative;*/
@@ -18,23 +23,29 @@
   font-size: 24px;
   padding-top: 30px;
   color: #555555;
+  background-color: lightblue;
   /*border: 1px solid red;*/
 }
 
 .linkStyle{
-  margin-top:  10px;
+  padding-top:  10px;
+  background-color: lightblue;
   /*border: 1px solid blue;*/
 }
 
 .linkStyle a{
   padding-left: 40px;
+  background-color: lightblue;
 }
 a {
   text-decoration:none;
 }
 
 .copyrightStyle {
-  margin-top: 10px;
+  background-color: lightblue;
+
+  padding-top: 10px;
+  pading-bottom: 2px;
 }
 
 /*a:hover{*/

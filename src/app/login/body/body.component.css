@@ -1,16 +1,17 @@
 .parentStyle {
   width: 100%;
-  height: 500px;
+  height: 520px;
   /*display: block;*/
   min-width: 1000px;
   text-align: center;
+  background-color: #f3f3f3;
   /*border: 2px solid blue;*/
 
 }
 
 .loginStyle {
   width: 50%;
-  height: 490px;
+  height: 510px;
   display: inline-block;
   /*min-width: 400px;*/
   vertical-align: middle;
@@ -20,10 +21,10 @@
 
 .container{
   width: 50%;
-  height:500px;
+  height:520px;
   /*border:1px solid red;*/
   text-align: center;
-  line-height:500px;
+  line-height:520px;
   /*min-width: 500px;*/
   display: inline-block;
 }

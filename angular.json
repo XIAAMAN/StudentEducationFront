@@ -28,7 +28,7 @@
               "src/styles.css",
               "src/assets/css/toastr.css"
             ],
-            "scripts": []
+            "scripts": ["node_modules/jquery/dist/jquery.js"]
           },
           "configurations": {
             "production": {

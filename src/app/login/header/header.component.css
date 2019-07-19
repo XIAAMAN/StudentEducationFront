@@ -1,5 +1,6 @@
 .headerStyle {
-  background-color: #F3F3F3;
+  /*background-color: #F3F3F3;*/
+  background-color: lightblue;
   width: 100%;
   min-width: 1000px;
   height: 80px;
