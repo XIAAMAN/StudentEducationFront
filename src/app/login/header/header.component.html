@@ -13,7 +13,7 @@
 
 
     <div *ngIf="userName" class="loginState">
-      <span >xiaaman</span>
+      <span >{{userName}}</span>
       <a href="/login" title="注销"><img id="log_out" src="assets/images/log_out_black.png"
                                   (mouseout)="huanyuan()" (mouseover)="jiaohuan()" (click)="logOut()"></a>
     </div>

@@ -5,7 +5,6 @@ import {LoginPageComponent} from './login/login-page/login-page.component';
 import {CanActivateGuard} from './interceptor/can-activate-guard';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {HomeComponent} from './main/home/home.component';
-import {PermisUnion} from './model/permis-union';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -22,6 +21,6 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
   ],
   exports: [RouterModule],
-  providers: [CanActivateGuard, PermisUnion]   // 不要忘记这里，需要将服务提供出去
+  providers: [CanActivateGuard]   // 不要忘记这里，需要将服务提供出去
 })
 export class AppRoutingModule { }

@@ -7,10 +7,11 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  private userName  = window.sessionStorage.getItem('userName');
+  private userName;
   constructor(private route: Router) { }
 
   ngOnInit() {
+    this.userName  = window.sessionStorage.getItem('userName');
   }
   // 当鼠标悬浮在注销按钮上，则交换图片
   jiaohuan() {

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {PermisUnion} from '../../model/permis-union';
 // import * as  form 'types/jquery';
 @Component({
   selector: 'app-navigation',
@@ -7,10 +6,34 @@ import {PermisUnion} from '../../model/permis-union';
   styleUrls: [ './navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-
-  constructor(private permis: PermisUnion) { }
+  parentPermisList: [{
+    permisId: null,
+    permisParentId: null,
+    permisName: null,
+    permisNameValue: null,
+    permisType: null,
+    permisPosition: null,
+    permisIcon: null,
+    permisUrl: null,
+    permisDescription: null,
+    childrenPermisList: [{
+      permisId: null,
+      permisParentId: null,
+      permisName: null,
+      permisNameValue: null,
+      permisType: null,
+      permisPosition: null,
+      permisIcon: null,
+      permisUrl: null,
+      permisDescription: null
+    }]
+  }];
+  constructor() { }
 
   ngOnInit() {
+
+    this.parentPermisList = JSON.parse(window.sessionStorage.getItem('parentPermisList'));
+    // console.log("navigation : ", this.parentPermisList)
     // $('#test').click(function() {
     //   alert(1111);
     // });
