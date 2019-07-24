@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import * as  form 'types/jquery';
+declare const my:any;
 @Component({
   selector: 'app-navigation',
   templateUrl: './navigation.component.html',

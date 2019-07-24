@@ -4,12 +4,12 @@
 /*  height: 100%;*/
 /*}*/
 body { margin: 0px; padding: 0px; background-color: #f3f3f3; font-family: 'Lato', sans-serif; }
-nav { width: 100%; min-width:1400px;margin: 0 auto; background: lightblue; height: 58px;}
+nav { width: 100%; min-width:1400px;margin: 0 auto; background: lightblue; height: 68px;}
 ul { margin: 0px; padding: 0px; list-style: none; }
 ul.dropdown { position: relative;  margin-left: 200px; }
 ul.dropdown li { font-weight: bold; float: left; width: 180px; position: relative; background: lightblue; height: 58px}
 ul.dropdown a:hover { color: #000; }
-ul.dropdown li a { display: block; padding: 20px 8px; color: #34495e; position: relative; z-index: 2000; text-align: center; text-decoration: none; font-weight: 700; font-size: 20px }
+ul.dropdown li a { display: block; padding: 20px 8px; color: #34495e; position: relative; z-index: 2000; text-align: center; text-decoration: none; font-weight: 500; font-size: 20px }
 ul.dropdown li ul li a { display: block; padding: 20px 8px; color: #34495e; position: relative; z-index: 2000; text-align: center; text-decoration: none;  font-size: 18px; }
 
 ul.dropdown li a:hover, ul.dropdown li a.hover { background: #005388; position: relative; color: #fff; }

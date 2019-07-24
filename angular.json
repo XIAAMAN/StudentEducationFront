@@ -26,9 +26,12 @@
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css",
-              "src/assets/css/toastr.css"
+              "src/assets/css/toastr.css",
+              "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
-            "scripts": ["node_modules/jquery/dist/jquery.js"]
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -61,7 +64,7 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "StudentEducation:build",
-            "proxyConfig":"proxyconfig.json"
+            "proxyConfig": "proxyconfig.json"
           },
           "configurations": {
             "production": {

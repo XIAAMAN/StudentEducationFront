@@ -5,42 +5,51 @@
 
    <div class="loginStyle">
      <div class="loginLabelStyle">用户登录</div>
-      <form #loginForm ="ngForm" action="" (ngSubmit)="onSubmit(loginForm.value)" >
-<!--        <span><mat-icon class="matStyle">account_box</mat-icon></span>-->
-        <div  class="userNameStyle">
-          <span class="material-icons matStyle">account_box</span>
-          <input type="text" required minlength="2"  #name="ngModel" name="userName" placeholder="请输入用户名" [(ngModel)]="user.userName">
+     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+       <nz-form-item>
+         <nz-form-control>
+           <nz-input-group nzPrefixIcon="user" nzSize="large">
+             <input [(ngModel)]="user.userName"  type="text" nz-input formControlName="userName" placeholder="Username" />
+           </nz-input-group>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-control>
+           <nz-input-group nzPrefixIcon="lock" nzSize="large">
+             <input  [(ngModel)]="user.password" type="password" nz-input formControlName="password" placeholder="Password" />
+           </nz-input-group>
+         </nz-form-control>
+       </nz-form-item>
+       <nz-form-item>
+         <nz-form-control>
+           <button  nzSize="large" nz-button class="login-form-button" [nzType]="'primary'">登 录</button>
+         </nz-form-control>
+       </nz-form-item>
+     </form>
 
-          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="errorMessage">
-            <div *ngIf="name.errors.required">
-              请输入名字
-            </div>
-            <div *ngIf="name.errors.minlength">
-              名字最少两个字符
-            </div>
-          </div>
-        </div>
 
-        <div class="userNameStyle">
-          <span class="material-icons matStyle">lock</span>
-          <input type="password" name="password" required minlength="6" #password="ngModel" placeholder="请输入密码" [(ngModel)]="user.password">
+     <!--      <form #loginForm ="ngForm" action="" (ngSubmit)="onSubmit(loginForm.value)" >-->
+<!--&lt;!&ndash;        <span><mat-icon class="matStyle">account_box</mat-icon></span>&ndash;&gt;-->
 
-          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="errorMessage">
-            <div *ngIf="password.errors.required">
-              请输入密码
-            </div>
-            <div *ngIf="password.errors.minlength">
-              请输入6个及以上字符
-            </div>
-          </div>
 
-        </div>
+<!--&lt;!&ndash;        <div  class="userNameStyle">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span class="material-icons matStyle">account_box</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="iconStyle"><img src="assets/images/user.png"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;          <input type="text" required minlength="2"  #name="ngModel" name="userName" placeholder="请输入用户名" [(ngModel)]="user.userName">&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
 
-        <div>
-          <button type="submit" class="loginButtonStyle">登录</button>
-        </div>
+<!--&lt;!&ndash;        <div class="userNameStyle">&ndash;&gt;-->
+<!--&lt;!&ndash;          <div class="iconStyle"><img src="assets/images/lock.png"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;          <span class="material-icons matStyle">lock</span>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;          <input type="password" name="password" required minlength="6" #password="ngModel" placeholder="请输入密码" [(ngModel)]="user.password">&ndash;&gt;-->
 
-      </form>
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+
+<!--        <div>-->
+<!--          <button type="submit" class="loginButtonStyle">登录</button>-->
+<!--        </div>-->
+
+<!--      </form>-->
    </div>
  </div>
 

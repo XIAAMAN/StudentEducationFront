@@ -1,31 +1,19 @@
-
-<body>
   <nav>
     <ul class="dropdown">
-<!--      <li class="drop"><a href="#">首页</a>-->
-<!--        <ul class="sub_menu">-->
-<!--          <li><a href="#">中文测试</a></li>-->
-<!--          <li><a href="#">中文测试</a></li>-->
-<!--          <li><a href="#">中文测试</a></li>-->
-<!--          <li><a href="#">中文测试</a></li>-->
-<!--          <li><a href="#">中文测试 </a></li>-->
-<!--          <li><a href="#">中文测试</a></li>-->
-<!--          <li><a href="#">中文测试</a></li>-->
-<!--        </ul>-->
-<!--      </li>-->
       <li class="drop" *ngFor="let parentPermis of parentPermisList">
-        <a href="#">{{parentPermis.permisName}}</a>
+        <a routerLink={{parentPermis.permisUrl}}>{{parentPermis.permisName}}</a>
         <ul class="sub_menu">
-          <li *ngFor="let childrenPermis of parentPermis.childrenPermisList"><a href="#">{{childrenPermis.permisName}}</a></li>
+          <li *ngFor="let childrenPermis of parentPermis.childrenPermisList"><a routerLink={{childrenPermis.permisUrl}}>{{childrenPermis.permisName}}</a></li>
         </ul>
       </li>
     </ul>
   </nav>
-
-</body>
+  <div style="width: 100%; height: auto; background-color: #F0F2F5">
+    <router-outlet></router-outlet>
+  </div>
 
 
 <!--<script src='js/jquery-1.8.3.min.js'></script>-->
-<!--<script src="js/index.js"></script>-->
+
 
 

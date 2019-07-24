@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {LoginRequestService} from '../login-request.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-body',
@@ -32,15 +33,26 @@ export class BodyComponent implements OnInit {
     userName: '',
     password: ''
   };
-  onSubmit(value: any): void {
-    // 当登录输入框输入的数据符合格式要求时，再请求后台验证请求
-    if (value.userName.length > 2 && value.password.length >= 6 ) {
+  validateForm: FormGroup;
+
+  submitForm(): void {
+    for (const i in this.validateForm.controls) {
+      this.validateForm.controls[i].markAsDirty();
+      this.validateForm.controls[i].updateValueAndValidity();
+    }
+    console.log("validateForm.valid : ", this.validateForm.valid)
+    if (this.validateForm.valid) {
       this.loginService.init(this.user);
     }
   }
-  constructor(private loginService: LoginRequestService) { }
+  constructor(private loginService: LoginRequestService, private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.validateForm = this.fb.group({
+      userName: [null, [Validators.required]],
+      password: [null, [Validators.required]],
+      remember: [true]
+    });
   }
 
 }

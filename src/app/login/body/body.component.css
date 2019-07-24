@@ -15,7 +15,6 @@
   display: inline-block;
   /*min-width: 400px;*/
   vertical-align: middle;
-
   /*border:1px solid red;*/
 }
 
@@ -35,47 +34,41 @@
   background-size:100% 100%;
 }
 
-input {
+.userNameStyle input {
   font-size: 16px;
   width: 260px;
-  height: 38px;
-  line-height: 38px;
-  /*margin-bottom: 40px;*/
+  height: 40px;
+  line-height: 40px;
   margin:0 auto;
+  margin-top: 2px;
+  border: 1px solid #CECDCD;
   padding: 0 0 2px 20px;
 }
 
-.matStyle {
-  font-size: 30px;
-  width: 40px;
-  height: 42px;
-  padding: 0;
-  margin: 0;
-  /*height: 38px;*/
-  line-height: 42px;
-  /*margin-top: 20px;*/
-
-  color: #CECDCD;
-
-  /*text-align: center;*/
-  /*vertical-align: middle;*/
-  /*font-family: Arial;*/
-  border: 1px solid ;
-  border-right: none;
-  vertical-align: middle;
-
-}
-
-/*.material-icons.md-18 { font-size: 18px; }*/
-/*.material-icons.md-24 { font-size: 24px; }*/
-/*.material-icons.md-36 { font-size: 36px; }*/
-/*.material-icons.md-48 { font-size: 48px; }*/
 
 .userNameStyle {
   margin-bottom: 40px;
   /*border: 1px solid red;*/
 }
 
+.iconStyle {
+  height: 40px;
+  width: 42px;
+  text-align: center;
+  line-height: 38px;
+  vertical-align: middle;
+  border: 1px solid #CECDCD;
+  background-color: #e6e6e6;
+  border-right: none;
+  margin-bottom: 4px;
+
+  /*margin-top: -1px;*/
+  display: inline-block;
+}
+
+.iconStyle img{
+  padding-bottom: 5px;
+}
 .loginLabelStyle {
   font-size: 24px;
   color: #0E81D2;
@@ -85,22 +78,27 @@ input {
 
 }
 
-.loginButtonStyle {
-  width: 322px;
-  height: 40px;
-  background-color: #0E81D2;
-  color: white;
-  font-family: "微软雅黑";
+.ant-btn-lg {
   font-size: 20px;
-  border: none;
-  border-radius: 5px;
 }
 
-.errorMessage {
-  width: 324px;
-  height: 20px;
+.login-form {
   margin: 0 auto;
-  color: red;
-  background-color: #FFDFDF;
-  font-size: 14px;
+  max-width: 300px;
+}
+
+/*.login-form-forgot {*/
+/*  float: right;*/
+/*}*/
+
+.login-form-button {
+  width: 100%;
+}
+
+.ant-input-affix-wrapper {
+  font-size: 18px;
+}
+.ant-input:not(:first-child) {
+  padding-left: 40px;
+
 }

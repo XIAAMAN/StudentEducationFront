@@ -48,7 +48,6 @@ export class LoginInterceptorService implements HttpInterceptor {
         break ;
       case 401:
         this.notify.showError(CODEMESSAGE['401']);
-        // this.router.navigate(['/']);
         return of(event) ;
         break ;
       case 403:
