@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Observable, Observer } from 'rxjs';@Component({
+import { Observable, Observer } from 'rxjs';
+import {NotificationService} from '../utils/notification.service';
+
+@Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.css']
@@ -52,7 +55,7 @@ export class TestComponent implements OnInit {
   };
 
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private notify: NotificationService) {
     this.validateForm = this.fb.group({
       userName: ['', [Validators.required], [this.userNameAsyncValidator]],
       email: ['', [Validators.email, Validators.required]],

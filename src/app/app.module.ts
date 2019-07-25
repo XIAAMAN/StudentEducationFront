@@ -26,6 +26,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { IconDefinition } from '@ant-design/icons-angular';
 import { LockOutline, UserOutline } from '@ant-design/icons-angular/icons';
 import { NzResultModule } from 'ng-zorro-antd/result';
+import { LookExerciseComponent } from './exercise/look-exercise/look-exercise.component';
 const icons: IconDefinition[] = [ LockOutline, UserOutline ];
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline ];
     NavigationComponent,
     LookSysLogComponent,
     TestComponent,
+    LookExerciseComponent,
 
   ],
   imports: [

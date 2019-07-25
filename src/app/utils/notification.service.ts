@@ -10,7 +10,7 @@ export class NotificationService {
 
   constructor(private toastr: ToastrService) { }
   showSuccess(msg) {
-    this.toastr.success(msg, null, {
+    this.toastr.success(msg, "Success Tips", {
       timeOut: 2000,
       closeButton: true,
       easing: 'ease-in',
@@ -20,7 +20,7 @@ export class NotificationService {
   }
 
   showWarning(msg) {
-    this.toastr.warning(msg, null, {
+    this.toastr.warning(msg, "Warning", {
       timeOut: 2000,
       closeButton: false,
       easing: 'ease-in',
@@ -30,7 +30,7 @@ export class NotificationService {
   }
 
   showInfo(msg) {
-    this.toastr.info(msg, null, {
+    this.toastr.info(msg, "Informational Notes", {
       timeOut: 2000,
       closeButton: false,
       easing: 'ease-in',
@@ -39,7 +39,7 @@ export class NotificationService {
     });
   }
   showError(msg) {
-    this.toastr.error(msg, null, {
+    this.toastr.error(msg, "Error", {
       timeOut: 2500,
       closeButton: false,
       easing: 'ease-in',

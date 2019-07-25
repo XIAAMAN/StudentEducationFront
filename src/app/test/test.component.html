@@ -1,3 +1,6 @@
+<body>
+
+
 <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm(validateForm.value)">
   <nz-form-item>
     <nz-form-label [nzSpan]="7" nzRequired>Username</nz-form-label>
@@ -62,3 +65,8 @@
     </nz-form-control>
   </nz-form-item>
 </form>
+<button (click)="this.notify.showSuccess('登录成功')">登录成功</button>
+<button (click)="this.notify.showError('登录失败')">登录失败</button>
+<button (click)="this.notify.showWarning('存在异常')">存在异常</button>
+<button (click)="this.notify.showInfo('重要信息')">重要信息</button>
+</body>

@@ -145,12 +145,12 @@ button.toast-close-button {
 }
 .toast-success {
   /*background-color: #51A351;*/
-  background-color: lightskyblue;
+  background-color: #005388;
 }
 .toast-error {
-  background-color: #ff0000;
-  /*background-color: #ff5151;*/
-  /*background-color: #BD362F;*/
+  /*background-color: #ff0000;*/
+  background-color: palevioletred;
+
 }
 .toast-info {
   background-color: #2F96B4;

@@ -7,28 +7,7 @@ declare const my:any;
   styleUrls: [ './navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
-  parentPermisList: [{
-    permisId: null,
-    permisParentId: null,
-    permisName: null,
-    permisNameValue: null,
-    permisType: null,
-    permisPosition: null,
-    permisIcon: null,
-    permisUrl: null,
-    permisDescription: null,
-    childrenPermisList: [{
-      permisId: null,
-      permisParentId: null,
-      permisName: null,
-      permisNameValue: null,
-      permisType: null,
-      permisPosition: null,
-      permisIcon: null,
-      permisUrl: null,
-      permisDescription: null
-    }]
-  }];
+  parentPermisList: [];
   constructor() { }
 
   ngOnInit() {

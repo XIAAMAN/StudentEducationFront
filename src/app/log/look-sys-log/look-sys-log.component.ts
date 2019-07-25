@@ -19,6 +19,7 @@ export class LookSysLogComponent implements OnInit{
   };
 
   ngOnInit() {
+    // console.log("array judge : ", this.permisAll.indexOf("experiment12"));
     this.loadData();
   }
 
@@ -38,18 +39,11 @@ export class LookSysLogComponent implements OnInit{
     let url: string;
     this.loading=true;
     url = 'apidata/log/get?page=' + this.currentPageIndex + "&size=" + this.pageSize;
-    this.http.get(url).subscribe((data:any) => {
+    this.http.get(url,this.httpOptions).subscribe((data:any) => {
       this.sysData = JSON.parse(JSON.stringify(data.content));
       this.totalSize = <number> data.totalElements;
       this.loading=false;
     })
   }
 
-  deleteLog(data: any) {
-    console.log("delete data : ", data)
-  }
-
-  modify(data: any) {
-    console.log("modify data : ", data)
-  }
 }

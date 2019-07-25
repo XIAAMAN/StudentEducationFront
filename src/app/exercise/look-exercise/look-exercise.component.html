@@ -1,0 +1,45 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-table #sysExerciseTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+  <tr>
+    <th>名称</th>
+    <th>描述</th>
+    <th>标签</th>
+    <th>语言</th>
+    <th>难度</th>
+    <th>上传人</th>
+    <th>时间</th>
+    <th *ngIf="judgePermis">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysExerciseTable.data">
+    <td>
+      <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
+      <ng-template #userName>{{ data.exerciseName}}</ng-template>
+    </td>
+    <td>
+      <span *ngIf="data.exerciseDescription.length >15; else description" title="{{data.exerciseDescription}}">{{ data.exerciseDescription.substring(0,15)+"..."}}</span>
+      <ng-template #description>{{ data.exerciseDescription}}</ng-template>
+    </td>
+    <td>{{ data.exerciseLabel }}</td>
+    <td>{{ data.exerciseLanguage}}</td>
+    <td>{{ data.exerciseDifficultValue}}</td>
+    <td>{{ data.exerciseUploadUserName}}</td>
+    <td>{{ data.exerciseTime}}</td>
+
+    <!--      根据用户所拥有的的权限加载相应的操作功能，如果所有操作权限都没有，则不现实该列-->
+    <td *ngIf="judgePermis">
+      <nz-divider nzType="vertical"></nz-divider>
+      <button *ngIf="permisAll.indexOf(exercise_detail_permis) >= 0" nz-button nzType="default" >查看详情</button>
+      <button *ngIf="permisAll.indexOf(exercise_modify_permis) >= 0" nz-button nzType="dashed" >修改</button>
+      <button *ngIf="permisAll.indexOf(exercise_delete_permis) >= 0" nz-button nzType="danger" >删除</button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>

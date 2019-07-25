@@ -10,24 +10,30 @@
     <th>日志名称</th>
     <th>调用方法</th>
     <th>IP地址</th>
+    <th>请求参数</th>
     <th>请求路径</th>
     <th>时间</th>
-    <th>操作</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let data of sysLogTable.data">
     <td>{{ data.userName }}</td>
     <td>{{ data.logName }}</td>
-    <td>{{ data.logMethod }}</td>
-    <td>{{ data.logIp}}</td>
-    <td>{{ data.logUrl}}</td>
-    <td>{{ data.logCreateTime}}</td>
     <td>
-      <nz-divider nzType="vertical"></nz-divider>
-      <button nz-button nzType="default" (click)="modify(data)">修改</button>
-      <button nz-button nzType="danger" (click)="deleteLog(data)">删除</button>
+      <span *ngIf="data.logMethod.length >25; else method" title="{{data.logMethod}}">{{ data.logMethod.substring(0,25)+"..."}}</span>
+      <ng-template #method>{{ data.logMethod}}</ng-template>
     </td>
+    <td>{{ data.logIp}}</td>
+    <td>
+      <span *ngIf="data.logParams.length >25; else params" title="{{data.logParams}}">{{ data.logParams.substring(0,25)+"..."}}</span>
+      <ng-template #params>{{ data.logParams}}</ng-template>
+    </td>
+    <td>
+      <span *ngIf="data.logUrl.length >25; else url" title="{{data.logUrl}}">{{ data.logUrl.substring(0,25)+"..."}}</span>
+      <ng-template #url>{{ data.logUrl}}</ng-template>
+    </td>
+    <td>{{ data.logCreateTime}}</td>
+
   </tr>
   </tbody>
 </nz-table>

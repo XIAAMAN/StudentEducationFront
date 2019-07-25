@@ -7,6 +7,7 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {HomeComponent} from './main/home/home.component';
 import {LookSysLogComponent} from './log/look-sys-log/look-sys-log.component';
 import {TestComponent} from './test/test.component';
+import {LookExerciseComponent} from './exercise/look-exercise/look-exercise.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -14,8 +15,10 @@ const appRoutes: Routes = [
   // 配置路由拦截，当访问home的时候，会被拦截到CanActivateGuard
   {path: 'home', component: HomeComponent, canActivate: [CanActivateGuard],
     children: [
-      {path: 'lookLog', component: LookSysLogComponent, canActivate: [CanActivateGuard]}
-    ]},
+      {path: 'lookLog', component: LookSysLogComponent, canActivate: [CanActivateGuard]},
+      {path: 'lookExercise', component: LookExerciseComponent, canActivate: [CanActivateGuard]},
+    ]
+  },
   {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];
