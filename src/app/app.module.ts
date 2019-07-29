@@ -24,10 +24,15 @@ import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { IconDefinition } from '@ant-design/icons-angular';
-import { LockOutline, UserOutline } from '@ant-design/icons-angular/icons';
+import { LockOutline, UserOutline, PlusOutline, InboxOutline } from '@ant-design/icons-angular/icons';
 import { NzResultModule } from 'ng-zorro-antd/result';
 import { LookExerciseComponent } from './exercise/look-exercise/look-exercise.component';
-const icons: IconDefinition[] = [ LockOutline, UserOutline ];
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,7 +63,11 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline ];
     NzAutocompleteModule,
     NzFormModule,
     NzResultModule,
-
+    NzPopconfirmModule,
+    NzModalModule,
+    NzInputModule,
+    NzSelectModule,
+    NzUploadModule
 
 
   ],

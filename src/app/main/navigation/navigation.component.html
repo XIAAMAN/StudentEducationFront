@@ -1,4 +1,5 @@
-  <nav>
+
+<nav>
     <ul class="dropdown">
       <li class="drop" *ngFor="let parentPermis of parentPermisList">
         <a routerLink={{parentPermis.permisUrl}}>{{parentPermis.permisName}}</a>
@@ -8,7 +9,7 @@
       </li>
     </ul>
   </nav>
-  <div style="width: 100%; height: auto; background-color: #F0F2F5">
+  <div style="width: 100%; min-width: 1400px;  height: auto; min-height: 100%; background-color: #F0F2F5">
     <router-outlet></router-outlet>
   </div>
 

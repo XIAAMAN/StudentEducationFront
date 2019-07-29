@@ -1,3 +1,4 @@
+/*表格样式*/
 tr th {
   text-align: center;
   font-size: 16px;
@@ -21,3 +22,41 @@ nz-table {
 }
 
 
+/*抽屉样式*/
+.title {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 24px;
+  display: block;
+  margin-bottom: 16px;
+}
+.item-wrap {
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 7px;
+  color: rgba(0, 0, 0, 0.65);
+}
+.label {
+  margin-right: 8px;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.uploadExerciseBtn{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  min-height: 200px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.steps-action {
+  margin-top: 24px;
+}

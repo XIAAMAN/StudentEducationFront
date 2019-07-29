@@ -2,7 +2,7 @@
   /*background-color: #F3F3F3;*/
   background-color: lightblue;
   width: 100%;
-  min-width: 1000px;
+  min-width: 1400px;
   height: 80px;
   display: inline-block;
   vertical-align: middle;
@@ -19,15 +19,16 @@
 
 .specialFontStyle{
   font-size: 22px;
-  font-family: "Arial Unicode MS";
+  font-family: "Arial ";
   font-weight: bold;
   color: #00005f;
   margin-left: -10px;
 }
 
 .normalFontStyle{
-  font-size: 30px;
-  font-family: "Adobe 楷体 Std R";
+  font-size: 28px;
+  font-family: "华文新魏";
+  letter-spacing: -2px;
 }
 
 .fontStyle {

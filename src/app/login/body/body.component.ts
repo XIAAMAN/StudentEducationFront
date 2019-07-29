@@ -25,7 +25,6 @@ export class BodyComponent implements OnInit {
       this.validateForm.controls[i].markAsDirty();
       this.validateForm.controls[i].updateValueAndValidity();
     }
-    console.log("validateForm.valid : ", this.validateForm.valid)
     if (this.validateForm.valid) {
       this.http.post('apidata/login',
         {

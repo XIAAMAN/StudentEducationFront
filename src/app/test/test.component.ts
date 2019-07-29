@@ -1,70 +1,51 @@
 import {Component, OnInit} from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { Observable, Observer } from 'rxjs';
-import {NotificationService} from '../utils/notification.service';
-
+import {HttpClient} from '@angular/common/http';
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
-  validateForm: FormGroup;
 
-  submitForm(value: any): void {
-    for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsDirty();
-      this.validateForm.controls[key].updateValueAndValidity();
-    }
-    console.log(value);
+  constructor(private msg: NzMessageService){}
+  ngOnInit() {
+
   }
 
-  resetForm(e: MouseEvent): void {
-    e.preventDefault();
-    this.validateForm.reset();
-    for (const key in this.validateForm.controls) {
-      this.validateForm.controls[key].markAsPristine();
-      this.validateForm.controls[key].updateValueAndValidity();
-    }
-  }
-
-
-  validateConfirmPassword(): void {
-    setTimeout(() => this.validateForm.controls.confirm.updateValueAndValidity());
-  }
-
-  userNameAsyncValidator = (control: FormControl) =>
-    new Observable((observer: Observer<ValidationErrors | null>) => {
-      setTimeout(() => {
-        if (control.value === 'JasonWood') {
-          // you have to return `{error: true}` to mark it as an error event
-          observer.next({ error: true, duplicated: true });
-        } else {
-          observer.next(null);
-        }
+  beforeUpload = (file: File) => {
+    console.log("file.type ",file.type)
+    console.log("file.name ",file.name)
+    return new Observable((observer: Observer<boolean>) => {
+      const isZip = file.type === 'application/x-zip-compressed';
+      if (!isZip) {
+        this.msg.error('只能够上传zip压缩包!');
         observer.complete();
-      }, 1000);
+        return;
+      }
+      const isLt10M = file.size / 1024 / 1024 < 10;
+      if (!isLt10M) {
+        this.msg.error('文件大小不能超过10M');
+        observer.complete();
+        return;
+      }
+
+      observer.next(isZip && isLt10M);
+      observer.complete();
     });
-  confirmValidator = (control: FormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { error: true, required: true };
-    } else if (control.value !== this.validateForm.controls.password.value) {
-      return { confirm: true, error: true };
-    }
-    return {};
   };
 
 
-  constructor(private fb: FormBuilder, private notify: NotificationService) {
-    this.validateForm = this.fb.group({
-      userName: ['', [Validators.required], [this.userNameAsyncValidator]],
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
-      confirm: ['', [this.confirmValidator]],
-      comment: ['', [Validators.required]]
-    });
+  handleChange({ file, fileList }: { [key: string]: any }): void {
+    const status = file.status;
+    if (status !== 'uploading') {
+      console.log(file, fileList);
+    }
+    if (status === 'done') {
+      this.msg.success(`${file.name} 文件上传成功.`);
+    } else if (status === 'error') {
+      this.msg.error(`${file.name} 文件上传失败.`);
+    }
   }
-  ngOnInit() {
-  }
-
 }

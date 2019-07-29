@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {NotificationService} from '../../utils/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +10,7 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   private userName;
-  constructor(private route: Router) { }
+  constructor(private route: Router, private http: HttpClient, private notify:NotificationService) { }
 
   ngOnInit() {
     this.userName  = window.sessionStorage.getItem('userName');
@@ -26,7 +28,8 @@ export class HeaderComponent implements OnInit {
   }
   // 注销登录后，需要清除会话数据
   logOut() {
+    // 退出登录，前后台都需要清除session
     window.sessionStorage.clear();
-    console.log('log out success');
+    this.http.get('apidata/sys_user/logOut').subscribe();
   }
 }
