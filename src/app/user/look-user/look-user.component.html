@@ -1,0 +1,169 @@
+<div style="background-color: #F0F2F5">
+<div style="width: 100%; height: 30px">
+</div>
+<nz-table #sysUserTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+
+  <div>
+    <button class="topButtons" nz-button nzType="default"  (click)="showAddUserModal()"><i nz-icon nzType="plus"></i>增加</button>
+    <button class="topButtons" nz-button nzType="default"  (click)="showUploadExcelModal()"><i nz-icon nzType="upload"></i>导入学生</button>
+<!--    <div class="search">-->
+<!--      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">-->
+<!--        <input type="text" nz-input placeholder="请输入关键字查找" />-->
+<!--      </nz-input-group>-->
+<!--      <ng-template #suffixIconButton>-->
+<!--        <button nz-button nzType="primary" nzSearch><i nz-icon nzType="search"></i></button>-->
+<!--      </ng-template>-->
+<!--    </div>-->
+
+  </div>
+
+
+
+
+  <tr>
+    <th>账号名称</th>
+    <th>真实姓名</th>
+    <th>学号或工号</th>
+    <th>手机号</th>
+    <th>邮箱</th>
+    <th *ngIf="judgePermis">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysUserTable.data">
+    <td>{{ data.userName }}</td>
+    <td>{{ data.userRealName }}</td>
+    <td>{{ data.userNumber }}</td>
+    <td>{{ data.userPhone }}</td>
+    <td>{{ data.userEmail }}</td>
+
+    <td *ngIf="judgePermis">
+      <button class="buttonStyle" nz-button nzType="dashed"
+              nz-popconfirm nzTitle="是否确定对此用户重置密码？" (nzOnConfirm)="resetPassword(data.userId)"
+              nzPlacement="leftBottom">重置密码</button>
+      <button class="buttonStyle" nz-button nzType="danger"
+              nz-popconfirm nzTitle="是否确定删除此用户？" (nzOnConfirm)="deleteUser(data.userId)"
+              nzPlacement="leftBottom">删除</button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>
+</div>
+
+<!--************************************************************************************-->
+<!--增加用户弹出框-->
+
+<nz-modal [(nzVisible)]="addModalVisible" nzTitle="增加用户"
+          (nzOnCancel)="addCancel()" (nzOnOk)="handleAddUserOk()">
+  <form nz-form [formGroup]="validateForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >账号名称</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzHasFeedback nzValidatingTip="校验中..."
+                       [nzErrorTip]="userNameErrorTpl">
+        <input nz-input [(ngModel)]="addModalData.userName" formControlName="userName">
+      </nz-form-control>
+<!--      账号名称校验错误显示-->
+      <ng-template #userNameErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')" >
+          请输入2-20个字符的账号名称
+        </ng-container>
+        <ng-container *ngIf="control.hasError('duplicated')">
+          账号名称 {{ this.addModalData.userName }} 已被占用，请重新输入！
+        </ng-container>
+      </ng-template>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">真实姓名</nz-form-label>
+      <nz-form-control [nzSpan]="16"  nzErrorTip="请输入2-100个字符的真实姓名">
+        <input nz-input [(ngModel)]="addModalData.userRealName" formControlName="userRealName" pattern=".{2,100}">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">学号或工号</nz-form-label>
+      <nz-form-control [nzSpan]="16"  nzHasFeedback nzValidatingTip="校验中..."
+                       [nzErrorTip]="userNumberErrorTpl">
+        <input nz-input [(ngModel)]="addModalData.userNumber" formControlName="userNumber">
+      </nz-form-control>
+<!--      学号或工号校验错误显示-->
+      <ng-template #userNumberErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('required')" >
+          请输入5-20位数的学号或工号
+        </ng-container>
+        <ng-container *ngIf="control.hasError('duplicated')">
+          学号或工号 {{ this.addModalData.userNumber }} 已被占用，请重新输入！
+        </ng-container>
+      </ng-template>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">手机号</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzHasFeedback [nzErrorTip]="userPhoneErrorTpl">
+        <input nz-input [ngModel]="addModalData.userPhone" formControlName="userPhone"
+               type="text">
+      </nz-form-control>
+<!--      手机号校验错误显示-->
+      <ng-template #userPhoneErrorTpl let-control>
+        <ng-container *ngIf="control.hasError('invalid')">
+          请输入有效的手机号码
+        </ng-container>
+      </ng-template>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" nzFor="email">邮箱</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzHasFeedback nzErrorTip="无效邮箱！">
+        <input nz-input [(ngModel)]="addModalData.userEmail" formControlName="userEmail" type="email"
+               (ngModelChange)="onChangeEmailSuffix($event)"  [nzAutocomplete]="auto" required>
+<!--        邮箱后缀自动完成-->
+        <nz-autocomplete #auto>
+          <nz-auto-option *ngFor="let option of emailSuffixOptions" [nzValue]="option">{{ option }}</nz-auto-option>
+        </nz-autocomplete>
+      </nz-form-control>
+    </nz-form-item>
+
+<!--     角色选择下拉框-->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">角色</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired nzErrorTip="请至少选择一个角色">
+        <nz-select nzMode="multiple" nzPlaceHolder="请选择角色" [(ngModel)]="listOfSelectedRole"
+                   formControlName="rolesName" nzMaxTagCount="2" nzMaxMultipleCount="2" >
+          <ng-container *ngFor="let option of listOfRoles">
+            <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</nz-modal>
+
+<!--************************************************************************************-->
+<!--上传学生Excel表弹出框-->
+
+<nz-modal [(nzVisible)]="uploadModalVisible" nzTitle="上传学生Excel表" nzWidth="600"
+          (nzOnCancel)="addStudentCancel()" (nzOnOk)="handleUploadExcelOk()">
+  <h3>上传文件说明：上传文件必须为.xls或.xlsx文件，大小不能超过10M，每次只能上传单个文件。
+    文件内容格式要求：excel文件中不需要有任何与学生信息无关的内容，第一列为学生姓名、第二列为学号、第三列为班级。如果格式错误将会导致学生信息注册失败</h3>
+  <nz-upload
+    nzType="drag"
+    [(nzFileList)]="fileList"
+    [nzBeforeUpload]="beforeUpload"
+    nzAccept=".xls,.xlsx"
+  >
+    <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+    <p class="ant-upload-text">Click or drag file to this area to upload</p>
+    <p class="ant-upload-hint">
+      只支持zip文件上传，大小不能超过10M
+    </p>
+  </nz-upload>
+</nz-modal>

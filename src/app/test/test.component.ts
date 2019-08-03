@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { NzMessageService, UploadFile } from 'ng-zorro-antd';
 import { Observable, Observer } from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpRequest, HttpResponse} from '@angular/common/http';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {filter} from 'rxjs/operators';
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
@@ -9,43 +11,53 @@ import {HttpClient} from '@angular/common/http';
 })
 export class TestComponent implements OnInit {
 
-  constructor(private msg: NzMessageService){}
-  ngOnInit() {
+  uploading = false;
+  fileList: UploadFile[] = [];
 
-  }
+  constructor(private http: HttpClient, private msg: NzMessageService) {}
 
-  beforeUpload = (file: File) => {
-    console.log("file.type ",file.type)
-    console.log("file.name ",file.name)
-    return new Observable((observer: Observer<boolean>) => {
-      const isZip = file.type === 'application/x-zip-compressed';
-      if (!isZip) {
-        this.msg.error('只能够上传zip压缩包!');
-        observer.complete();
-        return;
-      }
-      const isLt10M = file.size / 1024 / 1024 < 10;
-      if (!isLt10M) {
-        this.msg.error('文件大小不能超过10M');
-        observer.complete();
-        return;
-      }
-
-      observer.next(isZip && isLt10M);
-      observer.complete();
-    });
+  beforeUpload = (file: UploadFile): boolean => {
+    this.fileList = this.fileList.concat(file);
+    let isExcel = file.type;
+    if (isExcel !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && isExcel !== 'application/vnd.ms-excel') {
+      this.msg.error('只能上传Excel(.xls,.xlsx)文件');
+      return;
+    }
+    return false;
   };
 
-
-  handleChange({ file, fileList }: { [key: string]: any }): void {
-    const status = file.status;
-    if (status !== 'uploading') {
-      console.log(file, fileList);
+  handleUpload(): void {
+    const formData = new FormData();
+    // tslint:disable-next-line:no-any
+    if(this.fileList.length > 1) {
+      this.msg.info("只能上传一个文件")
+      return;
     }
-    if (status === 'done') {
-      this.msg.success(`${file.name} 文件上传成功.`);
-    } else if (status === 'error') {
-      this.msg.error(`${file.name} 文件上传失败.`);
-    }
+    this.fileList.forEach((file: any) => {
+      formData.append('files[]', file);
+    });
+    this.uploading = true;
+    // You can use any AJAX library you like
+    const req = new HttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts/', formData, {
+      reportProgress: true
+    });
+    this.http
+      .request(req)
+      .pipe(filter(e => e instanceof HttpResponse))
+      .subscribe(
+        () => {
+          this.uploading = false;
+          this.fileList = [];
+          this.msg.success('upload successfully.');
+        },
+        () => {
+          this.uploading = false;
+          this.msg.error('upload failed.');
+        }
+      );
   }
+
+  ngOnInit(): void {
+  }
+
 }

@@ -8,6 +8,7 @@ import {HomeComponent} from './main/home/home.component';
 import {LookSysLogComponent} from './log/look-sys-log/look-sys-log.component';
 import {TestComponent} from './test/test.component';
 import {LookExerciseComponent} from './exercise/look-exercise/look-exercise.component';
+import {LookUserComponent} from './user/look-user/look-user.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -17,6 +18,7 @@ const appRoutes: Routes = [
     children: [
       {path: 'lookLog', component: LookSysLogComponent, canActivate: [CanActivateGuard]},
       {path: 'lookExercise', component: LookExerciseComponent, canActivate: [CanActivateGuard]},
+      {path: 'lookUser', component: LookUserComponent, canActivate: [CanActivateGuard]},
     ]
   },
   {path: '', redirectTo: 'login', pathMatch: 'full'},

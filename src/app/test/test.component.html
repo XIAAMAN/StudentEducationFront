@@ -1,10 +1,13 @@
-<nz-upload nzAction="apidata/file/upload" nzAccept=".zip" nzType="drag"
-           [nzBeforeUpload]="beforeUpload" nzSize="10240" (nzChange)="handleChange($event)">
-  <p class="ant-upload-drag-icon">
-    <i nz-icon nzType="inbox"></i>
-  </p>
-  <p class="ant-upload-text">Click or drag file to this area to upload</p>
-  <p class="ant-upload-hint">
-    只支持zip文件上传，大小不能超过10M
-  </p>
+<nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
+  <button nz-button><i nz-icon nzType="upload"></i><span>Select File</span></button>
 </nz-upload>
+<button
+  nz-button
+  [nzType]="'primary'"
+  [nzLoading]="uploading"
+  (click)="handleUpload()"
+  [disabled]="fileList.length == 0"
+  style="margin-top: 16px"
+>
+  {{ uploading ? 'Uploading' : 'Start Upload' }}
+</button>

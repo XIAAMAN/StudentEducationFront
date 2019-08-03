@@ -24,9 +24,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/custom-theme.scss",
               "src/styles.css",
-              "src/assets/css/toastr.css",
               "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
             ],
             "scripts": [

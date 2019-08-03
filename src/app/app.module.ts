@@ -10,7 +10,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS  } from '@angular/common/http';
-import { ToastrModule } from 'ngx-toastr';
 import { LoginInterceptorService} from './interceptor/login-interceptor.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppRoutingModule } from './app-routing.module';
@@ -32,6 +31,7 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { LookUserComponent } from './user/look-user/look-user.component';
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
   declarations: [
@@ -46,6 +46,7 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     LookSysLogComponent,
     TestComponent,
     LookExerciseComponent,
+    LookUserComponent,
 
   ],
   imports: [
@@ -56,7 +57,6 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     RouterTestingModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ToastrModule.forRoot(),
     AppRoutingModule,
     NgZorroAntdModule,
     NzTableModule,
