@@ -9,8 +9,8 @@
   <thead>
 
   <div>
-    <button class="topButtons" nz-button nzType="default"  (click)="showAddUserModal()"><i nz-icon nzType="plus"></i>增加</button>
-    <button class="topButtons" nz-button nzType="default"  (click)="showUploadExcelModal()"><i nz-icon nzType="upload"></i>导入学生</button>
+    <button *ngIf="permisAll.indexOf(userAddPermis)>=0" class="topButtons" nz-button nzType="default"  (click)="showAddUserModal()"><i nz-icon nzType="plus"></i>增加</button>
+    <button *ngIf="permisAll.indexOf(userAddStudentsPermis)>=0" class="topButtons" nz-button nzType="default"  (click)="showUploadExcelModal()"><i nz-icon nzType="upload"></i>导入学生</button>
 <!--    <div class="search">-->
 <!--      <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">-->
 <!--        <input type="text" nz-input placeholder="请输入关键字查找" />-->
@@ -43,10 +43,10 @@
     <td>{{ data.userEmail }}</td>
 
     <td *ngIf="judgePermis">
-      <button class="buttonStyle" nz-button nzType="dashed"
+      <button *ngIf="permisAll.indexOf(userResetPasswordPermis)>=0" class="buttonStyle" nz-button nzType="dashed"
               nz-popconfirm nzTitle="是否确定对此用户重置密码？" (nzOnConfirm)="resetPassword(data.userId)"
               nzPlacement="leftBottom">重置密码</button>
-      <button class="buttonStyle" nz-button nzType="danger"
+      <button *ngIf="permisAll.indexOf(userDeletePermis)>=0" class="buttonStyle" nz-button nzType="danger"
               nz-popconfirm nzTitle="是否确定删除此用户？" (nzOnConfirm)="deleteUser(data.userId)"
               nzPlacement="leftBottom">删除</button>
     </td>
@@ -105,16 +105,10 @@
 
     <nz-form-item>
       <nz-form-label [nzSpan]="5">手机号</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzHasFeedback [nzErrorTip]="userPhoneErrorTpl">
-        <input nz-input [ngModel]="addModalData.userPhone" formControlName="userPhone"
-               type="text">
+      <nz-form-control [nzSpan]="16"  nzHasFeedback nzErrorTip="请输入有效的手机号码">
+        <input nz-input maxlength="11" [(ngModel)]="addModalData.userPhone" formControlName="userPhone">
       </nz-form-control>
 <!--      手机号校验错误显示-->
-      <ng-template #userPhoneErrorTpl let-control>
-        <ng-container *ngIf="control.hasError('invalid')">
-          请输入有效的手机号码
-        </ng-container>
-      </ng-template>
     </nz-form-item>
 
     <nz-form-item>

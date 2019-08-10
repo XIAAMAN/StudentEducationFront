@@ -1,13 +1,13 @@
 .mainStyle {
   /*bottom: 0;*/
   /*margin-top: -1px;*/
-  /*height: 145px;*/
-  position: absolute;
+  height: 18%;
+  /*position: absolute;*/
   width: 100%;
   min-width: 1400px;
-  top: 600px;
-  bottom: 0px;
-  left: 0;
+  /*top: 600px;*/
+  /*bottom: 0px;*/
+  /*left: 0;*/
   text-align: center;
 
   /*border: 1px solid red;*/

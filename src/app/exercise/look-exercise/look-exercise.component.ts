@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../utils/notification.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable, Observer} from 'rxjs';
+import {ConstUrlService} from '../../const/const-url.service';
 @Component({
   selector: 'app-look-exercise',
   templateUrl: './look-exercise.component.html',
@@ -18,13 +19,13 @@ export class LookExerciseComponent implements OnInit {
 
   //用户拥有的所有权限
   private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private  exercise_detail_permis: string = "exercises:management:detail";     //题目查看详情权限值
-  private  exercise_modify_permis: string = "exercises:management:modify";     //修改题目权限值
-  private  exercise_add_permis: string = "exercises:management:add";     //增加题目权限值
-  private  exercise_delete_permis: string = "exercises:management:delete";     //删除题目权限值
+  private  exerciseDetailPermis: string = "exercises:management:detail";     //题目查看详情权限值
+  private  exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
+  private  exerciseAddPermis: string = "exercises:management:add";     //增加题目权限值
+  private  exerciseDeletePermis: string = "exercises:management:delete";     //删除题目权限值
   private judgePermis: boolean = false; //表示用户是否拥有查看详情、修改、删除题目之一的权限
   constructor(private http: HttpClient, private notify: NotificationService,
-              private fb:FormBuilder) {
+              private fb:FormBuilder, private constUrl: ConstUrlService) {
 
   }
 
@@ -44,8 +45,8 @@ export class LookExerciseComponent implements OnInit {
   loadData() {
     let url: string;
     this.loading=true;
-    url = 'apidata/sys_exercise/get?page=' + this.currentPageIndex + "&size=" + this.pageSize;
-    this.http.get(url).subscribe((data:any) => {
+    url = this.constUrl.GETEXERCISEURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize;
+    this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
       this.sysData = JSON.parse(JSON.stringify(data.content));
       this.totalSize = <number> data.totalElements;
       this.loading=false;
@@ -77,9 +78,9 @@ export class LookExerciseComponent implements OnInit {
       exerciseWarning: ['', [Validators.required]]
     });
     // 判断用户是否有操作栏中任意一项的权限
-    if(this.permisAll.indexOf(this.exercise_detail_permis)>=0 ||
-      this.permisAll.indexOf(this.exercise_modify_permis)>=0 ||
-      this.permisAll.indexOf(this.exercise_delete_permis)>=0) {
+    if(this.permisAll.indexOf(this.exerciseDetailPermis)>=0 ||
+      this.permisAll.indexOf(this.exerciseModifyPermis)>=0 ||
+      this.permisAll.indexOf(this.exerciseDeletePermis)>=0) {
       this.judgePermis = true;
     }
     this.loadData();
@@ -105,8 +106,8 @@ export class LookExerciseComponent implements OnInit {
   // 删除题目
   deleteExercise(exerciseId: string) {
     let url:string;
-    url = 'apidata/sys_exercise/delete?exerciseId=' + exerciseId;
-    this.http.get(url).subscribe((data:any) => {
+    url = this.constUrl.DELETEEXERCISEURL + '?exerciseId=' + exerciseId;
+    this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
       if(data===200) {
         this.notify.showSuccess("已删除");
         this.loadData();
@@ -154,7 +155,7 @@ export class LookExerciseComponent implements OnInit {
       }
       let length = this.modalData.exerciseLabel.length;
       this.modalData.exerciseLabel = this.modalData.exerciseLabel.substring(0, length-1);
-      this.http.post('apidata/sys_exercise/modify',this.modalData).subscribe((data:any)=>{
+      this.http.post(this.constUrl.MODIFYEXERCISEURL, this.modalData, this.constUrl.httpOptions).subscribe((data:any)=>{
         if(data===200) {
           this.modalVisible = false;
           this.notify.showInfo("修改成功");
@@ -186,9 +187,7 @@ export class LookExerciseComponent implements OnInit {
   }
 
   loadLabelList() {
-    let url:string= "apidata/exercise_label/get";
-
-    this.http.get(url).subscribe((data:any)=>{
+    this.http.get(this.constUrl.GETEXERCISLABELEURL, this.constUrl.httpOptions).subscribe((data:any)=>{
       this.labelList = JSON.parse(JSON.stringify(data));
       for(let tt of this.labelList) {
         this.listOfOption.push(""+tt.exerciseLabelName);
@@ -241,7 +240,7 @@ export class LookExerciseComponent implements OnInit {
       }
       let length = this.uploadExercise.exerciseLabel.length;
       this.uploadExercise.exerciseLabel = this.uploadExercise.exerciseLabel.substring(0,length-1);
-      this.http.post('apidata/sys_exercise/add',this.uploadExercise).subscribe(data=>{
+      this.http.post(this.constUrl.ADDEXERCISEURL,this.uploadExercise, this.constUrl.httpOptions).subscribe(data=>{
         if(data===200) {
           this.notify.showSuccess("题目上传成功");
           this.resetUploadExercise();
@@ -285,7 +284,9 @@ export class LookExerciseComponent implements OnInit {
 
   validateExercise() {
     if(this.exerciseForm.valid) {
-      this.http.get("apidata/sys_exercise/judgeExerciseName?exerciseName="+this.uploadExercise.exerciseName)
+      let url:string;
+      url = this.constUrl.JUDGEEXERCISENAMEURL + "?exerciseName="+this.uploadExercise.exerciseName;
+      this.http.get(url, this.constUrl.httpOptions)
         .subscribe(data=>{
           if(data!=200) {
             this.notify.showError("该题目名称已存在，请更换题目名称");
@@ -388,13 +389,14 @@ export class LookExerciseComponent implements OnInit {
   selectExerciseName: string = "";
 
   selectExercise() {
+      let url:string;
       if(this.selectExerciseLabel==null) {
         this.selectExerciseLabel = "";
       }
-      let url = 'apidata/sys_exercise/dynamicGet?page=' + this.currentPageIndex + "&size=" + this.pageSize
+      url = this.constUrl.DYNAMICGETGETEXERCISEURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize
       + "&exerciseLabel=" + this.selectExerciseLabel + "&exerciseName=" + this.selectExerciseName;
       this.loading = true;
-      this.http.get(url).subscribe((data:any)=>{
+      this.http.get(url, this.constUrl.httpOptions).subscribe((data:any)=>{
         this.sysData = JSON.parse(JSON.stringify(data.content));
         this.totalSize = <number> data.totalElements;
         this.loading=false;

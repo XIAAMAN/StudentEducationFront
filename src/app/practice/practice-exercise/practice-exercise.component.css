@@ -1,0 +1,22 @@
+/*表格样式*/
+tr th {
+  text-align: center;
+  font-size: 16px;
+}
+
+tr td {
+  text-align: center;
+  min-width: 100px;
+  max-width: 250px;
+}
+tr td span:hover {
+  cursor: pointer;
+}
+nz-table {
+  margin: 0 auto;
+  min-width: 1200px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #000;
+  width: 90%;
+}

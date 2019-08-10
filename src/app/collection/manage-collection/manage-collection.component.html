@@ -1,0 +1,108 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-table #sysCollectionTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+  <button class="uploadExerciseBtn" nz-button nzType="default" (click)="addCollection()"><i nz-icon nzType="plus"></i>创建题目集</button>
+
+  <tr>
+    <th>实验名称</th>
+    <th>开始时间</th>
+    <th>结束时间</th>
+    <th>状态</th>
+    <th>实验比重</th>
+    <th>创建人</th>
+    <th *ngIf="judgePermis">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysCollectionTable.data">
+    <td>{{ data.collectionName }}</td>
+    <td>{{ data.collectionStartTime }}</td>
+    <td>{{ data.collectionEndTime }}</td>
+    <td>
+      <label *ngIf="currentTime < data.collectionStartTime" style="color:white; background-color: lightseagreen; padding: 2px">未开始</label>
+      <label *ngIf="(currentTime>=data.collectionStartTime) && (currentTime<data.collectionEndTime)" style="color:white; background-color: #0E81D2; padding: 2px">进行中</label>
+      <label *ngIf="currentTime > data.collectionEndTime" style="color:white; background-color: #a94442; padding: 2px">已结束</label>
+    </td>
+    <td>{{''+ data.collectionRate+' %' }}</td>
+    <td>{{ data.collectionCreateUserName }}</td>
+    <td *ngIf="judgePermis">
+      <button *ngIf="permisAll.indexOf(collectionAddDeleteExercisePermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="addExercise(data.collectionId)">增删题目</button>
+      <button *ngIf="permisAll.indexOf(collectionDeletePermis)>=0" class="buttonActionStyle"  nz-button nzType="danger"
+              nz-popconfirm nzTitle="是否确定删除该题目集？" nzPlacement="leftBottom"
+              (nzOnConfirm)="deleteCollection(data.collectionId)">删除</button>
+    </td>
+
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>
+
+
+<!--*******************************************************************************************************-->
+<!--创建题目集-->
+<nz-modal [(nzVisible)]="addModalVisible" nzTitle="创建题目集"
+          nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelAddCollection()" (nzOnOk)="submitAddCollection()">
+  <form nz-form [formGroup]="addCollectionForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">实验名称</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired nzErrorTip="请输入3-20个字符">
+        <input nz-input [(ngModel)]="addCollectionData.collectionName"  formControlName="collectionName" pattern=".{3,20}" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">实验比重</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <nz-input-number [(ngModel)]="addCollectionData.collectionRate" [nzMin]="1" [nzMax]="100"
+          [nzStep]="1" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"
+          formControlName="collectionRate" style="width: 100%;"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">开始时间</nz-form-label>
+      <nz-form-control nzRequired>
+        <nz-date-picker [nzStyle]="{'width': '368px'}" [nzDisabledDate]="disabledStartDate" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+          [(ngModel)]="addCollectionData.collectionStartTime" nzPlaceHolder="设置实验开始时间"
+          (ngModelChange)="onStartChange($event)" (nzOnOpenChange)="handleStartOpenChange($event)"
+          formControlName="collectionStartTime">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">结束时间</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <nz-date-picker [nzStyle]="{'width': '368px'}" [nzDisabledDate]="disabledEndDate" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+          [(ngModel)]="addCollectionData.collectionEndTime" nzPlaceHolder="设置实验结束时间" [nzOpen]="endOpen"
+          (ngModelChange)="onEndChange($event)" (nzOnOpenChange)="handleEndOpenChange($event)"
+           formControlName="collectionEndTime">
+        </nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+
+<!--**************************************************************************************************-->
+<!--添加题目-->
+
+<nz-modal [(nzVisible)]="addExerciseVisible" nzTitle="修改题目集"
+          nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelAddExercise()" (nzOnOk)="submitAddExercise()">
+  <form nz-form [formGroup]="addExerciseForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">增删题目</nz-form-label>
+      <nz-form-control [nzSpan]="16" >
+        <nz-select nzMode="multiple" nzPlaceHolder="请选择题目" [(ngModel)]="exerciseListValue"
+                   formControlName="exerciseName" nzMaxTagCount="10" nzMaxMultipleCount="10" >
+          <ng-container *ngFor="let option of exerciseOptionList">
+            <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

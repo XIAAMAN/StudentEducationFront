@@ -9,6 +9,12 @@ import {LookSysLogComponent} from './log/look-sys-log/look-sys-log.component';
 import {TestComponent} from './test/test.component';
 import {LookExerciseComponent} from './exercise/look-exercise/look-exercise.component';
 import {LookUserComponent} from './user/look-user/look-user.component';
+import {CheckExerciseComponent} from './exercise/check-exercise/check-exercise.component';
+import {ManageCollectionComponent} from './collection/manage-collection/manage-collection.component';
+import {PracticeExerciseComponent} from './practice/practice-exercise/practice-exercise.component';
+import {ExerciseDetailsComponent} from './exercise/exercise-details/exercise-details.component';
+import {ManageCourseComponent} from './course/manage-course/manage-course.component';
+import {ManagePermisComponent} from './user/manage-permis/manage-permis.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -19,6 +25,12 @@ const appRoutes: Routes = [
       {path: 'lookLog', component: LookSysLogComponent, canActivate: [CanActivateGuard]},
       {path: 'lookExercise', component: LookExerciseComponent, canActivate: [CanActivateGuard]},
       {path: 'lookUser', component: LookUserComponent, canActivate: [CanActivateGuard]},
+      {path: 'checkExercise', component: CheckExerciseComponent, canActivate: [CanActivateGuard]},
+      {path: 'manageCollection', component: ManageCollectionComponent, canActivate: [CanActivateGuard]},
+      {path: 'practiceExercise', component: PracticeExerciseComponent, canActivate: [CanActivateGuard]},
+      {path: 'practiceExercise/:exerciseId', component: ExerciseDetailsComponent, canActivate: [CanActivateGuard]},
+      {path: 'manageCourse', component: ManageCourseComponent, canActivate: [CanActivateGuard]},
+      {path: 'managePermis', component: ManagePermisComponent, canActivate: [CanActivateGuard]},
     ]
   },
   {path: '', redirectTo: 'login', pathMatch: 'full'},

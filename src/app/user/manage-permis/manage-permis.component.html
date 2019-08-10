@@ -1,0 +1,52 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-table #sysRoleTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+  <tr>
+    <th>角色名称</th>
+    <th>角色值</th>
+    <th>角色描述</th>
+    <th>角色等级</th>
+    <th *ngIf="judgePermis">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysRoleTable.data">
+    <td>{{ data.roleName }}</td>
+    <td>{{ data.roleNameValue }}</td>
+    <td>
+      <span *ngIf="data.roleDescription.length >25; else method" title="{{data.roleDescription}}">{{ data.roleDescription.substring(0,25)+"..."}}</span>
+      <ng-template #method>{{ data.roleDescription}}</ng-template>
+    </td>    <td>{{ data.roleRank }}</td>
+
+    <td *ngIf="judgePermis">
+      <button *ngIf="permisAll.indexOf(modifyUserPermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="openModifyModal(data.roleId)">修改权限</button>
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>
+
+
+<nz-modal [(nzVisible)]="modifyVisible" nzTitle="修改权限"
+          nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelModifyExercise()" (nzOnOk)="submitModifyExercise()">
+  <form nz-form [formGroup]="modifyPermisForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">增删权限</nz-form-label>
+      <nz-form-control [nzSpan]="16" >
+        <nz-tree-select
+          [nzNodes]="permisOptionList"
+          nzShowSearch
+          nzCheckable
+          formControlName="modifyPermis"
+          nzPlaceHolder="Please select"
+          [(ngModel)]="permisValueList"
+          (ngModelChange)="onChange($event)"
+        >
+        </nz-tree-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>

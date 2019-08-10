@@ -1,31 +1,33 @@
- <div class="parentStyle">
-   <div class="container">
-     <img src="assets/images/login_page.jpg">
+ <div class="parentStyle" id="bodyHeight">
+   <div class="container" >
+     <img src="assets/images/login_page.jpg" id="bodyImageHeight">
    </div>
 
-   <div class="loginStyle">
-     <div class="loginLabelStyle">用户登录</div>
-     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
-       <nz-form-item>
-         <nz-form-control>
-           <nz-input-group nzPrefixIcon="user" nzSize="large">
-             <input [(ngModel)]="user.userName"  type="text" nz-input formControlName="userName" placeholder="Username" />
-           </nz-input-group>
-         </nz-form-control>
-       </nz-form-item>
-       <nz-form-item>
-         <nz-form-control>
-           <nz-input-group nzPrefixIcon="lock" nzSize="large">
-             <input  [(ngModel)]="user.password" type="password" nz-input formControlName="password" placeholder="Password" />
-           </nz-input-group>
-         </nz-form-control>
-       </nz-form-item>
-       <nz-form-item>
-         <nz-form-control>
-           <button  nzSize="large" nz-button class="login-form-button" [nzType]="'primary'">登 录</button>
-         </nz-form-control>
-       </nz-form-item>
-     </form>
+   <div class="loginStyle" >
+     <div id="bodyLoginHeight">
+       <div class="loginLabelStyle">用户登录</div>
+       <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()" >
+         <nz-form-item>
+           <nz-form-control>
+             <nz-input-group nzPrefixIcon="user" nzSize="large">
+               <input [(ngModel)]="user.userName"  type="text" nz-input formControlName="userName" placeholder="Username" />
+             </nz-input-group>
+           </nz-form-control>
+         </nz-form-item>
+         <nz-form-item>
+           <nz-form-control>
+             <nz-input-group nzPrefixIcon="lock" nzSize="large">
+               <input  [(ngModel)]="user.password" type="password" nz-input formControlName="password" placeholder="Password" />
+             </nz-input-group>
+           </nz-form-control>
+         </nz-form-item>
+         <nz-form-item>
+           <nz-form-control>
+             <button  nzSize="large" nz-button class="login-form-button" [nzType]="'primary'">登 录</button>
+           </nz-form-control>
+         </nz-form-item>
+       </form>
+     </div>
    </div>
  </div>
 

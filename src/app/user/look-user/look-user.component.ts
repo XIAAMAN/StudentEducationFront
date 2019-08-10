@@ -3,9 +3,9 @@ import {HttpClient, HttpHeaders, HttpParams, HttpRequest, HttpResponse} from '@a
 import { NotificationService } from '../../utils/notification.service';
 import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
-import {stringify} from 'querystring';
 import {filter} from 'rxjs/operators';
 import {UploadFile} from 'ng-zorro-antd';
+import {ConstUrlService} from '../../const/const-url.service';
 
 @Component({
   selector: 'app-look-user',
@@ -20,26 +20,31 @@ export class LookUserComponent implements OnInit {
   private currentPageIndex: number=1;
   private pageSize: number = 10;
   private sysData: any[];
-  private judgePermis: boolean = false;
-
+//用户拥有的所有权限
+  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+  private userAddPermis: string = "sys_users:management:add";     //增加用户权限
+  private userAddStudentsPermis: string = "sys_users:management:addStudents";     //导入学生权限
+  private userResetPasswordPermis: string = "sys_users:management:resetPassword";     //重置用户密码权限
+  private userDeletePermis: string = "sys_users:management:delete";     //删除用户权限
+  private judgePermis:boolean = false;
   //表示用户是否拥有修改、删除用户之一的权限
 
   constructor(
     private http: HttpClient,
     private notify: NotificationService,
     private fb: FormBuilder,
+    private constUrl: ConstUrlService
   ) { }
 
   // 加载表格数据
   loadData() {
     let url: string;
     this.loading=true;
-    url = 'apidata/sys_user/get?page=' + this.currentPageIndex + "&size=" + this.pageSize;
-    this.http.get(url).subscribe((data:any) => {
+    url = this.constUrl.GETUSERURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize;
+    this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
       this.sysData = JSON.parse(JSON.stringify(data.content));
       this.totalSize = <number> data.totalElements;
       this.loading=false;
-      this.judgePermis = true;
     })
   }
 
@@ -49,12 +54,17 @@ export class LookUserComponent implements OnInit {
       userName:  ['',[Validators.required],[this.userNameAsyncValidator]],
       userRealName: ['',[Validators.required]],
       userNumber:  ['', [Validators.required],[this.userNumberAsyncValidator]],
-      userPhone:  ['', [this.userPhoneValidator],[Validators.required]],
+      userPhone:  ['', [this.userPhoneValidator]],
       userEmail: ['', [Validators.email]],
       rolesName: ['',[Validators.required]],
     });
     this.loadData();
     this.loadRoleList();
+    // 判断用户是否有操作栏中任意一项的权限
+    if(this.permisAll.indexOf(this.userResetPasswordPermis)>=0 ||
+      this.permisAll.indexOf(this.userDeletePermis)>=0) {
+      this.judgePermis = true;
+    }
   }
 
   //当每页数据大小发生改变
@@ -73,8 +83,8 @@ export class LookUserComponent implements OnInit {
   //重置密码
   resetPassword(userId: String): void{
     let url:string;
-    url = 'apidata/sys_user/resetPassword?userId=' + userId;
-    this.http.get(url).subscribe((data:any) => {
+    url = this.constUrl.RESETPASSWORDUSERURL + '?userId=' + userId;
+    this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
       if(data===200) {
         this.notify.showSuccess("重置密码成功");
         this.loadData();
@@ -85,7 +95,7 @@ export class LookUserComponent implements OnInit {
   //删除用户
   deleteUser(userId: String): void {
     let url:string;
-    url = 'apidata/sys_user/delete?userId=' + userId;
+    url = this.constUrl.DELETEUSERURL + '?userId=' + userId;
     this.http.get(url).subscribe((data:any) => {
       if(data===200) {
         this.notify.showSuccess("已删除");
@@ -111,10 +121,6 @@ export class LookUserComponent implements OnInit {
   private emailSuffixOptions: string[] = [];
   private listOfRoles: string[];
   private  roleName = {};
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
 
   //弹出增加用户模态框
   showAddUserModal(): void {
@@ -149,10 +155,9 @@ export class LookUserComponent implements OnInit {
       }
       let length = this.addModalData.userPassword.length;
       this.addModalData.userPassword = this.addModalData.userPassword.substring(0, length-1);
-      url = "apidata/sys_user/add";
       // this.roleName = this.addModalData.roleName;
       console.log(this.roleName)
-      this.http.post(url, this.addModalData, this.httpOptions).subscribe( data =>{
+      this.http.post(this.constUrl.ADDUSERURL, this.addModalData, this.constUrl.httpOptions).subscribe( data =>{
         if(data===200) {
           this.notify.showSuccess("用户添加成功");
           this.loadData();
@@ -196,7 +201,7 @@ export class LookUserComponent implements OnInit {
     });
 
     // You can use any AJAX library you like
-    const req = new HttpRequest('POST', 'apidata/file/studentExcel', formData, {
+    const req = new HttpRequest('POST', this.constUrl.FILESTUDENTEXCELURL, formData, {
       // reportProgress: true
     });
     this.http
@@ -211,16 +216,19 @@ export class LookUserComponent implements OnInit {
           if(data.body === 300) {
             this.notify.showError("学号格式错误，长度必须为8");
           } else if(data.body === 400) {
-            this.notify.showError("学号已经被注册成用户名");
+            this.notify.showError("学号已经被使用");
           }else if(data.body === 500) {
-            this.notify.showError("班级已存在");
+            this.notify.showError("存在用户名被注册");
           }else if(data.body === 600) {
+            this.notify.showError("班级号已经存在");
+          }else if(data.body === 700) {
             this.notify.showError("学生班级号不一致");
           }else {
             this.notify.showInfo("成功注册 "+data.body+"个学生账户")
           }
 
           this.uploadModalVisible = false;
+          this.loadData();
         },
         () => {
           this.notify.showError('文件上传失败');
@@ -246,9 +254,7 @@ export class LookUserComponent implements OnInit {
 
   // 加载角色列表
   loadRoleList() {
-    let url:string= "apidata/role/get";
-
-    this.http.get(url).subscribe((data:any)=>{
+    this.http.get(this.constUrl.GETROLEURL, this.constUrl.httpOptions).subscribe((data:any)=>{
       this.listOfRoles = JSON.parse(JSON.stringify(data));
     })
   }
@@ -262,9 +268,9 @@ export class LookUserComponent implements OnInit {
       setTimeout(() => {
         let url: string;
         let userName: string = control.value;
-        url = 'apidata/sys_user/judgeUserName?userName=' + userName;
+        url = this.constUrl.JUDGEUSERNAMEUSERURL + '?userName=' + userName;
 
-        this.http.get(url).subscribe((data:any) => {
+        this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
           // 账号名称字符数校验
           if(userName.length < 2 || userName.length > 20) {
             observer.next({error: true,required: true})
@@ -286,8 +292,8 @@ export class LookUserComponent implements OnInit {
       setTimeout(() => {
         let url: string;
         let userNumber: string = control.value;
-        url = 'apidata/sys_user/judgeUserNumber?userNumber=' + userNumber;
-        this.http.get(url).subscribe((data:any) => {
+        url = this.constUrl.JUDGEUSERNUMBERUSERURL + '?userNumber=' + userNumber;
+        this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
           // 学号或工号字符数校验
           if(userNumber.length < 5 || userNumber.length > 20) {
             observer.next({error: true,required: true})
@@ -306,13 +312,17 @@ export class LookUserComponent implements OnInit {
   userPhoneValidator = (control: FormControl): { [s: string]: boolean } => {
     let userPhone: string = control.value;
     let re = /^((13[0-9])|(17[0-1,6-8])|(15[^4,\\D])|(18[0-9]))\d{8}$/;
+    // let re = new RegExp("(13[0-9])|(17[0-1,6-8])|(15[^4,\\\\D])|(18[0-9])\\d{8}");
 
     // ^1 以1开头，\d表示数字，\d{10}表示数字出现10次，加上前面以1开头，正好是11个数字，X$表示以X结尾，
     // 这里用$表示后面没有了，11个数字后已经是匹配字符串的结尾。
+
     if (!re.test(userPhone)) {
-      return { invalid: true, error: true };
+      return { required: true, error: true };
     }
-    return {};
+      return { };
+
+
   };
 }
 

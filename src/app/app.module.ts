@@ -32,6 +32,17 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { LookUserComponent } from './user/look-user/look-user.component';
+import { CheckExerciseComponent } from './exercise/check-exercise/check-exercise.component';
+import { ManageCollectionComponent } from './collection/manage-collection/manage-collection.component';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import zh from '@angular/common/locales/zh';
+import {registerLocaleData} from '@angular/common';
+import { ExerciseDetailsComponent } from './exercise/exercise-details/exercise-details.component';
+import { PracticeExerciseComponent } from './practice/practice-exercise/practice-exercise.component';
+import { ManageCourseComponent } from './course/manage-course/manage-course.component';
+import { ManagePermisComponent } from './user/manage-permis/manage-permis.component';
+import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
+registerLocaleData(zh);
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
   declarations: [
@@ -47,6 +58,12 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     TestComponent,
     LookExerciseComponent,
     LookUserComponent,
+    CheckExerciseComponent,
+    ManageCollectionComponent,
+    ExerciseDetailsComponent,
+    PracticeExerciseComponent,
+    ManageCourseComponent,
+    ManagePermisComponent,
 
   ],
   imports: [
@@ -67,15 +84,16 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     NzModalModule,
     NzInputModule,
     NzSelectModule,
-    NzUploadModule
-
+    NzUploadModule,
+    NzDatePickerModule,
+    NzTreeSelectModule
 
   ],
   exports: [RouterModule],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoginInterceptorService, multi: true },
     { provide: NZ_I18N, useValue: zh_CN },
-    { provide: NZ_ICONS, useValue: icons }
+    { provide: NZ_ICONS, useValue: icons },
   ],
   bootstrap: [AppComponent]
 })

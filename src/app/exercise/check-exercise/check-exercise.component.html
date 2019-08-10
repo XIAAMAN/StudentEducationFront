@@ -1,0 +1,49 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-table #sysExerciseTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+  <tr>
+    <th>名称</th>
+    <th>描述</th>
+    <th>标签</th>
+    <th>输入样例</th>
+    <th>输出样例</th>
+    <th>状态</th>
+    <!--      <th>难度</th>-->
+    <th>上传人</th>
+    <th *ngIf="judgePermis">操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysExerciseTable.data">
+    <td>
+      <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
+      <ng-template #userName>{{ data.exerciseName}}</ng-template>
+    </td>
+    <td>
+      <span *ngIf="data.exerciseDescription.length >15; else description" title="{{data.exerciseDescription}}">{{ data.exerciseDescription.substring(0,15)+"..."}}</span>
+      <ng-template #description>{{ data.exerciseDescription}}</ng-template>
+    </td>
+    <td>{{ data.exerciseLabel }}</td>
+    <td>
+      <span *ngIf="data.exerciseInputExample.length >15; else inputExample" title="{{data.exerciseInputExample}}">{{ data.exerciseInputExample.substring(0,15)+"..."}}</span>
+      <ng-template #inputExample>{{ data.exerciseInputExample}}</ng-template>
+    </td>
+    <td>
+      <span *ngIf="data.exerciseOutputExample.length >15; else exerciseOutputExample" title="{{data.exerciseOutputExample}}">{{ data.exerciseOutputExample.substring(0,15)+"..."}}</span>
+      <ng-template #exerciseOutputExample>{{ data.exerciseOutputExample}}</ng-template>
+    </td>
+    <td><label style="color:white; background-color: red; padding: 2px">待审核</label></td>
+    <td>{{data.exerciseUploadUserName}}</td>
+    <td *ngIf="judgePermis">
+      <button *ngIf="permisAll.indexOf(exercisePassPermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="pass(data.exerciseId)">通过</button>
+      <button *ngIf="permisAll.indexOf(exerciseRefusePermis)>=0" class="buttonActionStyle"  nz-button nzType="danger" (click)="refuse(data.exerciseId)">拒绝</button>
+    </td>
+
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>

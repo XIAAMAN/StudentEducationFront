@@ -1,0 +1,48 @@
+.content {
+  margin: 0px auto;
+  min-width: 600px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #000;
+  width: 60%;
+}
+.exerciseDetails {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.messageTips {
+  float: right;
+  font-size: 16px;
+  padding-left: 0;
+}
+.hint {
+  color: orange;
+}
+a {
+  font-size: 20px;
+  color: #0a4991;
+  /*#00005f*/
+}
+h2 {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 700;
+}
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+p {
+  font-size: 17px;
+}
+.textStyle {
+  margin-bottom: 10px;
+  width: 98%;
+}
+.buttonStyle {
+  text-align: center;
+  width: 100%;
+  padding-top:10px;
+  padding-bottom: 20px
+}
+

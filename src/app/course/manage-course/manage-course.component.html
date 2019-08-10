@@ -1,0 +1,97 @@
+<div style="background-color: #F0F2F5">
+  <div style="width: 100%; height: 30px">
+  </div>
+  <nz-table #sysCourseTable [nzData]="sysData" [nzFrontPagination]="false"
+            [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+            [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+            (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+            nzSize="default">
+    <thead>
+
+    <div>
+      <button *ngIf="permisAll.indexOf(courseAddPermis)>=0" class="topButtons" nz-button nzType="default"  (click)="showAddCourseModal()"><i nz-icon nzType="plus"></i>增加课程</button>
+    </div>
+
+    <tr>
+      <th>课程名称</th>
+      <th>授课班级</th>
+      <th>课程语言</th>
+      <th>授课老师</th>
+      <th *ngIf="judgePermis">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of sysCourseTable.data">
+      <td>{{ data.courseName }}</td>
+      <td>{{ data.courseClass }}</td>
+      <td>{{ data.courseLanguage }}</td>
+      <td>{{ data.courseUserRealName }}</td>
+      <td *ngIf="judgePermis">
+        <button *ngIf="permisAll.indexOf(courseAddDeleteCollectionPermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="addCollection(data.courseId)">增删题目集</button>
+        <button *ngIf="permisAll.indexOf(courseDeletePermis)>=0" class="buttonActionStyle"  nz-button nzType="danger"
+                nz-popconfirm nzTitle="是否确定删除这道题目？" (nzOnConfirm)="deleteCourse(data.courseId)"
+                nzPlacement="leftBottom">删除</button>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <div style="width: 100%; height: 30px;"></div>
+</div>
+
+<!--************************************************************************************-->
+<!--增加课程弹出框-->
+
+<nz-modal [(nzVisible)]="addCourseModalVisible" nzTitle="增加课程"
+          (nzOnCancel)="addCourseCancel()" (nzOnOk)="handleAddCourseOk()">
+  <form nz-form [formGroup]="addCourseForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >课程名称</nz-form-label>
+      <nz-form-control [nzSpan]="16"  nzRequired nzErrorTip="请输入2-20个字符的课程名称">
+        <input nz-input [(ngModel)]="addCourseModalData.courseName" formControlName="courseName" pattern=".{2,100}">
+      </nz-form-control>
+    </nz-form-item>
+
+    <!--     授课班级选择下拉框-->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">授课班级</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <nz-select nzMode="multiple" nzPlaceHolder="请选择班级" [(ngModel)]="listOfSelectedClass"
+                   formControlName="courseClass" nzMaxTagCount="20" nzMaxMultipleCount="20">
+          <ng-container *ngFor="let option of listOfClasses">
+            <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+<!--    <nz-form-item>-->
+<!--      <nz-form-label [nzSpan]="5">课程语言</nz-form-label>-->
+<!--      <nz-form-control [nzSpan]="16"  nzHasFeedback nzValidatingTip="校验中..."-->
+<!--                       nzErrorTip="请输入课程语言">-->
+<!--        <input nz-input [(ngModel)]="addCourseModalData.courseLanguage" formControlName="courseLanguage">-->
+<!--      </nz-form-control>-->
+<!--    </nz-form-item>-->
+  </form>
+</nz-modal>
+
+
+<!--**************************************************************************************************-->
+<!--增删题目集-->
+
+<nz-modal [(nzVisible)]="addCollectionVisible" nzTitle="增删题目集"
+          nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelAddCollection()" (nzOnOk)="submitAddCollection()">
+  <form nz-form [formGroup]="addCollectionForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">增删题目集</nz-form-label>
+      <nz-form-control [nzSpan]="16" >
+        <nz-select nzMode="multiple" nzPlaceHolder="请选择题目集" [(ngModel)]="collectionListValue"
+                   formControlName="collectionName" nzMaxTagCount="10" nzMaxMultipleCount="10" >
+          <ng-container *ngFor="let option of collectionOptionList">collection
+            <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-modal>
+

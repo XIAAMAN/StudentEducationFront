@@ -1,11 +1,3 @@
-.login-form {
-  max-width: 300px;
-}
-
-.login-form-forgot {
-  float: right;
-}
-
-.login-form-button {
-  width: 100%;
+nz-date-picker {
+  margin: 0 8px 12px 0;
 }

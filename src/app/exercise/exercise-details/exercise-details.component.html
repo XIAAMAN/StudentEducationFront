@@ -1,0 +1,44 @@
+<div style="width: 100%; height: 30px"></div>
+<div  class="content">
+  <div class="exerciseDetails">
+    <div style="width: 60px">
+      <a routerLink="/home/practiceExercise"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
+    </div>
+      <nz-card style="width:98%;">
+        <div nz-col [nzSpan]="8" class="messageTips">
+          <nz-card nzType="inner" nzTitle="题目相关信息">
+            <div class="messageTips">
+              题目标签：{{ this.sysDetailsData.exerciseLabel }}<br>
+              作者：{{ this.sysDetailsData.exerciseUploadUserName }}<br>
+              审查人：{{ this.sysDetailsData.exerciseCheckUserName }}<br>
+              上传时间：{{ this.sysDetailsData.exerciseTime }}
+            </div>
+          </nz-card>
+        </div>
+        <h2>{{ this.sysDetailsData.exerciseName }} </h2>
+        <h3>题目描述：</h3> <p>{{ this.sysDetailsData.exerciseDescription}}</p>
+        <h3>输入样例：</h3> <p>{{ this.sysDetailsData.exerciseInputExample}}</p>
+        <h3>输出样例：</h3> <p>{{ this.sysDetailsData.exerciseOutputExample}}</p>
+        <h3>提示信息：</h3> <p class="hint">{{ this.sysDetailsData.exerciseWarning}}</p>
+    </nz-card>
+      <h3 style="margin-top: 5px">编译器</h3>
+      <div class="compiler">
+        <textarea
+          nz-input
+          placeholder="在此处输入你的代码..."
+          [(ngModel)]="exerciseCode"
+          [nzAutosize]="{ minRows: 10, maxRows: 10 }" class="textStyle">
+        </textarea>
+        <div class="result" *ngIf="isSubmit">
+          <textarea
+            [(ngModel)]="compilerResult"
+            class="textStyle"
+            disabled>
+          </textarea>
+        </div>
+        <div class="buttonStyle">
+        <button nz-button nzType="primary"  (click)="submitCode()">提交</button>
+        </div>
+      </div>
+  </div>
+

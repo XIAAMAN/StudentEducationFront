@@ -1,0 +1,59 @@
+<div style="background-color: #F0F2F5">
+  <div style="width: 100%; height: 30px">
+  </div>
+  <nz-table #sysExerciseTable [nzData]="sysData" [nzFrontPagination]="false"
+            [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+            [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+            (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+            nzSize="default">
+    <thead>
+
+
+    <tr>
+      <th>名称</th>
+      <th>描述</th>
+      <th>标签</th>
+      <th>语言</th>
+      <th>状态</th>
+      <!--      <th>难度</th>-->
+      <th>上传人</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of sysExerciseTable.data">
+      <td>
+        <a [title]="'点击跳转'" [routerLink]="['/home/practiceExercise', data.exerciseId]">
+
+        <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
+        <ng-template #userName>{{ data.exerciseName}}</ng-template>
+        </a>
+      </td>
+      <td>
+        <span *ngIf="data.exerciseDescription.length >15; else description" title="{{data.exerciseDescription}}">{{ data.exerciseDescription.substring(0,15)+"..."}}</span>
+        <ng-template #description>{{ data.exerciseDescription}}</ng-template>
+      </td>
+      <td>{{ data.exerciseLabel }}</td>
+      <td>{{ data.exerciseLanguage}}</td>
+      <td>
+        <label style="color:white; background-color: #0E81D2; padding: 2px" *ngIf="data.exerciseState===1; else exerciseState" >已通过</label>
+        <ng-template #exerciseState >
+          <label style="color:white; background-color: red; padding: 2px">待审核</label>
+        </ng-template>
+      </td>
+      <!--      <td>-->
+      <!--        <label *ngIf="(''+data.exerciseDifficultValue)==='简单'" style="color:white; background-color: lightseagreen; padding: 2px">-->
+      <!--          {{ data.exerciseDifficultValue}}</label>-->
+      <!--        <label *ngIf="(''+data.exerciseDifficultValue)==='适中'" style="color:white; background-color: #0E81D2; padding: 2px">-->
+      <!--          {{ data.exerciseDifficultValue}}</label>-->
+      <!--        <label *ngIf="(''+data.exerciseDifficultValue)==='困难'" style="color:white; background-color: #a94442; padding: 2px">-->
+      <!--          {{ data.exerciseDifficultValue}}</label>-->
+      <!--      </td>-->
+
+      <!--      根据用户所拥有的的权限加载相应的操作功能，如果所有操作权限都没有，则不现实该列-->
+      <td>{{data.exerciseUploadUserName}}</td>
+
+    </tr>
+    </tbody>
+  </nz-table>
+  <div style="width: 100%; height: 30px;"></div>
+</div>

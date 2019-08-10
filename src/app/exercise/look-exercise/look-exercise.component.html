@@ -69,10 +69,9 @@
       <!--      根据用户所拥有的的权限加载相应的操作功能，如果所有操作权限都没有，则不现实该列-->
       <td>{{data.exerciseUploadUserName}}</td>
       <td *ngIf="judgePermis">
-        <nz-divider nzType="vertical"></nz-divider>
-        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exercise_detail_permis) >= 0" nz-button nzType="default" (click)="lookExerciseDetail(data)">查看详情</button>
-        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exercise_modify_permis) >= 0" nz-button nzType="dashed" (click)="modifyExercise(data)">修改</button>
-        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exercise_delete_permis) >= 0" nz-button nzType="danger"
+        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseDetailPermis) >= 0" nz-button nzType="default" (click)="lookExerciseDetail(data)">查看详情</button>
+        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseModifyPermis) >= 0" nz-button nzType="dashed" (click)="modifyExercise(data)">修改</button>
+        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseDeletePermis) >= 0" nz-button nzType="danger"
                 nz-popconfirm nzTitle="是否确定删除这道题目？" (nzOnConfirm)="deleteExercise(data.exerciseId)"
                 nzPlacement="leftBottom">删除</button>
       </td>
@@ -226,8 +225,8 @@
 
     <nz-form-item>
       <nz-form-label [nzSpan]="5">注意事项</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzRequired  nzErrorTip="请输入5-100个字符">
-        <input nz-input [(ngModel)]="modalData.exerciseWarning" formControlName="exerciseWarning" pattern=".{5,100}" />
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <input nz-input [(ngModel)]="modalData.exerciseWarning" formControlName="exerciseWarning"/>
       </nz-form-control>
     </nz-form-item>
 
