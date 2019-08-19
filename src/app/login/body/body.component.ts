@@ -39,10 +39,14 @@ export class BodyComponent implements OnInit {
             window.sessionStorage.setItem("rankValue", res.rankValue);
             this.router.navigateByUrl('/home');
             this.notify.showSuccess(this.user.userName + '  登录成功');
+          } else if(res.state === 600){
+            this.user.userName = "";
+            this.user.password = "";
+            this.notify.showWarning("该浏览器已有账号登录");
           } else {
             this.user.userName = "";
             this.user.password = "";
-            // this.notify.showWarning("用户名或密码错误");
+            this.notify.showWarning("用户名或密码错误");
           }
         });
     } else {

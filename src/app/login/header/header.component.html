@@ -13,11 +13,118 @@
 
 
     <div *ngIf="userName" class="loginState">
-      <span >{{userName}}</span>
+<!--      <i nz-icon nzType="user" nzTheme="outline"></i>-->
+
+      <a nz-dropdown [nzDropdownMenu]="menu">
+        <span class="userNameFontStyle">{{ userName }}</span>
+        <i nz-icon nzType="down"></i>
+      </a>
+      <nz-dropdown-menu #menu="nzDropdownMenu" class="dropdownMenu">
+        <ul nz-menu class="dropdownMenu">
+          <li nz-menu-item (click)="modifyInfo()">修改个人资料</li>
+          <li nz-menu-item (click)="modifyPwd()">修改密码</li>
+<!--          <li nz-menu-item (click)="logOut()">-->
+<!--            <a href="/login">注销</a></li>-->
+        </ul>
+      </nz-dropdown-menu>
       <a href="/login" title="注销"><img id="log_out" src="assets/images/log_out_black.png"
-                                  (mouseout)="huanyuan()" (mouseover)="jiaohuan()" (click)="logOut()"></a>
+                                       (mouseout)="huanyuan()" (mouseover)="jiaohuan()" (click)="logOut()"></a>
+
     </div>
 
   </div>
 
 </div>
+
+
+<!--************************************************************************************-->
+<!--修改个人资料弹出框-->
+
+<nz-modal [(nzVisible)]="modifyInfoModalVisible" nzTitle="修改个人资料"
+          (nzOnCancel)="modifyInfoCancel()" (nzOnOk)="handleModifyInfoOk()">
+  <form nz-form [formGroup]="validateUserInfoForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >账号名称</nz-form-label>
+      <nz-form-control [nzSpan]="16">
+        <input nz-input [(ngModel)]="infoModalData.userName" formControlName="userName" disabled>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >真实姓名</nz-form-label>
+      <nz-form-control [nzSpan]="16"  >
+        <input nz-input [(ngModel)]="infoModalData.userRealName" formControlName="userRealName" disabled>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >学号或工号</nz-form-label>
+      <nz-form-control [nzSpan]="16">
+        <input nz-input [(ngModel)]="infoModalData.userNumber" formControlName="userNumber" disabled>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >手机号</nz-form-label>
+      <nz-form-control [nzSpan]="16"  nzErrorTip="请输入有效的手机号码">
+        <input nz-input maxlength="11" [(ngModel)]="infoModalData.userPhone" formControlName="userPhone">
+      </nz-form-control>
+      <!--      手机号校验错误显示-->
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" nzFor="email" >邮箱</nz-form-label>
+      <nz-form-control [nzSpan]="16"  nzErrorTip="无效邮箱！">
+        <input nz-input [(ngModel)]="infoModalData.userEmail" formControlName="userEmail" type="email"
+               (ngModelChange)="onChangeEmailSuffix($event)"  [nzAutocomplete]="auto" required>
+        <!--        邮箱后缀自动完成-->
+        <nz-autocomplete #auto>
+          <nz-auto-option *ngFor="let option of emailSuffixOptions" [nzValue]="option">{{ option }}</nz-auto-option>
+        </nz-autocomplete>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</nz-modal>
+
+
+<!--************************************************************************************-->
+<!--修改密码弹出框-->
+
+<nz-modal [(nzVisible)]="modifyPwdModalVisible" nzTitle="修改密码"
+          (nzOnCancel)="modifyPwdCancel()" (nzOnOk)="handleModifyPwdOk()">
+  <form nz-form [formGroup]="validatePwdForm">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >原密码</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzErrorTip="请输入你的登录密码">
+        <input nz-input type="password" [(ngModel)]="PwdModalData.oldPassword" formControlName="oldPassword">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >新密码</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzErrorTip="请输入6-15个字符的新密码!">
+        <input nz-input type="password" [(ngModel)]="PwdModalData.newPassword"
+               formControlName="newPassword" (ngModelChange)="validateConfirmPassword()" pattern=".{6,15}">
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5" >确认密码</nz-form-label>
+      <nz-form-control [nzSpan]="16" [nzErrorTip]="passwordErrorTpl">
+        <input nz-input type="password" [(ngModel)]="PwdModalData.confirmPassword" formControlName="confirmPassword">
+        <ng-template #passwordErrorTpl let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            请确认你的新密码！
+          </ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">
+            两次密码输入不一致！
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+  </form>
+</nz-modal>
+
+

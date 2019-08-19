@@ -11,14 +11,14 @@ import {NotificationService} from '../../utils/notification.service';
 })
 export class ManagePermisComponent implements OnInit {
 
-  private loading:boolean=true;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private pageSize: number = 10;
-  private sysData: any[];
-  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private modifyUserPermis: string = "sys_users:permis:modify";     //增加用户权限
-  private judgePermis:boolean = false;
+   loading:boolean=true;
+   totalSize: number;
+   currentPageIndex: number=1;
+   pageSize: number = 10;
+   sysData: any[];
+   permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+   modifyUserPermis: string = "sys_users:permis:modify";     //增加用户权限
+   judgePermis:boolean = false;
   constructor( private http: HttpClient, private notify: NotificationService,
                private fb:FormBuilder, private constUrl: ConstUrlService) { }
 

@@ -9,11 +9,11 @@ import {ConstUrlService} from '../../const/const-url.service';
 })
 export class LookSysLogComponent implements OnInit{
 
-  private loading:boolean=true;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private pageSize: number = 10;
-  private sysData: any[];
+   loading:boolean=true;
+   totalSize: number;
+   currentPageIndex: number=1;
+   pageSize: number = 10;
+   sysData: any[];
   constructor( private http: HttpClient, private constUrl: ConstUrlService) { }
 
   ngOnInit() {

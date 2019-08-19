@@ -12,8 +12,12 @@
 }
 .messageTips {
   float: right;
-  font-size: 16px;
-  padding-left: 0;
+  font-size: 18px;
+  text-align: left;
+  /*padding-left: 2px;*/
+}
+.messageTips label {
+  font-size: 15px;
 }
 .hint {
   color: orange;
@@ -28,6 +32,7 @@ h2 {
   font-size: 28px;
   font-weight: 700;
 }
+
 h3 {
   font-size: 20px;
   font-weight: 600;
@@ -43,6 +48,14 @@ p {
   text-align: center;
   width: 100%;
   padding-top:10px;
-  padding-bottom: 20px
+  padding-bottom: 20px;
+}
+.buttonStyle button {
+  margin-right: 30px;
 }
 
+.codeStyle{
+  font-family: "微软雅黑";
+  font-size: 18px;
+  font-weight: 500;
+}

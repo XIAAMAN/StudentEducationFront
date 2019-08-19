@@ -10,6 +10,13 @@ export class ConstUrlService {
   };
   BASEURL = "apidata";
   LOGINURL = this.BASEURL + "/login";    //登录
+  LOGINOUTURL = this.BASEURL + "/sys_user/logOut";    //退出登录
+  //修改个人资料
+  GETUSERINFOURL = this.BASEURL + "/sys_user/getUserInfo";    //获取个人资料
+  MODIFYUSERINFOURL = this.BASEURL + "/sys_user/modifyUserInfo";  //修改个人资料
+
+//修改密码
+  MODIFYPWDURL = this.BASEURL + "/sys_user/modifyPwd";  //修改密码
 
   //我的课程
   GETCOURSEURL = this.BASEURL + "/sys_course/get";   //查询课程
@@ -46,7 +53,8 @@ export class ConstUrlService {
   PRACTICEEXERCISEURL = this.BASEURL + "/sys_exercise/practice";  //获得学生可以练习的题目
 
   //题目详情
-  DETAILEXERCISEURL = this.BASEURL + "/sys_exercise/practiceDetails"   //题目详细页面
+  DETAILEXERCISEURL = this.BASEURL + "/sys_exercise/practiceDetails";   //题目详细页面
+  GETCOLLECTIONEXERCISEURL = this.BASEURL + "/sys_collection/getExerciseList"; //查询题目集中所有题目
 
   //查看用户
   GETUSERURL = this.BASEURL + "/sys_user/get";
@@ -66,5 +74,11 @@ export class ConstUrlService {
 
   //查看日志
   GETLOGURL = this.BASEURL + "/log/get";  //查询日志
+
+  //代码编译
+  TESTCOMPILEURL = this.BASEURL + "/compile/test";  //在线编译
+  SUBMITCOMPILEURL = this.BASEURL + "/compile/submit";  //提交
+  PRACTICECOMPILEURL = this.BASEURL + "/compile/practice";  //题目练习提交
+  GETEXERCISEPRACTICECOMPILEURL = this.BASEURL + "/compile/getExercisePractice";  //查询用户曾经提交的题目练习代码
   constructor() { }
 }

@@ -17,7 +17,6 @@ import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {HomeComponent} from './main/home/home.component';
 import { NavigationComponent } from './main/navigation/navigation.component';
 import { LookSysLogComponent } from './log/look-sys-log/look-sys-log.component';
-import { TestComponent } from './test/test.component';
 import {NgZorroAntdModule, NZ_I18N, NZ_ICONS, zh_CN} from 'ng-zorro-antd';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzAutocompleteModule } from 'ng-zorro-antd/auto-complete';
@@ -42,6 +41,7 @@ import { PracticeExerciseComponent } from './practice/practice-exercise/practice
 import { ManageCourseComponent } from './course/manage-course/manage-course.component';
 import { ManagePermisComponent } from './user/manage-permis/manage-permis.component';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
+import { TestComponent } from './test/test.component';
 registerLocaleData(zh);
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
@@ -55,7 +55,6 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     PageNotFoundComponent,
     NavigationComponent,
     LookSysLogComponent,
-    TestComponent,
     LookExerciseComponent,
     LookUserComponent,
     CheckExerciseComponent,
@@ -64,6 +63,7 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     PracticeExerciseComponent,
     ManageCourseComponent,
     ManagePermisComponent,
+    TestComponent,
 
   ],
   imports: [

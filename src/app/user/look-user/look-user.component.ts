@@ -15,18 +15,18 @@ import {ConstUrlService} from '../../const/const-url.service';
 export class LookUserComponent implements OnInit {
 
   // 表格
-  private loading:boolean=true;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private pageSize: number = 10;
-  private sysData: any[];
+   loading:boolean=true;
+   totalSize: number;
+   currentPageIndex: number=1;
+   pageSize: number = 10;
+   sysData: any[];
 //用户拥有的所有权限
-  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private userAddPermis: string = "sys_users:management:add";     //增加用户权限
-  private userAddStudentsPermis: string = "sys_users:management:addStudents";     //导入学生权限
-  private userResetPasswordPermis: string = "sys_users:management:resetPassword";     //重置用户密码权限
-  private userDeletePermis: string = "sys_users:management:delete";     //删除用户权限
-  private judgePermis:boolean = false;
+   permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+   userAddPermis: string = "sys_users:management:add";     //增加用户权限
+   userAddStudentsPermis: string = "sys_users:management:addStudents";     //导入学生权限
+   userResetPasswordPermis: string = "sys_users:management:resetPassword";     //重置用户密码权限
+   userDeletePermis: string = "sys_users:management:delete";     //删除用户权限
+   judgePermis:boolean = false;
   //表示用户是否拥有修改、删除用户之一的权限
 
   constructor(
@@ -106,9 +106,9 @@ export class LookUserComponent implements OnInit {
 
   //*******************************************************************************//
   // 增加用户模态框
-  private addModalVisible: boolean = false;
+   addModalVisible: boolean = false;
   validateForm: FormGroup;
-  private addModalData = {
+   addModalData = {
     userName: '',
     userRealName: '',
     userNumber: '',
@@ -117,10 +117,10 @@ export class LookUserComponent implements OnInit {
     userRecommendName: '',
     userPassword: '',
   };
-  private listOfSelectedRole = [];
-  private emailSuffixOptions: string[] = [];
-  private listOfRoles: string[];
-  private  roleName = {};
+   listOfSelectedRole = [];
+   emailSuffixOptions: string[] = [];
+   listOfRoles: string[];
+    roleName = {};
 
   //弹出增加用户模态框
   showAddUserModal(): void {
@@ -177,7 +177,7 @@ export class LookUserComponent implements OnInit {
 
   //*******************************************************************************//
   // 上传学生Excel表模态框
-  private uploadModalVisible: boolean = false;
+   uploadModalVisible: boolean = false;
   fileList: UploadFile[] = [];
 
   //弹出上传模态框

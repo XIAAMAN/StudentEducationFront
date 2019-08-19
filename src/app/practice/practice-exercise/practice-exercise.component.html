@@ -22,7 +22,7 @@
     <tbody>
     <tr *ngFor="let data of sysExerciseTable.data">
       <td>
-        <a [title]="'点击跳转'" [routerLink]="['/home/practiceExercise', data.exerciseId]">
+        <a [title]="'点击跳转'" [routerLink]="['/home/practiceExercise', data.exerciseId, '0000']">
 
         <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
         <ng-template #userName>{{ data.exerciseName}}</ng-template>

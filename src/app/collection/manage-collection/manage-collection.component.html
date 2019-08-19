@@ -5,7 +5,7 @@
           (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
           nzSize="default">
   <thead>
-  <button class="uploadExerciseBtn" nz-button nzType="default" (click)="addCollection()"><i nz-icon nzType="plus"></i>创建题目集</button>
+  <button *ngIf="permisAll.indexOf(collectionAddPermis)>=0 && courseId==null" class="uploadExerciseBtn" nz-button nzType="default" (click)="addCollection()"><i nz-icon nzType="plus"></i>创建题目集</button>
 
   <tr>
     <th>实验名称</th>
@@ -14,12 +14,16 @@
     <th>状态</th>
     <th>实验比重</th>
     <th>创建人</th>
-    <th *ngIf="judgePermis">操作</th>
+    <th *ngIf="judgePermis && courseId==null">操作</th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let data of sysCollectionTable.data">
-    <td>{{ data.collectionName }}</td>
+    <td>
+      <a *ngIf="(currentTime>=data.collectionStartTime) && (currentTime<data.collectionEndTime) && courseId!=null; else collectionName"
+         [title]="'点击跳转'" [routerLink]="['/home/practiceExercise','0000', data.collectionId]">{{ data.collectionName }}</a>
+      <ng-template #collectionName>{{ data.collectionName }}</ng-template>
+    </td>
     <td>{{ data.collectionStartTime }}</td>
     <td>{{ data.collectionEndTime }}</td>
     <td>
@@ -29,7 +33,7 @@
     </td>
     <td>{{''+ data.collectionRate+' %' }}</td>
     <td>{{ data.collectionCreateUserName }}</td>
-    <td *ngIf="judgePermis">
+    <td *ngIf="judgePermis && courseId==null">
       <button *ngIf="permisAll.indexOf(collectionAddDeleteExercisePermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="addExercise(data.collectionId)">增删题目</button>
       <button *ngIf="permisAll.indexOf(collectionDeletePermis)>=0" class="buttonActionStyle"  nz-button nzType="danger"
               nz-popconfirm nzTitle="是否确定删除该题目集？" nzPlacement="leftBottom"

@@ -9,11 +9,11 @@ import {ConstUrlService} from '../../const/const-url.service';
 })
 export class PracticeExerciseComponent implements OnInit {
   // 表格
-  private loading:boolean = true;
-  private pageSize: number = 10;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private sysData: any[];
+   loading:boolean = true;
+   pageSize: number = 10;
+   totalSize: number;
+   currentPageIndex: number=1;
+   sysData: any[];
 
 
   constructor(private http: HttpClient, private constUrl: ConstUrlService) { }
@@ -31,7 +31,7 @@ export class PracticeExerciseComponent implements OnInit {
   }
 
   // 加载表格数据
-  private loadData() {
+   loadData() {
     let url: string;
     this.loading = true;
     url = this.constUrl.PRACTICEEXERCISEURL +  '?page=' + this.currentPageIndex + "&size=" + this.pageSize;

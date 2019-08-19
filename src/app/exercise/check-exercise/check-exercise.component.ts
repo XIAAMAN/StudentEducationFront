@@ -10,16 +10,16 @@ import {ConstUrlService} from '../../const/const-url.service';
 })
 export class CheckExerciseComponent implements OnInit {
 
-  private loading:boolean=true;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private pageSize: number = 10;
-  private sysData: any[];
+   loading:boolean=true;
+   totalSize: number;
+   currentPageIndex: number=1;
+   pageSize: number = 10;
+   sysData: any[];
   //用户拥有的所有权限
-  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private exercisePassPermis: string = "exercises:check:pass";     //通过权限
-  private exerciseRefusePermis: string = "exercises:check:refuse";     //拒绝权限
-  private judgePermis:boolean = false;
+   permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+   exercisePassPermis: string = "exercises:check:pass";     //通过权限
+   exerciseRefusePermis: string = "exercises:check:refuse";     //拒绝权限
+   judgePermis:boolean = false;
   constructor( private http: HttpClient, private notify:NotificationService, private constUrl: ConstUrlService) { }
 
   ngOnInit() {

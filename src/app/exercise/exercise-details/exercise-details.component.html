@@ -2,20 +2,21 @@
 <div  class="content">
   <div class="exerciseDetails">
     <div style="width: 60px">
-      <a routerLink="/home/practiceExercise"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
+      <a (click)="backCollections()"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
     </div>
       <nz-card style="width:98%;">
         <div nz-col [nzSpan]="8" class="messageTips">
           <nz-card nzType="inner" nzTitle="题目相关信息">
-            <div class="messageTips">
-              题目标签：{{ this.sysDetailsData.exerciseLabel }}<br>
-              作者：{{ this.sysDetailsData.exerciseUploadUserName }}<br>
-              审查人：{{ this.sysDetailsData.exerciseCheckUserName }}<br>
-              上传时间：{{ this.sysDetailsData.exerciseTime }}
+            <div>
+              <label>题目标签：{{ this.sysDetailsData.exerciseLabel }}</label><br>
+              <label>作者：{{ this.sysDetailsData.exerciseUploadUserName }}</label><br>
+              <label>审查人：{{ this.sysDetailsData.exerciseCheckUserName }}</label><br>
+              <label>上传时间：{{ this.sysDetailsData.exerciseTime }}</label>
             </div>
           </nz-card>
         </div>
-        <h2>{{ this.sysDetailsData.exerciseName }} </h2>
+        <h2 *ngIf="exerciseId!=null">{{ this.sysDetailsData.exerciseName }} </h2>
+        <h2 *ngIf="collectionId!=null">{{ this.sysDetailsData.exerciseName }} ({{sysDetailsData.exerciseScore}}分) </h2>
         <h3>题目描述：</h3> <p>{{ this.sysDetailsData.exerciseDescription}}</p>
         <h3>输入样例：</h3> <p>{{ this.sysDetailsData.exerciseInputExample}}</p>
         <h3>输出样例：</h3> <p>{{ this.sysDetailsData.exerciseOutputExample}}</p>
@@ -25,20 +26,25 @@
       <div class="compiler">
         <textarea
           nz-input
-          placeholder="在此处输入你的代码..."
-          [(ngModel)]="exerciseCode"
-          [nzAutosize]="{ minRows: 10, maxRows: 10 }" class="textStyle">
+          placeholder="在此处输入你的代码,每道题最多提交10次..."
+          [(ngModel)]="sysDetailsData.exerciseCode"
+          [nzAutosize]="{ minRows: 10, maxRows: 20 }" class="textStyle codeStyle">
         </textarea>
         <div class="result" *ngIf="isSubmit">
           <textarea
             [(ngModel)]="compilerResult"
-            class="textStyle"
+            [nzAutosize]="{ minRows: 5, maxRows: 15 }"
+            class="textStyle codeStyle"
             disabled>
           </textarea>
         </div>
         <div class="buttonStyle">
-        <button nz-button nzType="primary"  (click)="submitCode()">提交</button>
+          <button nz-button nzType="primary" id="submitId" [nzLoading]="compileSubmitLoading" [disabled]="submitDisable" (click)="submitCode()">提交</button>
+          <button *ngIf="collectionId!=null" nz-button nzType="primary" [disabled]="testDisable" [nzLoading]="compileTestLoading" (click)="onlineTest()">在线运行</button>
+          <button *ngIf="collectionId!=null" nz-button nzType="default" [disabled]="exerciseIndex==0" (click)="backExercise()">上一题</button>
+          <button *ngIf="collectionId!=null" nz-button nzType="default" [disabled]="exerciseIndex==exerciseLength-1" (click)="nextExercise()">下一题</button>
         </div>
       </div>
   </div>
-
+</div>
+<div style="width: 100%; height: 30px"></div>

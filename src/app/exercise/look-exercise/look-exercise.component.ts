@@ -11,19 +11,19 @@ import {ConstUrlService} from '../../const/const-url.service';
 })
 export class LookExerciseComponent implements OnInit {
   // 表格
-  private loading:boolean=true;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private pageSize: number = 10;
-  private sysData: any[];
+   loading:boolean=true;
+   totalSize: number;
+   currentPageIndex: number=1;
+   pageSize: number = 10;
+   sysData: any[];
 
   //用户拥有的所有权限
-  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private  exerciseDetailPermis: string = "exercises:management:detail";     //题目查看详情权限值
-  private  exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
-  private  exerciseAddPermis: string = "exercises:management:add";     //增加题目权限值
-  private  exerciseDeletePermis: string = "exercises:management:delete";     //删除题目权限值
-  private judgePermis: boolean = false; //表示用户是否拥有查看详情、修改、删除题目之一的权限
+   permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+    exerciseDetailPermis: string = "exercises:management:detail";     //题目查看详情权限值
+    exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
+    exerciseAddPermis: string = "exercises:management:add";     //增加题目权限值
+    exerciseDeletePermis: string = "exercises:management:delete";     //删除题目权限值
+   judgePermis: boolean = false; //表示用户是否拥有查看详情、修改、删除题目之一的权限
   constructor(private http: HttpClient, private notify: NotificationService,
               private fb:FormBuilder, private constUrl: ConstUrlService) {
 
@@ -89,8 +89,8 @@ export class LookExerciseComponent implements OnInit {
 
   //**********************************************************************************************//
   // 抽屉
-  private visible:boolean = false;
-  private data: any ={};
+   visible:boolean = false;
+   data: any ={};
 
   //打开抽屉
   lookExerciseDetail(data: any): void {
@@ -117,13 +117,13 @@ export class LookExerciseComponent implements OnInit {
 
   //*********************************************************************************************//
   // 修改模态框
-  private modalVisible: boolean = false;
-  private modifyExerciseName: string ="";
-  private modifyExerciseInput: string ="";
-  private modifyExerciseOutput: string ="";
-  private modifyExerciseWarning: string ="";
-  private modifyExerciseDescription: string ="";
-  private labelList:[
+   modalVisible: boolean = false;
+   modifyExerciseName: string ="";
+   modifyExerciseInput: string ="";
+   modifyExerciseOutput: string ="";
+   modifyExerciseWarning: string ="";
+   modifyExerciseDescription: string ="";
+   labelList:[
     {
       exerciseLabelId:string,
       exerciseLabelName:string,
@@ -133,9 +133,9 @@ export class LookExerciseComponent implements OnInit {
     }
   ];
   validateForm: FormGroup;
-  private listOfOption = [];
-  private listOfSelectedValue:string[] = [];
-  private modalData: any = {};
+   listOfOption = [];
+   listOfSelectedValue:string[] = [];
+   modalData: any = {};
   cancelModify() {
     this.modalVisible = false;
     this.modalData.exerciseName = this.modifyExerciseName;

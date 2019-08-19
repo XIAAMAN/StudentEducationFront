@@ -4,6 +4,7 @@ import {differenceInCalendarDays, format} from 'date-fns';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NotificationService} from '../../utils/notification.service';
 import {ConstUrlService} from '../../const/const-url.service';
+import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-manage-collection',
   templateUrl: './manage-collection.component.html',
@@ -11,22 +12,28 @@ import {ConstUrlService} from '../../const/const-url.service';
 })
 export class ManageCollectionComponent implements OnInit {
 
-  private loading:boolean=true;
-  private totalSize: number;
-  private currentPageIndex: number=1;
-  private pageSize: number = 10;
-  private sysData: any[];
+   loading:boolean=true;
+   totalSize: number;
+   currentPageIndex: number=1;
+   pageSize: number = 10;
+   sysData: any[];
+   courseId:string=null;
   //用户拥有的所有权限
-  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private collectionAddPermis: string = "exercises:collection:add";     //创建题目集权限
-  private collectionDeletePermis: string = "exercises:collection:delete";     //删除题目集权限
-  private collectionAddDeleteExercisePermis: string = "exercises:collection:addDeleteExercise";     //增删题目权限
-  private judgePermis: boolean = false; //表示用户是否拥有删除题目集、增删题目之一的权限
+   permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+   collectionAddPermis: string = "exercises:collection:add";     //创建题目集权限
+   collectionDeletePermis: string = "exercises:collection:delete";     //删除题目集权限
+   collectionAddDeleteExercisePermis: string = "exercises:collection:addDeleteExercise";     //增删题目权限
+   judgePermis: boolean = false; //表示用户是否拥有删除题目集、增删题目之一的权限
   currentTime = format(new Date(), 'YYYY-MM-DD HH:mm:ss');
   constructor(private http: HttpClient, private notify: NotificationService,
-              private fb:FormBuilder, private constUrl: ConstUrlService) { }
+              private fb:FormBuilder,  private route: ActivatedRoute,
+              private constUrl: ConstUrlService) { }
 
   ngOnInit() {
+    this.route.paramMap.subscribe(params => {
+      this.courseId = params.get('courseId');
+    });
+    console.log(this.courseId)
     this.loadData();
     //获取所有题目名称
     this.http.get(this.constUrl.GETEXERCISENAMEURL, this.constUrl.httpOptions)
@@ -67,7 +74,7 @@ export class ManageCollectionComponent implements OnInit {
   loadData() {
     let url: string;
     this.loading=true;
-    url = this.constUrl.GETCOLLECTIONURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize;
+    url = this.constUrl.GETCOLLECTIONURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize+ "&courseId=" + this.courseId;
     this.http.get(url,this.constUrl.httpOptions).subscribe((data:any) => {
       this.sysData = JSON.parse(JSON.stringify(data.content));
       this.totalSize = <number> data.totalElements;
@@ -162,7 +169,7 @@ export class ManageCollectionComponent implements OnInit {
     this.endOpen = open;
   }
 
-  
+
   // **********************************************************************************************
   // 增加题目
   addExerciseVisible:boolean = false;

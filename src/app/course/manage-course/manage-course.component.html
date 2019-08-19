@@ -22,7 +22,13 @@
     </thead>
     <tbody>
     <tr *ngFor="let data of sysCourseTable.data">
-      <td>{{ data.courseName }}</td>
+      <td>
+<!--        只有超级管理员和学生才能够点击课程链接-->
+        <a *ngIf="rankValue==10 || rankValue==6; else courseName" [title]="'点击跳转'" [routerLink]="['/home/manageCollection', data.courseId]">
+        {{ data.courseName }}
+        </a>
+        <ng-template #courseName>{{ data.courseName }}</ng-template>
+      </td>
       <td>{{ data.courseClass }}</td>
       <td>{{ data.courseLanguage }}</td>
       <td>{{ data.courseUserRealName }}</td>

@@ -4,6 +4,7 @@ import {NotificationService} from '../../utils/notification.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {format} from "date-fns";
 import {ConstUrlService} from '../../const/const-url.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-manage-course',
@@ -12,18 +13,18 @@ import {ConstUrlService} from '../../const/const-url.service';
 })
 export class ManageCourseComponent implements OnInit {
   // 表格
-  private loading:boolean = true;
-  private pageSize: number = 10;
-  private totalSize: number;
-  private currentPageIndex: number = 1;
-  private sysData: any[];
-
+   loading:boolean = true;
+   pageSize: number = 10;
+   totalSize: number;
+   currentPageIndex: number = 1;
+   sysData: any[];
+   rankValue: number = + window.sessionStorage.getItem("rankValue");
   //用户拥有的所有权限
-  private permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
-  private  courseAddDeleteCollectionPermis: string = "education:course:addDeleteCollection";      //增加题目集权限值
-  private  courseAddPermis: string = "education:course:add";       //增加课程权限值
-  private  courseDeletePermis: string = "education:course:delete";     //删除课程权限值
-  private judgePermis: boolean = false;
+   permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
+    courseAddDeleteCollectionPermis: string = "education:course:addDeleteCollection";      //增加题目集权限值
+    courseAddPermis: string = "education:course:add";       //增加课程权限值
+    courseDeletePermis: string = "education:course:delete";     //删除课程权限值
+   judgePermis: boolean = false;
   constructor(
     private http: HttpClient,
     private notify: NotificationService,
@@ -44,10 +45,10 @@ export class ManageCourseComponent implements OnInit {
   }
 
   // 加载表格数据
-  private loadData() {
+   loadData() {
     let url: string;
     this.loading = true;
-    url = this.constUrl.GETCOURSEURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize;
+    url = this.constUrl.GETCOURSEURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize ;
     this.http.get(url,this.constUrl.httpOptions).subscribe((data:any) => {
       this.sysData = JSON.parse(JSON.stringify(data.content));
       this.totalSize = <number> data.totalElements;
@@ -80,9 +81,9 @@ export class ManageCourseComponent implements OnInit {
 
   //*******************************************************************************//
   // 增加课程模态框
-  private addCourseModalVisible: boolean = false;
+   addCourseModalVisible: boolean = false;
   addCourseForm: FormGroup;
-  private addCourseModalData = {
+   addCourseModalData = {
     courseName: '',
     courseClass: '',
     courseLanguage: '',
@@ -90,8 +91,8 @@ export class ManageCourseComponent implements OnInit {
     courseUserRealName: '',
     courseCreateTime: '',
   };
-  private listOfSelectedClass: string[] = [];
-  private listOfClasses: string[] = [];
+   listOfSelectedClass: string[] = [];
+   listOfClasses: string[] = [];
 
   //弹出增加课程模态框
   showAddCourseModal(): void {
@@ -115,10 +116,12 @@ export class ManageCourseComponent implements OnInit {
 
   //提交增加课程
   handleAddCourseOk(): void {
-    for(let tt of this.listOfSelectedClass) {
+    var tt;
+    var length: number;
+    for(tt of this.listOfSelectedClass) {
       this.addCourseModalData.courseClass += tt +" ";
     }
-    let length = this.addCourseModalData.courseClass.length;
+    length = this.addCourseModalData.courseClass.length;
     this.addCourseModalData.courseClass = this.addCourseModalData.courseClass.substring(0, length-1);
     this.addCourseModalData.courseCreateTime = format(new Date(), 'YYYY-MM-DD HH:mm:ss');
     console.log(this.addCourseModalData.courseClass);

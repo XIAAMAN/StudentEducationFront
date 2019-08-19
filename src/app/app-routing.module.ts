@@ -27,8 +27,9 @@ const appRoutes: Routes = [
       {path: 'lookUser', component: LookUserComponent, canActivate: [CanActivateGuard]},
       {path: 'checkExercise', component: CheckExerciseComponent, canActivate: [CanActivateGuard]},
       {path: 'manageCollection', component: ManageCollectionComponent, canActivate: [CanActivateGuard]},
+      {path: 'manageCollection/:courseId', component: ManageCollectionComponent, canActivate: [CanActivateGuard]},
       {path: 'practiceExercise', component: PracticeExerciseComponent, canActivate: [CanActivateGuard]},
-      {path: 'practiceExercise/:exerciseId', component: ExerciseDetailsComponent, canActivate: [CanActivateGuard]},
+      {path: 'practiceExercise/:exerciseId/:collectionId', component: ExerciseDetailsComponent, canActivate: [CanActivateGuard]},
       {path: 'manageCourse', component: ManageCourseComponent, canActivate: [CanActivateGuard]},
       {path: 'managePermis', component: ManagePermisComponent, canActivate: [CanActivateGuard]},
     ]
