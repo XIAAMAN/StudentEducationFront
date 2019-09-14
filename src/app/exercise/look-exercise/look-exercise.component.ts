@@ -20,7 +20,7 @@ export class LookExerciseComponent implements OnInit {
   //用户拥有的所有权限
    permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
     exerciseDetailPermis: string = "exercises:management:detail";     //题目查看详情权限值
-    exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
+    // exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
     exerciseAddPermis: string = "exercises:management:add";     //增加题目权限值
     exerciseDeletePermis: string = "exercises:management:delete";     //删除题目权限值
    judgePermis: boolean = false; //表示用户是否拥有查看详情、修改、删除题目之一的权限
@@ -67,19 +67,26 @@ export class LookExerciseComponent implements OnInit {
     this.exerciseForm = this.fb.group({
       exerciseName: ['', [Validators.required]],
       exerciseLabel: ['', [Validators.required]],
+      exerciseType: ['', [Validators.required]],
       // exerciseDifficult: ['', [Validators.required]],
-      exerciseDescription: ['', [Validators.required]],
+
+      exerciseScore: ['', [Validators.required]],
       exerciseCode: ['', [Validators.required]]
     });
     //上传题目样例验证
-    this.exampleForm = this.fb.group({
-      exerciseInputExample: ['', [Validators.required]],
-      exerciseOutputExample: ['', [Validators.required]],
-      exerciseWarning: ['', [Validators.required]]
-    });
+    // this.exampleForm = this.fb.group({
+    //   exerciseSelectOne: ['', [Validators.required]],
+    //   exerciseSelectTwo: ['', [Validators.required]],
+    //   exerciseSelectThree: ['', [Validators.required]],
+    //   exerciseSelectFour: ['', [Validators.required]],
+    //   exerciseDescription: ['', [Validators.required]],
+    //   exerciseInputExample: ['', [Validators.required]],
+    //   exerciseOutputExample: ['', [Validators.required]],
+    //   exerciseWarning: ['', [Validators.required]]
+    // });
     // 判断用户是否有操作栏中任意一项的权限
     if(this.permisAll.indexOf(this.exerciseDetailPermis)>=0 ||
-      this.permisAll.indexOf(this.exerciseModifyPermis)>=0 ||
+      // this.permisAll.indexOf(this.exerciseModifyPermis)>=0 ||
       this.permisAll.indexOf(this.exerciseDeletePermis)>=0) {
       this.judgePermis = true;
     }
@@ -200,6 +207,9 @@ export class LookExerciseComponent implements OnInit {
   uploadExercisePermis: string = "exercises:management:add";
   exerciseForm: FormGroup;
   exampleForm: FormGroup;
+  exerciseTypeValue:string = "";
+  listOfType: string[] = ["编程题","选择题","判断题","填空题"];
+  isFree: boolean = true;
   uploadExerciseVisible: boolean = false;
   labelValue:string[] = [];
   uploadExercise = {
@@ -211,10 +221,17 @@ export class LookExerciseComponent implements OnInit {
     exerciseOutputExample: '',
     exerciseErrorExample: '',
     exerciseLabel: '',
+    exerciseScore: 5.0,
     exerciseWarning: '',
     exerciseCode: '',
+    exerciseFree: 1,
     exerciseFileName: '',
+    exerciseType: 1,
     exerciseFileUrl: '',
+    exerciseSelectOne: '',
+    exerciseSelectTwo: '',
+    exerciseSelectThree: '',
+    exerciseSelectFour: '',
 
   }
 
@@ -233,23 +250,49 @@ export class LookExerciseComponent implements OnInit {
   }
 
   done(): void {
-    if(this.uploadExercise.exerciseFileUrl.length>0) {
-      this.uploadExerciseVisible = false;
-      for(let tt of this.labelValue) {
-        this.uploadExercise.exerciseLabel += tt +" ";
+    if("编程题"==this.exerciseTypeValue) {
+      if(this.uploadExercise.exerciseFileUrl.length>0) {
+        this.uploadExercise.exerciseSelectOne = "";
+        this.uploadExercise.exerciseSelectTwo = "";
+        this.uploadExercise.exerciseSelectThree = "";
+        this.uploadExercise.exerciseSelectFour = "";
+        this.uploadExercise.exerciseType = 1;
+        this.submitExercise();
+      } else {
+        alert("请先上传文件");
       }
-      let length = this.uploadExercise.exerciseLabel.length;
-      this.uploadExercise.exerciseLabel = this.uploadExercise.exerciseLabel.substring(0,length-1);
-      this.http.post(this.constUrl.ADDEXERCISEURL,this.uploadExercise, this.constUrl.httpOptions).subscribe(data=>{
-        if(data===200) {
-          this.notify.showSuccess("题目上传成功");
-          this.resetUploadExercise();
-          this.loadData();
-        }
-      });
+    }else if("选择题"==this.exerciseTypeValue) {
+      this.uploadExercise.exerciseDescription = "";
+      this.uploadExercise.exerciseWarning = "";
+      this.uploadExercise.exerciseInputExample = "";
+      this.uploadExercise.exerciseOutputExample = "";
+      this.uploadExercise.exerciseType = 2;
+      this.submitExercise();
+    } else if("判断题" == this.exerciseTypeValue) {
+      this.uploadExercise.exerciseDescription = "";
+      this.uploadExercise.exerciseWarning = "";
+      this.uploadExercise.exerciseInputExample = "";
+      this.uploadExercise.exerciseOutputExample = "";
+      this.uploadExercise.exerciseSelectOne = "";
+      this.uploadExercise.exerciseSelectTwo = "";
+      this.uploadExercise.exerciseSelectThree = "";
+      this.uploadExercise.exerciseSelectFour = "";
+      this.uploadExercise.exerciseType = 3;
+      this.submitExercise();
     } else {
-      alert("请先上传文件");
+      this.uploadExercise.exerciseDescription = "";
+      this.uploadExercise.exerciseWarning = "";
+      this.uploadExercise.exerciseInputExample = "";
+      this.uploadExercise.exerciseOutputExample = "";
+      this.uploadExercise.exerciseSelectOne = "";
+      this.uploadExercise.exerciseSelectTwo = "";
+      this.uploadExercise.exerciseSelectThree = "";
+      this.uploadExercise.exerciseSelectFour = "";
+      this.uploadExercise.exerciseType = 4;
+      this.submitExercise();
     }
+
+
   }
 
   changeContent(): void {
@@ -274,6 +317,7 @@ export class LookExerciseComponent implements OnInit {
 
   changeVisible() {
     this.uploadExerciseVisible=true;
+    this.exerciseTypeValue = this.listOfType[0];
     // document.getElementById("uploadExercise").style.display = "block"
   }
 
@@ -284,13 +328,16 @@ export class LookExerciseComponent implements OnInit {
 
   validateExercise() {
     if(this.exerciseForm.valid) {
-      let url:string;
-      url = this.constUrl.JUDGEEXERCISENAMEURL + "?exerciseName="+this.uploadExercise.exerciseName;
-      this.http.get(url, this.constUrl.httpOptions)
+      // let url:string;
+      // url = this.constUrl.JUDGEEXERCISENAMEURL + "?exerciseName="+this.uploadExercise.exerciseName;
+      this.http.post(this.constUrl.JUDGEEXERCISENAMEURL,{
+        exerciseName: this.uploadExercise.exerciseName
+      }, this.constUrl.httpOptions)
         .subscribe(data=>{
           if(data!=200) {
             this.notify.showError("该题目名称已存在，请更换题目名称");
           } else {
+
             this.next();
           }
         })
@@ -305,14 +352,36 @@ export class LookExerciseComponent implements OnInit {
 
   // 验证题目说明表单模块
   validateExample() {
-    if(this.exampleForm.valid ) {
-      this.next();
-    } else {
-      for (const i in this.exampleForm.controls) {
-        this.exampleForm.controls[i].markAsDirty();
-        this.exampleForm.controls[i].updateValueAndValidity();
+    console.log(this.uploadExercise)
+    if("编程题" == this.exerciseTypeValue) {
+      if(this.uploadExercise.exerciseWarning.length>0 && this.uploadExercise.exerciseDescription.length>0
+          && this.uploadExercise.exerciseInputExample.length>0 && this.uploadExercise.exerciseOutputExample.length> 0) {
+        this.next();
+      }else {
+        alert("存在非法数据，请检查所有填写数据是否为空");
       }
+
+    }else if("选择题" == this.exerciseTypeValue) {
+      if(this.uploadExercise.exerciseSelectOne.length>0 && this.uploadExercise.exerciseSelectTwo.length>0
+        && this.uploadExercise.exerciseSelectThree.length>0 && this.uploadExercise.exerciseSelectFour.length>0) {
+        this.next();
+      } else {
+        alert("存在非法数据，请检查所有填写数据是否为空");
+      }
+
+    } else {
+      this.next();
     }
+
+    // console.log(this.uploadExercise)
+    // if(this.exampleForm.valid ) {
+    //   this.next();
+    // } else {
+    //   for (const i in this.exampleForm.controls) {
+    //     this.exampleForm.controls[i].markAsDirty();
+    //     this.exampleForm.controls[i].updateValueAndValidity();
+    //   }
+    // }
   }
 
   beforeUpload = (file: File) => {
@@ -346,6 +415,26 @@ export class LookExerciseComponent implements OnInit {
     });
   };
 
+  submitExercise() {
+    this.uploadExerciseVisible = false;
+    for(let tt of this.labelValue) {
+      this.uploadExercise.exerciseLabel += tt +" ";
+    }
+    if(this.isFree) {
+      this.uploadExercise.exerciseFree = 1;
+    }else {
+      this.uploadExercise.exerciseFree = 0;
+    }
+    let length = this.uploadExercise.exerciseLabel.length;
+    this.uploadExercise.exerciseLabel = this.uploadExercise.exerciseLabel.substring(0,length-1);
+    this.http.post(this.constUrl.ADDEXERCISEURL,this.uploadExercise, this.constUrl.httpOptions).subscribe(data=>{
+      if(data===200) {
+        this.notify.showSuccess("题目上传成功");
+        this.resetUploadExercise();
+        this.loadData();
+      }
+    });
+  }
 
   handleChange({ file, fileList }: { [key: string]: any }): void {
     this.uploadExercise.exerciseFileName = "";
@@ -365,7 +454,7 @@ export class LookExerciseComponent implements OnInit {
 
   resetUploadExercise() {
     this.exerciseForm.reset();
-    this.exampleForm.reset();
+    // this.exampleForm.reset();
     this.index = 1;
     this.current =0;
     this.uploadExercise.exerciseName = '';
@@ -379,6 +468,12 @@ export class LookExerciseComponent implements OnInit {
     this.uploadExercise.exerciseDifficultValue = '';
     this.uploadExercise.exerciseCode = '';
     this.uploadExercise.exerciseLabel = '';
+    this.uploadExercise.exerciseScore = 5;
+    this.uploadExercise.exerciseSelectOne = "";
+    this.uploadExercise.exerciseSelectTwo = "";
+    this.uploadExercise.exerciseSelectThree = "";
+    this.uploadExercise.exerciseSelectFour = "";
+    this.isFree = true;
     this.labelValue=[];
   }
 
@@ -403,4 +498,30 @@ export class LookExerciseComponent implements OnInit {
       })
 
   }
+
+  // initValidate() {
+  //   if("编程题"==this.exerciseTypeValue) {
+  //     this.uploadExercise.exerciseSelectOne = "无";
+  //     this.uploadExercise.exerciseSelectTwo = "无";
+  //     this.uploadExercise.exerciseSelectThree = "无";
+  //     this.uploadExercise.exerciseSelectFour = "无";
+  //   }else if("选择题"==this.exerciseTypeValue) {
+  //     this.uploadExercise.exerciseDescription = "无";
+  //     this.uploadExercise.exerciseInputExample = "无";
+  //     this.uploadExercise.exerciseOutputExample = "无";
+  //     this.uploadExercise.exerciseWarning = "无";
+  //   } else {
+  //
+  //     this.uploadExercise.exerciseDescription = "无";
+  //     this.uploadExercise.exerciseInputExample = "无";
+  //     this.uploadExercise.exerciseOutputExample = "无";
+  //     this.uploadExercise.exerciseWarning = "无";
+  //     this.uploadExercise.exerciseSelectOne = "无";
+  //     this.uploadExercise.exerciseSelectTwo = "无";
+  //     this.uploadExercise.exerciseSelectThree = "无";
+  //     this.uploadExercise.exerciseSelectFour = "无";
+  //   }
+  //
+  // }
+
 }

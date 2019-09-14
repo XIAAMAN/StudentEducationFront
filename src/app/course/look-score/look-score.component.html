@@ -1,0 +1,59 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-select *ngIf="rankValue > 7 && this.courseName==null" style="width: 100px;margin-left: 100px;margin-bottom: 10px" [(ngModel)]="classValue" (ngModelChange)="classChange($event)" nzSize="default">
+  <nz-option *ngFor="let option of classListOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+</nz-select>
+<nz-select *ngIf="rankValue > 7 && this.courseName==null" style="width: 200px;margin-left: 10px;" [(ngModel)]="courseValue" (ngModelChange)="courseChange($event)" nzSize="default">
+  <nz-option *ngFor="let option of courseListOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+</nz-select>
+<nz-table #sysLogTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+    <a *ngIf="courseName!=null" (click)="back()" style="font-size: 20px;color: #0a4991;"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
+  <tr>
+    <th>课程名称</th>
+    <th>
+      <span *ngIf="rankValue == 6 || courseName!=null; else userName">实验名称</span>
+      <ng-template #userName>姓名</ng-template>
+    </th>
+    <th>
+      <span *ngIf="rankValue == 6 || courseName!=null; else userNumber">题目名称</span>
+      <ng-template #userNumber>学号</ng-template>
+    </th>
+    <th>
+      <span *ngIf="rankValue == 6 || courseName!=null; else userClass">得分</span>
+      <ng-template #userClass>班级</ng-template>
+    </th>
+    <th>
+      <span *ngIf="rankValue == 6 || courseName!=null; else userScore">总分</span>
+      <ng-template #userScore>分数</ng-template>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysLogTable.data">
+    <td>{{ data.courseName }}</td>
+    <td>
+      <span *ngIf="rankValue == 6 || courseName!=null; else name">{{ data.collectionName }}</span>
+      <ng-template #name><a title="查看详情" [routerLink]="['/home/lookScore',data.userNumber, data.courseName]">{{data.userName}}</a></ng-template>
+    </td>
+    <td>
+      <span *ngIf="rankValue == 6 || courseName!=null; else number">{{ data.exerciseName }}</span>
+      <ng-template #number>{{data.userNumber}}</ng-template>
+    </td>
+    <td>
+      <span *ngIf="rankValue == 6 || courseName!=null; else class">{{ data.exerciseAutoScore }}</span>
+      <ng-template #class>{{data.userClass}}</ng-template>
+    </td>
+    <td>
+      <span *ngIf="rankValue == 6 || courseName!=null; else score">{{ data.exerciseTotalScore }}</span>
+      <ng-template #score>{{data.courseScore}}</ng-template>
+    </td>
+
+
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>

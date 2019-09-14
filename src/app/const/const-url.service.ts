@@ -42,7 +42,8 @@ export class ConstUrlService {
   DELETECOLLECTIONURL = this.BASEURL + "/sys_collection/delete";   //删除题目集
   ADDCOLLECTIONURL = this.BASEURL + "/sys_collection/add";  //增加题目集
   ADDDELETEEXERCISEURL = this.BASEURL + "/sys_collection/addExercise";  //增删题目
-  GETHAVEDXERCISENAMEURL = this.BASEURL + "/sys_collection/getExerciseName";  //获得题目集已有题目
+  GETHAVEDXERCISENAMEURL = this.BASEURL + "/sys_collection/getProgramExerciseName";  //获得题目集已有题目
+  JUDGECOLLECTIONURL = this.BASEURL + "/sys_collection/judgeCollection";  //获得题目集已有题目
 
   //题目审核
   GETCHECKEXERCISEURL = this.BASEURL + "/sys_exercise/check";     //查询待审核的题目
@@ -80,5 +81,13 @@ export class ConstUrlService {
   SUBMITCOMPILEURL = this.BASEURL + "/compile/submit";  //提交
   PRACTICECOMPILEURL = this.BASEURL + "/compile/practice";  //题目练习提交
   GETEXERCISEPRACTICECOMPILEURL = this.BASEURL + "/compile/getExercisePractice";  //查询用户曾经提交的题目练习代码
+
+  //查看成绩
+  STUDENTLOOKSCOREURL = this.BASEURL + "/score/studentLook";     //学生查看成绩
+  TEACHERLOOKSCOREURL = this.BASEURL + "/score/teacherLook";     //教师查看成绩
+  STUDENTDETAILSCOREURL = this.BASEURL + "/score/studentDetail";     //教师查看学生成绩详情
+  TEACHERGETCLASSURL = this.BASEURL + "/score/getClass";     //获得教师管理班级
+  TEACHERGETCOURSEURL = this.BASEURL + "/score/getCourse";     //获得教师所授课程
+
   constructor() { }
 }

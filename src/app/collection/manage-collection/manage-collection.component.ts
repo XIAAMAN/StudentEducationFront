@@ -36,7 +36,7 @@ export class ManageCollectionComponent implements OnInit {
     console.log(this.courseId)
     this.loadData();
     //获取所有题目名称
-    this.http.get(this.constUrl.GETEXERCISENAMEURL, this.constUrl.httpOptions)
+    this.http.get(this.constUrl.GETEXERCISENAMEURL+"?exerciseType=1", this.constUrl.httpOptions)
       .subscribe((data:any)=> {
         this.exerciseOptionList = data;
       })
@@ -49,7 +49,8 @@ export class ManageCollectionComponent implements OnInit {
     });
     // 添加题目
     this.addExerciseForm = this.fb.group({
-      exerciseName: ['']
+      exerciseName: [''],
+      exerciseType: ['']
     });
 
     // 判断用户是否有操作栏中任意一项的权限
@@ -84,11 +85,19 @@ export class ManageCollectionComponent implements OnInit {
 
   //删除
   deleteCollection(collectionId: string) {
-    this.http.get(this.constUrl.DELETECOLLECTIONURL + "?collectionId="+collectionId, this.constUrl.httpOptions)
-      .subscribe(data=>{
-        this.notify.showSuccess("题目集删除成功");
-        this.loadData();
+    this.http.get(this.constUrl.JUDGECOLLECTIONURL + "?collectionId=" + collectionId, this.constUrl.httpOptions)
+      .subscribe((data:any)=>{
+        if(data === 200) {
+          this.http.get(this.constUrl.DELETECOLLECTIONURL + "?collectionId="+collectionId, this.constUrl.httpOptions)
+            .subscribe(data=>{
+              this.notify.showSuccess("题目集删除成功");
+              this.loadData();
+            })
+        }else {
+          alert("该题目集已被添加到课程中，不可删除");
+        }
       })
+
   }
 
   // ****************************************************************************************************
@@ -172,34 +181,69 @@ export class ManageCollectionComponent implements OnInit {
 
   // **********************************************************************************************
   // 增加题目
+  collectionExercise = {
+    collectionId: '',
+    exerciseListValue: [],
+    exerciseType: 1,
+  };
+  exerciseTypeValue:string = "";
+  listOfType: string[] = ["编程题","选择题","判断题","填空题"];
   addExerciseVisible:boolean = false;
   addExerciseForm: FormGroup;
-  exerciseListValue:string[] = [];
+  // exerciseListValue:string[] = [];
   exerciseOptionList:string[] = [];
-  collectionId:string = "";
   cancelAddExercise() {
     this.addExerciseVisible = false
     // this.addExerciseForm.reset();
   }
 
   submitAddExercise() {
-    this.http.get(this.constUrl.ADDDELETEEXERCISEURL + "?collectionId="+this.collectionId +"&exerciseList="+this.exerciseListValue,
+    this.http.post(this.constUrl.ADDDELETEEXERCISEURL, this.collectionExercise,
       this.constUrl.httpOptions).subscribe(data=>{
         this.addExerciseVisible = false;
         this.notify.showSuccess("题目个数修改成功");
     })
   }
 
-  addExercise(collectionId:string) {
-    this.collectionId = collectionId;
-    this.http.get(this.constUrl.GETHAVEDXERCISENAMEURL + '?collectionId='+ collectionId,this.constUrl.httpOptions)
+  addExercise(data:any) {
+    if(this.currentTime > data.collectionStartTime) {
+      alert("实验已经开始或结束，不能进行更改！");
+    }else {
+      this.exerciseTypeValue = this.listOfType[0];
+      this.collectionExercise.collectionId = data.collectionId;
+      this.http.get(this.constUrl.GETHAVEDXERCISENAMEURL + '?collectionId='+ data.collectionId+"&exerciseType=1",this.constUrl.httpOptions)
+        .subscribe((data:any)=>{
+          this.addExerciseVisible = true;
+          this.collectionExercise.exerciseListValue = [];
+          for(let tt of data) {
+            this.collectionExercise.exerciseListValue.push(tt);
+          }
+        })
+    }
+  }
+
+  exerciseTypeChange($event: any) {
+    if(this.exerciseTypeValue=="编程题") {
+      this.collectionExercise.exerciseType = 1;
+    } else if(this.exerciseTypeValue=="选择题") {
+      this.collectionExercise.exerciseType = 2;
+    } else if(this.exerciseTypeValue=="判断题") {
+      this.collectionExercise.exerciseType = 3;
+    } else {
+      this.collectionExercise.exerciseType = 4;
+    }
+    this.http.get(this.constUrl.GETHAVEDXERCISENAMEURL + '?collectionId='+ this.collectionExercise.collectionId+"&exerciseType=" + this.collectionExercise.exerciseType,this.constUrl.httpOptions)
       .subscribe((data:any)=>{
-        this.addExerciseVisible = true;
-        this.exerciseListValue = [];
+        this.collectionExercise.exerciseListValue = [];
         for(let tt of data) {
-          this.exerciseListValue.push(tt);
+          this.collectionExercise.exerciseListValue.push(tt);
         }
       })
 
+    this.http.get(this.constUrl.GETEXERCISENAMEURL+"?exerciseType="+this.collectionExercise.exerciseType, this.constUrl.httpOptions)
+      .subscribe((data:any)=> {
+        this.exerciseOptionList = [];
+        this.exerciseOptionList = data;
+      })
   }
 }

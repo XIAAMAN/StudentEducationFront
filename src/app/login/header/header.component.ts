@@ -110,7 +110,7 @@ export class HeaderComponent implements OnInit {
   logOut() {
     // 退出登录，前后台都需要清除session
     window.sessionStorage.clear();
-    this.http.get('apidata/sys_user/logOut').subscribe();
+    this.http.get(this.constUrl.LOGINOUTURL).subscribe();
   }
 
   //************************************************************************************//

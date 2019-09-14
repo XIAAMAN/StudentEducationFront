@@ -24,12 +24,18 @@
     </nz-card>
       <h3 style="margin-top: 5px">编译器</h3>
       <div class="compiler">
-        <textarea
-          nz-input
-          placeholder="在此处输入你的代码,每道题最多提交10次..."
-          [(ngModel)]="sysDetailsData.exerciseCode"
-          [nzAutosize]="{ minRows: 10, maxRows: 20 }" class="textStyle codeStyle">
-        </textarea>
+        <div style="border: 1px solid silver;width: 98%">
+          <codemirror  [(ngModel)]="sysDetailsData.exerciseCode"
+                       [config]="cmOptions">
+          </codemirror>
+        </div>
+
+<!--        <textarea-->
+<!--          nz-input-->
+<!--          placeholder="在此处输入你的代码,每道题最多提交10次..."-->
+<!--          [(ngModel)]="sysDetailsData.exerciseCode"-->
+<!--          [nzAutosize]="{ minRows: 10, maxRows: 20 }" class="textStyle codeStyle">-->
+<!--        </textarea>-->
         <div class="result" *ngIf="isSubmit">
           <textarea
             [(ngModel)]="compilerResult"

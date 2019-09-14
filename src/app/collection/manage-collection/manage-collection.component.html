@@ -34,7 +34,7 @@
     <td>{{''+ data.collectionRate+' %' }}</td>
     <td>{{ data.collectionCreateUserName }}</td>
     <td *ngIf="judgePermis && courseId==null">
-      <button *ngIf="permisAll.indexOf(collectionAddDeleteExercisePermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="addExercise(data.collectionId)">增删题目</button>
+      <button *ngIf="permisAll.indexOf(collectionAddDeleteExercisePermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="addExercise(data)">增删题目</button>
       <button *ngIf="permisAll.indexOf(collectionDeletePermis)>=0" class="buttonActionStyle"  nz-button nzType="danger"
               nz-popconfirm nzTitle="是否确定删除该题目集？" nzPlacement="leftBottom"
               (nzOnConfirm)="deleteCollection(data.collectionId)">删除</button>
@@ -98,10 +98,22 @@
           nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelAddExercise()" (nzOnOk)="submitAddExercise()">
   <form nz-form [formGroup]="addExerciseForm">
     <nz-form-item>
+      <nz-form-label [nzSpan]="5">题目类型</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired >
+        <nz-select [(ngModel)]="exerciseTypeValue"
+                   formControlName="exerciseType" (ngModelChange)="exerciseTypeChange($event)">
+          <ng-container *ngFor="let option of listOfType">
+            <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+          </ng-container>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
       <nz-form-label [nzSpan]="5">增删题目</nz-form-label>
       <nz-form-control [nzSpan]="16" >
-        <nz-select nzMode="multiple" nzPlaceHolder="请选择题目" [(ngModel)]="exerciseListValue"
-                   formControlName="exerciseName" nzMaxTagCount="10" nzMaxMultipleCount="10" >
+        <nz-select nzMode="multiple" nzPlaceHolder="请选择题目" [(ngModel)]="collectionExercise.exerciseListValue"
+                   formControlName="exerciseName" nzMaxTagCount="20" nzMaxMultipleCount="20" >
           <ng-container *ngFor="let option of exerciseOptionList">
             <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
           </ng-container>

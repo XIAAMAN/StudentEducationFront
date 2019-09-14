@@ -42,6 +42,9 @@ import { ManageCourseComponent } from './course/manage-course/manage-course.comp
 import { ManagePermisComponent } from './user/manage-permis/manage-permis.component';
 import { NzTreeSelectModule } from 'ng-zorro-antd/tree-select';
 import { TestComponent } from './test/test.component';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { LookScoreComponent } from './course/look-score/look-score.component';
+import { CodemirrorModule } from 'ng2-codemirror';
 registerLocaleData(zh);
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
@@ -64,6 +67,7 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     ManageCourseComponent,
     ManagePermisComponent,
     TestComponent,
+    LookScoreComponent,
 
   ],
   imports: [
@@ -86,7 +90,9 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     NzSelectModule,
     NzUploadModule,
     NzDatePickerModule,
-    NzTreeSelectModule
+    NzTreeSelectModule,
+    NzSwitchModule,
+    CodemirrorModule
 
   ],
   exports: [RouterModule],

@@ -33,7 +33,7 @@
       <th>描述</th>
       <th>标签</th>
       <th>语言</th>
-      <th>状态</th>
+      <th>类型</th>
 <!--      <th>难度</th>-->
       <th>上传人</th>
       <th *ngIf="judgePermis">操作</th>
@@ -51,11 +51,17 @@
       </td>
       <td>{{ data.exerciseLabel }}</td>
       <td>{{ data.exerciseLanguage}}</td>
+<!--      <td>-->
+<!--        <label style="color:white; background-color: #0E81D2; padding: 2px" *ngIf="data.exerciseState===1; else exerciseState" >已通过</label>-->
+<!--        <ng-template #exerciseState >-->
+<!--          <label style="color:white; background-color: red; padding: 2px">待审核</label>-->
+<!--        </ng-template>-->
+<!--      </td>-->
       <td>
-        <label style="color:white; background-color: #0E81D2; padding: 2px" *ngIf="data.exerciseState===1; else exerciseState" >已通过</label>
-        <ng-template #exerciseState >
-          <label style="color:white; background-color: red; padding: 2px">待审核</label>
-        </ng-template>
+        <span *ngIf="1==data.exerciseType">编程题</span>
+        <span *ngIf="2==data.exerciseType">选择题</span>
+        <span *ngIf="3==data.exerciseType">判断题</span>
+        <span *ngIf="4==data.exerciseType">填空题</span>
       </td>
 <!--      <td>-->
 <!--        <label *ngIf="(''+data.exerciseDifficultValue)==='简单'" style="color:white; background-color: lightseagreen; padding: 2px">-->
@@ -70,7 +76,7 @@
       <td>{{data.exerciseUploadUserName}}</td>
       <td *ngIf="judgePermis">
         <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseDetailPermis) >= 0" nz-button nzType="default" (click)="lookExerciseDetail(data)">查看详情</button>
-        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseModifyPermis) >= 0" nz-button nzType="dashed" (click)="modifyExercise(data)">修改</button>
+<!--        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseModifyPermis) >= 0" nz-button nzType="dashed" (click)="modifyExercise(data)">修改</button>-->
         <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseDeletePermis) >= 0" nz-button nzType="danger"
                 nz-popconfirm nzTitle="是否确定删除这道题目？" (nzOnConfirm)="deleteExercise(data.exerciseId)"
                 nzPlacement="leftBottom">删除</button>
@@ -114,7 +120,7 @@
     </div>
   </div>
 
-  <div nz-row>
+  <div nz-row *ngIf="data.exerciseType == 1">
     <div nz-col nzSpan="24">
       <div class="item-wrap">
         <p class="label">题目描述: </p>
@@ -123,36 +129,82 @@
     </div>
   </div>
 
-  <nz-divider></nz-divider>
-  <p class="title">参考样例</p>
 
-  <div nz-row>
-    <div nz-col nzSpan="24">
-      <div class="item-wrap">
-        <p class="label">输入样例: </p>
-        {{this.data.exerciseInputExample}}
+  <div *ngIf="data.exerciseType == 1">
+    <nz-divider></nz-divider>
+    <p class="title">参考样例</p>
+
+    <div nz-row >
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">输入样例: </p>
+          {{this.data.exerciseInputExample}}
+        </div>
+      </div>
+    </div>
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">输出样例: </p>
+          {{this.data.exerciseOutputExample}}
+        </div>
+      </div>
+    </div>
+
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">注意事项: </p>
+          {{this.data.exerciseWarning}}
+        </div>
       </div>
     </div>
   </div>
 
-  <div nz-row>
-    <div nz-col nzSpan="24">
-      <div class="item-wrap">
-        <p class="label">输出样例: </p>
-        {{this.data.exerciseOutputExample}}
+  <div *ngIf="data.exerciseType == 2">
+    <nz-divider></nz-divider>
+    <p class="title">题目选项</p>
+
+    <div nz-row >
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">A: </p>
+          {{this.data.exerciseSelectOne}}
+        </div>
       </div>
     </div>
-  </div>
 
-
-  <div nz-row>
-    <div nz-col nzSpan="24">
-      <div class="item-wrap">
-        <p class="label">注意事项: </p>
-        {{this.data.exerciseWarning}}
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">B: </p>
+          {{this.data.exerciseSelectTwo}}
+        </div>
       </div>
     </div>
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">C: </p>
+          {{this.data.exerciseSelectThree}}
+        </div>
+      </div>
+    </div>
+
+    <div nz-row>
+      <div nz-col nzSpan="24">
+        <div class="item-wrap">
+          <p class="label">D: </p>
+          {{this.data.exerciseSelectFour}}
+        </div>
+      </div>
+    </div>
+
   </div>
+
 
   <nz-divider></nz-divider>
   <p class="title">上传信息</p>
@@ -255,22 +307,42 @@
     <div class="steps-content">
       <div *ngIf="index===1">
         <form nz-form [formGroup]="exerciseForm">
+
           <nz-form-item>
             <nz-form-label [nzSpan]="5">题目名称</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired nzErrorTip="请输入2-100个字符">
-              <input nz-input [(ngModel)]="uploadExercise.exerciseName"  formControlName="exerciseName" pattern=".{2,100}" />
+            <nz-form-control [nzSpan]="16" nzRequired>
+              <textarea rows="3" nz-input [(ngModel)]="uploadExercise.exerciseName" formControlName="exerciseName"></textarea>
             </nz-form-control>
           </nz-form-item>
 
           <nz-form-item>
             <nz-form-label [nzSpan]="5">题目标签</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired >
+            <nz-form-control [nzSpan]="16" nzRequired >
               <nz-select nzMode="multiple" nzPlaceHolder="请选择标签" [(ngModel)]="labelValue"
                          formControlName="exerciseLabel" nzMaxTagCount="3" nzMaxMultipleCount="3" >
                 <ng-container *ngFor="let option of listOfOption">
                   <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
                 </ng-container>
               </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">题目类型</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired >
+              <nz-select [(ngModel)]="exerciseTypeValue"
+                         formControlName="exerciseType">
+                <ng-container *ngFor="let option of listOfType">
+                  <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
+                </ng-container>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-label [nzSpan]="5">题目分值</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired>
+              <nz-input-number [(ngModel)]="uploadExercise.exerciseScore" style="width: 100%;" [nzMin]="1" [nzMax]="30" [nzStep]="1" formControlName="exerciseScore"></nz-input-number>
             </nz-form-control>
           </nz-form-item>
 
@@ -292,71 +364,111 @@
 <!--          </nz-form-item>-->
 
 
-
           <nz-form-item>
-            <nz-form-label [nzSpan]="5">题目描述</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired>
-              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseDescription" formControlName="exerciseDescription" ></textarea>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item>
-            <nz-form-label [nzSpan]="5">参考代码</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired>
+            <nz-form-label [nzSpan]="5">参考代码/答案</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired>
               <textarea rows="6" nz-input [(ngModel)]="uploadExercise.exerciseCode" formControlName="exerciseCode" ></textarea>
             </nz-form-control>
           </nz-form-item>
         </form>
+
       </div>
       <div *ngIf="index===2">
-        <form nz-form [formGroup]="exampleForm">
-          <nz-form-item>
-            <nz-form-label [nzSpan]="5">输入样例</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired>
+
+          <nz-form-item *ngIf="'编程题'==exerciseTypeValue">
+            <nz-form-label [nzSpan]="5">题目描述</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired>
+              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseDescription" ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item *ngIf="'编程题'==exerciseTypeValue">
+            <nz-form-label [nzSpan]="5" >输入样例</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired>
               <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseInputExample"
-                        formControlName="exerciseInputExample"
                         placeholder="" ></textarea>
             </nz-form-control>
           </nz-form-item>
 
-          <nz-form-item>
+          <nz-form-item *ngIf="'编程题'==exerciseTypeValue">
             <nz-form-label [nzSpan]="5">输出样例</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired >
+            <nz-form-control [nzSpan]="16" nzRequired >
               <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseOutputExample"
-                        formControlName="exerciseOutputExample"
                         placeholder="" ></textarea>
             </nz-form-control>
           </nz-form-item>
 
-
-
-          <nz-form-item>
+          <nz-form-item *ngIf="'编程题'==exerciseTypeValue">
             <nz-form-label [nzSpan]="5">注意事项</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzHasFeedback nzRequired >
+            <nz-form-control [nzSpan]="16" nzRequired >
               <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseWarning"
-                        formControlName="exerciseWarning"
                         placeholder="例如：代码中不要输出任何多余无关字符"></textarea>
             </nz-form-control>
           </nz-form-item>
 
-        </form>
+          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
+            <nz-form-label [nzSpan]="5">选项A</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired >
+              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectOne"
+                        placeholder="" ></textarea>
+            </nz-form-control>
+          </nz-form-item>
 
+          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
+            <nz-form-label [nzSpan]="5">选项B</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired >
+              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectTwo"
+                        placeholder="" ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
+            <nz-form-label [nzSpan]="5">选项C</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired >
+              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectThree"
+                        placeholder="" ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
+            <nz-form-label [nzSpan]="5">选项D</nz-form-label>
+            <nz-form-control [nzSpan]="16" nzRequired>
+              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectFour"
+                        placeholder="" ></textarea>
+            </nz-form-control>
+          </nz-form-item>
+
+        <div style="display: inline-block; text-align: left; width: 100%; border: 1px ">
+          <div style="display: inline-block; text-align: right; line-height: 40px; width: 156px; margin-right: 5px">
+            <label>是否开放到习题中: </label>
+          </div>
+          <nz-switch [(ngModel)]="this.isFree" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+        </div>
       </div>
       <div *ngIf="index===3">
-        <h3>
-          上传文件说明：上传的文件必须是zip格式的压缩包，大小不能超过10M。压缩包里面包含的是测试文件，
-          分别为.in和.out文件，可以有多个.in和.out文件但名称必须相同。例如：test1.in、test1.out、test2.in、test2.out
-        </h3>
-        <nz-upload nzAction="apidata/file/upload" nzAccept=".zip" nzType="drag"
-                   [nzBeforeUpload]="beforeUpload" nzSize="10240" (nzChange)="handleChange($event)">
-          <p class="ant-upload-drag-icon">
-            <i nz-icon nzType="inbox"></i>
-          </p>
-          <p class="ant-upload-text">Click or drag file to this area to upload</p>
-          <p class="ant-upload-hint">
-            只支持zip文件上传，大小不能超过10M
-          </p>
-        </nz-upload>
+        <div *ngIf="'编程题'==exerciseTypeValue">
+          <h3>
+            上传文件说明：上传的文件必须是zip格式的压缩包，大小不能超过10M。压缩包里面包含的是测试文件，
+            分别为.in和.out文件，可以有多个.in和.out文件但名称必须相同。例如：test1.in、test1.out、test2.in、test2.out
+          </h3>
+          <nz-upload nzAction="apidata/file/upload" nzAccept=".zip" nzType="drag"
+                     [nzBeforeUpload]="beforeUpload" nzSize="10240" (nzChange)="handleChange($event)">
+            <p class="ant-upload-drag-icon">
+              <i nz-icon nzType="inbox"></i>
+            </p>
+            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+            <p class="ant-upload-hint">
+              只支持zip文件上传，大小不能超过10M
+            </p>
+          </nz-upload>
+        </div>
+
+        <div *ngIf="'编程题'!=exerciseTypeValue">
+          <h3>
+            无须上传测试文件，点击确认上传即可
+          </h3>
+        </div>
+
       </div>
     </div>
     <div class="steps-action">

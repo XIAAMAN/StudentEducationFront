@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ConstUrlService} from '../../const/const-url.service';
+import 'codemirror/mode/sql/sql.js';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/sql-hint.js';
 
 @Component({
   selector: 'app-exercise-details',
@@ -15,6 +18,23 @@ export class ExerciseDetailsComponent implements OnInit {
     exercise : {},
     collectionId : ""
   }
+  cmOptions: any = { // codemirror组件的配置项
+    lineNumbers: true, // 显示行号
+    styleActiveLine: true, // 当前行背景高亮
+    matchBrackets: true,
+    lineWrapping: true, // 自动换行
+    mode: { name: 'text/x-mysql' }, // 定义mode
+    indentUnit: 4,         // 缩进单位为4
+    theme: 'default', // 设置黑色主题
+
+    extraKeys: {
+      'Ctrl': 'autocomplete', // 提示快捷键
+      Tab: function (cm) {
+        const spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
+        cm.replaceSelection(spaces);
+      }
+    }, // 自动提示配置
+  };
   sysCollectionData: any = [];
   loading: boolean = false;
   exerciseCode: string = "";

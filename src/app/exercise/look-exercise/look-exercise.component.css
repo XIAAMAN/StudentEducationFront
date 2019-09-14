@@ -90,3 +90,11 @@ nz-table {
   -webkit-transition: all .3s;
   transition: all .3s;
 }
+
+.validateTop {
+  width: 100%;
+  height: 20px;
+}
+
+
+

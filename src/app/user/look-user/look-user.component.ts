@@ -311,7 +311,7 @@ export class LookUserComponent implements OnInit {
 
   userPhoneValidator = (control: FormControl): { [s: string]: boolean } => {
     let userPhone: string = control.value;
-    let re = /^((13[0-9])|(17[0-1,6-8])|(15[^4,\\D])|(18[0-9]))\d{8}$/;
+    let re = /^1[0-9]\d{10}$/;
     // let re = new RegExp("(13[0-9])|(17[0-1,6-8])|(15[^4,\\\\D])|(18[0-9])\\d{8}");
 
     // ^1 以1开头，\d表示数字，\d{10}表示数字出现10次，加上前面以1开头，正好是11个数字，X$表示以X结尾，
