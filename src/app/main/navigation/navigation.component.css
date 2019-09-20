@@ -12,7 +12,7 @@ ul.dropdown a:hover { color: #000; }
 ul.dropdown li a { display: block; padding: 20px 8px; color: #34495e; position: relative; z-index: 2; text-align: center; text-decoration: none; font-weight: 500; font-size: 20px }
 ul.dropdown li ul li a { display: block; padding: 20px 8px; color: #34495e; position: relative; z-index: 2; text-align: center; text-decoration: none;  font-size: 18px; }
 
-ul.dropdown li a:hover, ul.dropdown li a.hover { background: #005388; position: relative; color: #fff; }
+ul.dropdown li a:hover, ul.dropdown li a.hover { background: #005388;position: relative; color: #fff; }
 ul.dropdown ul { display: none; position: absolute; top: 0; left: 0; width: 180px; z-index: 2; }
 ul.dropdown ul li { font-weight: normal; background: #f6f6f6; color: #000; border-bottom: 1px solid #ccc; }
 ul.dropdown ul li a { display: block; color: #34495e !important; background: lightblue !important; }

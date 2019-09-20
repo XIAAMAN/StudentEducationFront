@@ -1,0 +1,27 @@
+<div style="width: 100%; height: 30px"></div>
+<div *ngIf="rankValue==6" class="content">
+  <div class="queryStudent">问卷调查</div>
+  <div class="exerciseDetails">
+    <nz-card style="width:98%;">
+      <div style="text-align: center" *ngFor="let user of sysData;let i=index">
+        <div class="divStyle">{{user.userRealName}}</div>
+        <div class="divStyle">{{user.userNumber}}</div>
+        <div class="divStyle">{{user.userClass}}</div>
+        <nz-radio-group [(ngModel)]="relationData[i].userRelationshipRank" [nzButtonStyle]="'solid'">
+          <label nz-radio-button nzValue="没听说过">没听说过</label>
+          <label nz-radio-button nzValue="听过名字">听过名字</label>
+          <label nz-radio-button nzValue="刚认识">刚认识</label>
+          <label nz-radio-button nzValue="比较熟">比较熟</label>
+          <label nz-radio-button nzValue="非常熟悉">非常熟悉</label>
+        </nz-radio-group>
+      </div>
+      <div style="text-align: center;margin-top: 20px;margin-bottom: 20px">
+        <button nz-button nzType="primary" nz-popconfirm nzTitle="是否确定提交，提交后十天内不能再次提交"
+                nzSize="large" [disabled]="isDisable" (nzOnConfirm)="submit()" nzPlacement="top">提交</button>
+
+      </div>
+    </nz-card>
+
+  </div>
+</div>
+<div style="width: 100%; height: 30px"></div>

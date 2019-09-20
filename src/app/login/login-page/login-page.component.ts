@@ -17,7 +17,7 @@ export class LoginPageComponent implements OnInit {
     // 如果已经登录，则直接返回到主页面
     const user = window.sessionStorage.getItem('userName');
     if (user) {
-      this.route.navigateByUrl('/home');
+      this.route.navigateByUrl('/home/homePage');
     }
   }
 

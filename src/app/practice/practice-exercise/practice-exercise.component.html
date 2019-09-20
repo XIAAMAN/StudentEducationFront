@@ -11,7 +11,7 @@
 
     <tr>
       <th>名称</th>
-      <th>描述</th>
+      <th>类型</th>
       <th>标签</th>
       <th>语言</th>
       <th>状态</th>
@@ -24,13 +24,17 @@
       <td>
         <a [title]="'点击跳转'" [routerLink]="['/home/practiceExercise', data.exerciseId, '0000']">
 
-        <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
-        <ng-template #userName>{{ data.exerciseName}}</ng-template>
+        <span *ngIf="data.exerciseType==1 && data.exerciseName.length > 20" title="{{data.exerciseDescription}}">{{ data.exerciseName.substring(0,20)+"..."}}</span>
+        <span *ngIf="data.exerciseType==1 && data.exerciseName.length <= 20" title="{{data.exerciseDescription}}">{{ data.exerciseName}}</span>
+        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length > 20" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,20)+"..."}}</span>
+        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length <= 20" title="{{data.exerciseName}}">{{ data.exerciseName}}</span>
         </a>
       </td>
       <td>
-        <span *ngIf="data.exerciseDescription.length >15; else description" title="{{data.exerciseDescription}}">{{ data.exerciseDescription.substring(0,15)+"..."}}</span>
-        <ng-template #description>{{ data.exerciseDescription}}</ng-template>
+        <span *ngIf="data.exerciseType == 1">编程题</span>
+        <span *ngIf="data.exerciseType == 2">选择题</span>
+        <span *ngIf="data.exerciseType == 3">判断题</span>
+        <span *ngIf="data.exerciseType == 4">填空题</span>
       </td>
       <td>{{ data.exerciseLabel }}</td>
       <td>{{ data.exerciseLanguage}}</td>

@@ -20,7 +20,7 @@ export class LookExerciseComponent implements OnInit {
   //用户拥有的所有权限
    permisAll :string[] = JSON.parse(window.sessionStorage.getItem("permisAll"));
     exerciseDetailPermis: string = "exercises:management:detail";     //题目查看详情权限值
-    // exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
+    exerciseModifyPermis: string = "exercises:management:modify";     //修改题目权限值
     exerciseAddPermis: string = "exercises:management:add";     //增加题目权限值
     exerciseDeletePermis: string = "exercises:management:delete";     //删除题目权限值
    judgePermis: boolean = false; //表示用户是否拥有查看详情、修改、删除题目之一的权限
@@ -58,10 +58,8 @@ export class LookExerciseComponent implements OnInit {
     this.validateForm = this.fb.group({
       exerciseName: ['', [Validators.required]],
       exerciseLabel: ['', [Validators.required]],
-      exerciseWarning: ['', [Validators.required]],
-      exerciseInputExample: ['', [Validators.required]],
-      exerciseOutputExample: ['', [Validators.required]],
-      exerciseDescription: ['', [Validators.required]]
+      exerciseScore: ['', [Validators.required]],
+      exerciseCode: ['', [Validators.required]]
     });
     //上传题目验证框
     this.exerciseForm = this.fb.group({
@@ -86,7 +84,7 @@ export class LookExerciseComponent implements OnInit {
     // });
     // 判断用户是否有操作栏中任意一项的权限
     if(this.permisAll.indexOf(this.exerciseDetailPermis)>=0 ||
-      // this.permisAll.indexOf(this.exerciseModifyPermis)>=0 ||
+      this.permisAll.indexOf(this.exerciseModifyPermis)>=0 ||
       this.permisAll.indexOf(this.exerciseDeletePermis)>=0) {
       this.judgePermis = true;
     }
@@ -227,11 +225,7 @@ export class LookExerciseComponent implements OnInit {
     exerciseFree: 1,
     exerciseFileName: '',
     exerciseType: 1,
-    exerciseFileUrl: '',
-    exerciseSelectOne: '',
-    exerciseSelectTwo: '',
-    exerciseSelectThree: '',
-    exerciseSelectFour: '',
+    exerciseFileUrl: ''
 
   }
 
@@ -252,10 +246,6 @@ export class LookExerciseComponent implements OnInit {
   done(): void {
     if("编程题"==this.exerciseTypeValue) {
       if(this.uploadExercise.exerciseFileUrl.length>0) {
-        this.uploadExercise.exerciseSelectOne = "";
-        this.uploadExercise.exerciseSelectTwo = "";
-        this.uploadExercise.exerciseSelectThree = "";
-        this.uploadExercise.exerciseSelectFour = "";
         this.uploadExercise.exerciseType = 1;
         this.submitExercise();
       } else {
@@ -273,10 +263,6 @@ export class LookExerciseComponent implements OnInit {
       this.uploadExercise.exerciseWarning = "";
       this.uploadExercise.exerciseInputExample = "";
       this.uploadExercise.exerciseOutputExample = "";
-      this.uploadExercise.exerciseSelectOne = "";
-      this.uploadExercise.exerciseSelectTwo = "";
-      this.uploadExercise.exerciseSelectThree = "";
-      this.uploadExercise.exerciseSelectFour = "";
       this.uploadExercise.exerciseType = 3;
       this.submitExercise();
     } else {
@@ -284,10 +270,6 @@ export class LookExerciseComponent implements OnInit {
       this.uploadExercise.exerciseWarning = "";
       this.uploadExercise.exerciseInputExample = "";
       this.uploadExercise.exerciseOutputExample = "";
-      this.uploadExercise.exerciseSelectOne = "";
-      this.uploadExercise.exerciseSelectTwo = "";
-      this.uploadExercise.exerciseSelectThree = "";
-      this.uploadExercise.exerciseSelectFour = "";
       this.uploadExercise.exerciseType = 4;
       this.submitExercise();
     }
@@ -358,14 +340,6 @@ export class LookExerciseComponent implements OnInit {
           && this.uploadExercise.exerciseInputExample.length>0 && this.uploadExercise.exerciseOutputExample.length> 0) {
         this.next();
       }else {
-        alert("存在非法数据，请检查所有填写数据是否为空");
-      }
-
-    }else if("选择题" == this.exerciseTypeValue) {
-      if(this.uploadExercise.exerciseSelectOne.length>0 && this.uploadExercise.exerciseSelectTwo.length>0
-        && this.uploadExercise.exerciseSelectThree.length>0 && this.uploadExercise.exerciseSelectFour.length>0) {
-        this.next();
-      } else {
         alert("存在非法数据，请检查所有填写数据是否为空");
       }
 
@@ -469,10 +443,6 @@ export class LookExerciseComponent implements OnInit {
     this.uploadExercise.exerciseCode = '';
     this.uploadExercise.exerciseLabel = '';
     this.uploadExercise.exerciseScore = 5;
-    this.uploadExercise.exerciseSelectOne = "";
-    this.uploadExercise.exerciseSelectTwo = "";
-    this.uploadExercise.exerciseSelectThree = "";
-    this.uploadExercise.exerciseSelectFour = "";
     this.isFree = true;
     this.labelValue=[];
   }

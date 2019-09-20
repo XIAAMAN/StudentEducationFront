@@ -4,6 +4,12 @@
     <div style="width: 60px">
       <a (click)="backCollections()"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
     </div>
+    <div style="margin-top: 10px;">
+      <button *ngIf="chooseExercise.length > 0" (click)="chooseChange()" nz-button nzType="default">选择题</button>
+      <button *ngIf="judgeExercise.length > 0" (click)="judgeChange()" nz-button nzType="default">判断题</button>
+      <button *ngIf="blankExercise.length > 0" (click)="blankChange()" nz-button nzType="default">填空题</button>
+      <button *ngIf="programExercise.length > 0" (click)="programChange()" nz-button nzType="default">编程题</button>
+    </div>
       <nz-card style="width:98%;">
         <div nz-col [nzSpan]="8" class="messageTips">
           <nz-card nzType="inner" nzTitle="题目相关信息">
@@ -15,27 +21,54 @@
             </div>
           </nz-card>
         </div>
-        <h2 *ngIf="exerciseId!=null">{{ this.sysDetailsData.exerciseName }} </h2>
-        <h2 *ngIf="collectionId!=null">{{ this.sysDetailsData.exerciseName }} ({{sysDetailsData.exerciseScore}}分) </h2>
-        <h3>题目描述：</h3> <p>{{ this.sysDetailsData.exerciseDescription}}</p>
-        <h3>输入样例：</h3> <p>{{ this.sysDetailsData.exerciseInputExample}}</p>
-        <h3>输出样例：</h3> <p>{{ this.sysDetailsData.exerciseOutputExample}}</p>
-        <h3>提示信息：</h3> <p class="hint">{{ this.sysDetailsData.exerciseWarning}}</p>
+
+        <div>
+           <pre *ngIf="exerciseType==1"><h2>{{ this.sysDetailsData.exerciseName }}</h2></pre>
+           <pre *ngIf="exerciseType!=1"><h3>{{ this.sysDetailsData.exerciseName }}</h3></pre>
+          <!--        <h2 *ngIf="collectionId!=null">{{ this.sysDetailsData.exerciseName }} ({{sysDetailsData.exerciseScore}}分) </h2>-->
+          <div *ngIf="exerciseType == 1">
+            <h3>题目描述：</h3> <p>{{ this.sysDetailsData.exerciseDescription}}</p>
+            <h3>输入样例：</h3> <p>{{ this.sysDetailsData.exerciseInputExample}}</p>
+            <h3>输出样例：</h3> <p>{{ this.sysDetailsData.exerciseOutputExample}}</p>
+            <h3>提示信息：</h3> <p class="hint">{{ this.sysDetailsData.exerciseWarning}}</p>
+          </div>
+        </div>
+
     </nz-card>
-      <h3 style="margin-top: 5px">编译器</h3>
+
+      <h3 style="margin-top: 5px">答题区</h3>
       <div class="compiler">
-        <div style="border: 1px solid silver;width: 98%">
+<!--        编程题-->
+        <div *ngIf="exerciseType==1" style="border: 1px solid silver;width: 98%">
           <codemirror  [(ngModel)]="sysDetailsData.exerciseCode"
                        [config]="cmOptions">
           </codemirror>
         </div>
+<!--        选择题-->
+        <div *ngIf="exerciseType==2" style="margin-top: 20px; margin-bottom: 20px">
+          <nz-radio-group [(ngModel)]="sysDetailsData.exerciseCode">
+            <label nz-radio nzValue="A">A</label>
+            <label nz-radio nzValue="B">B</label>
+            <label nz-radio nzValue="C">C</label>
+            <label nz-radio nzValue="D">D</label>
+          </nz-radio-group>
+        </div>
 
-<!--        <textarea-->
-<!--          nz-input-->
-<!--          placeholder="在此处输入你的代码,每道题最多提交10次..."-->
-<!--          [(ngModel)]="sysDetailsData.exerciseCode"-->
-<!--          [nzAutosize]="{ minRows: 10, maxRows: 20 }" class="textStyle codeStyle">-->
-<!--        </textarea>-->
+<!--        判断题-->
+        <div *ngIf="exerciseType==3" style="margin-top: 20px; margin-bottom: 20px">
+          <nz-radio-group [(ngModel)]="sysDetailsData.exerciseCode">
+            <label nz-radio nzValue="对">对</label>
+            <label nz-radio nzValue="错">错</label>
+          </nz-radio-group>
+        </div>
+
+<!--        填空题-->
+        <div *ngIf="exerciseType == 4">
+          <div *ngFor="let tt of exerciseBlank; let i=index">
+            <input class="inputStyle" [(ngModel)]="tempExerciseBlank[i]" placeholder="（{{i+1}}）">
+          </div>
+        </div>
+
         <div class="result" *ngIf="isSubmit">
           <textarea
             [(ngModel)]="compilerResult"
@@ -46,7 +79,7 @@
         </div>
         <div class="buttonStyle">
           <button nz-button nzType="primary" id="submitId" [nzLoading]="compileSubmitLoading" [disabled]="submitDisable" (click)="submitCode()">提交</button>
-          <button *ngIf="collectionId!=null" nz-button nzType="primary" [disabled]="testDisable" [nzLoading]="compileTestLoading" (click)="onlineTest()">在线运行</button>
+          <button *ngIf="collectionId!=null && exerciseType==1" nz-button nzType="primary" [disabled]="testDisable" [nzLoading]="compileTestLoading" (click)="onlineTest()">在线运行</button>
           <button *ngIf="collectionId!=null" nz-button nzType="default" [disabled]="exerciseIndex==0" (click)="backExercise()">上一题</button>
           <button *ngIf="collectionId!=null" nz-button nzType="default" [disabled]="exerciseIndex==exerciseLength-1" (click)="nextExercise()">下一题</button>
         </div>

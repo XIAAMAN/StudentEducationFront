@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 // import * as  form 'types/jquery';
 declare const my:any;
 @Component({
@@ -8,7 +9,7 @@ declare const my:any;
 })
 export class NavigationComponent implements OnInit {
   parentPermisList: [];
-  constructor() { }
+  constructor(private route:Router) { }
 
   ngOnInit() {
 

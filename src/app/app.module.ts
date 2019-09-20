@@ -45,6 +45,8 @@ import { TestComponent } from './test/test.component';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { LookScoreComponent } from './course/look-score/look-score.component';
 import { CodemirrorModule } from 'ng2-codemirror';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { HomePageComponent } from './home-page/home-page.component';
 registerLocaleData(zh);
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
@@ -68,6 +70,7 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     ManagePermisComponent,
     TestComponent,
     LookScoreComponent,
+    HomePageComponent,
 
   ],
   imports: [
@@ -92,7 +95,8 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     NzDatePickerModule,
     NzTreeSelectModule,
     NzSwitchModule,
-    CodemirrorModule
+    CodemirrorModule,
+    NzRadioModule
 
   ],
   exports: [RouterModule],

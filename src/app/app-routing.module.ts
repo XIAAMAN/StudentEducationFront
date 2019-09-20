@@ -16,6 +16,7 @@ import {ExerciseDetailsComponent} from './exercise/exercise-details/exercise-det
 import {ManageCourseComponent} from './course/manage-course/manage-course.component';
 import {ManagePermisComponent} from './user/manage-permis/manage-permis.component';
 import {LookScoreComponent} from './course/look-score/look-score.component';
+import {HomePageComponent} from './home-page/home-page.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
   // 配置路由拦截，当访问home的时候，会被拦截到CanActivateGuard
   {path: 'home', component: HomeComponent, canActivate: [CanActivateGuard],
     children: [
+      {path: 'homePage', component: HomePageComponent, canActivate: [CanActivateGuard]},
       {path: 'lookLog', component: LookSysLogComponent, canActivate: [CanActivateGuard]},
       {path: 'lookExercise', component: LookExerciseComponent, canActivate: [CanActivateGuard]},
       {path: 'lookUser', component: LookUserComponent, canActivate: [CanActivateGuard]},

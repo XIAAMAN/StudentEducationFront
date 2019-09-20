@@ -37,7 +37,7 @@ export class BodyComponent implements OnInit {
             window.sessionStorage.setItem('userName', this.user.userName);
             window.sessionStorage.setItem("permisAll", res.permisValueList);
             window.sessionStorage.setItem("rankValue", res.rankValue);
-            this.router.navigateByUrl('/home');
+            this.router.navigateByUrl('/home/homePage');
             this.notify.showSuccess(this.user.userName + '  登录成功');
           } else if(res.state === 600){
             this.user.userName = "";

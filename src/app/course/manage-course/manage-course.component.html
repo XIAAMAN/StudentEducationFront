@@ -35,7 +35,7 @@
       <td *ngIf="judgePermis">
         <button *ngIf="permisAll.indexOf(courseAddDeleteCollectionPermis)>=0" class="buttonActionStyle"  nz-button nzType="primary" (click)="addCollection(data.courseId)">增删题目集</button>
         <button *ngIf="permisAll.indexOf(courseDeletePermis)>=0" class="buttonActionStyle"  nz-button nzType="danger"
-                nz-popconfirm nzTitle="是否确定删除这道题目？" (nzOnConfirm)="deleteCourse(data.courseId)"
+                nz-popconfirm nzTitle="是否确定删除这门课程么？" (nzOnConfirm)="deleteCourse(data.courseId)"
                 nzPlacement="leftBottom">删除</button>
       </td>
     </tr>

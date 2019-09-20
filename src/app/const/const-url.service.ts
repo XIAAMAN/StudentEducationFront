@@ -55,6 +55,7 @@ export class ConstUrlService {
 
   //题目详情
   DETAILEXERCISEURL = this.BASEURL + "/sys_exercise/practiceDetails";   //题目详细页面
+  GETEXERCISETYPEURL = this.BASEURL + "/sys_exercise/getExerciseType";   //得到题目类型
   GETCOLLECTIONEXERCISEURL = this.BASEURL + "/sys_collection/getExerciseList"; //查询题目集中所有题目
 
   //查看用户
@@ -80,6 +81,7 @@ export class ConstUrlService {
   TESTCOMPILEURL = this.BASEURL + "/compile/test";  //在线编译
   SUBMITCOMPILEURL = this.BASEURL + "/compile/submit";  //提交
   PRACTICECOMPILEURL = this.BASEURL + "/compile/practice";  //题目练习提交
+  GETBLANKNUMBERURL = this.BASEURL + "/sys_exercise/getBlankNumbers";  //获得填空题有多少个空
   GETEXERCISEPRACTICECOMPILEURL = this.BASEURL + "/compile/getExercisePractice";  //查询用户曾经提交的题目练习代码
 
   //查看成绩
@@ -88,6 +90,12 @@ export class ConstUrlService {
   STUDENTDETAILSCOREURL = this.BASEURL + "/score/studentDetail";     //教师查看学生成绩详情
   TEACHERGETCLASSURL = this.BASEURL + "/score/getClass";     //获得教师管理班级
   TEACHERGETCOURSEURL = this.BASEURL + "/score/getCourse";     //获得教师所授课程
+
+  //首页
+  GETSAMETEACHERUSERURL = this.BASEURL + "/sys_user/getSameTeacherUser"; //获得相同教师的班级学生
+  GETBLANKUSERURL = this.BASEURL + "/user_relationship/blankModel"; //获得一个空数组
+  SAVERELATIONSHIPURL = this.BASEURL + "/user_relationship/save"; //提交
+  JUDGEDATEURL = this.BASEURL + "/user_relationship/judgeDate"; //判断是否能够提交
 
   constructor() { }
 }

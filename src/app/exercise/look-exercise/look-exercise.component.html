@@ -30,7 +30,6 @@
 
     <tr>
       <th>名称</th>
-      <th>描述</th>
       <th>标签</th>
       <th>语言</th>
       <th>类型</th>
@@ -42,13 +41,12 @@
     <tbody>
     <tr *ngFor="let data of sysExerciseTable.data">
       <td>
-        <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
-        <ng-template #userName>{{ data.exerciseName}}</ng-template>
+        <span *ngIf="data.exerciseType==1 && data.exerciseName.length > 15" title="{{data.exerciseDescription}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
+        <span *ngIf="data.exerciseType==1 && data.exerciseName.length <= 15" title="{{data.exerciseDescription}}">{{ data.exerciseName}}</span>
+        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length > 15" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
+        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length <= 15" title="{{data.exerciseName}}">{{ data.exerciseName}}</span>
       </td>
-      <td>
-        <span *ngIf="data.exerciseDescription.length >15; else description" title="{{data.exerciseDescription}}">{{ data.exerciseDescription.substring(0,15)+"..."}}</span>
-        <ng-template #description>{{ data.exerciseDescription}}</ng-template>
-      </td>
+
       <td>{{ data.exerciseLabel }}</td>
       <td>{{ data.exerciseLanguage}}</td>
 <!--      <td>-->
@@ -76,7 +74,7 @@
       <td>{{data.exerciseUploadUserName}}</td>
       <td *ngIf="judgePermis">
         <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseDetailPermis) >= 0" nz-button nzType="default" (click)="lookExerciseDetail(data)">查看详情</button>
-<!--        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseModifyPermis) >= 0" nz-button nzType="dashed" (click)="modifyExercise(data)">修改</button>-->
+        <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseModifyPermis) >= 0" nz-button nzType="dashed" (click)="modifyExercise(data)">修改</button>
         <button class="buttonActionStyle" *ngIf="permisAll.indexOf(exerciseDeletePermis) >= 0" nz-button nzType="danger"
                 nz-popconfirm nzTitle="是否确定删除这道题目？" (nzOnConfirm)="deleteExercise(data.exerciseId)"
                 nzPlacement="leftBottom">删除</button>
@@ -163,48 +161,6 @@
     </div>
   </div>
 
-  <div *ngIf="data.exerciseType == 2">
-    <nz-divider></nz-divider>
-    <p class="title">题目选项</p>
-
-    <div nz-row >
-      <div nz-col nzSpan="24">
-        <div class="item-wrap">
-          <p class="label">A: </p>
-          {{this.data.exerciseSelectOne}}
-        </div>
-      </div>
-    </div>
-
-    <div nz-row>
-      <div nz-col nzSpan="24">
-        <div class="item-wrap">
-          <p class="label">B: </p>
-          {{this.data.exerciseSelectTwo}}
-        </div>
-      </div>
-    </div>
-
-    <div nz-row>
-      <div nz-col nzSpan="24">
-        <div class="item-wrap">
-          <p class="label">C: </p>
-          {{this.data.exerciseSelectThree}}
-        </div>
-      </div>
-    </div>
-
-    <div nz-row>
-      <div nz-col nzSpan="24">
-        <div class="item-wrap">
-          <p class="label">D: </p>
-          {{this.data.exerciseSelectFour}}
-        </div>
-      </div>
-    </div>
-
-  </div>
-
 
   <nz-divider></nz-divider>
   <p class="title">上传信息</p>
@@ -242,10 +198,18 @@
 <nz-modal [(nzVisible)]="modalVisible" nzTitle="修改题目"
            nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelModify()" (nzOnOk)="submitModify()">
   <form nz-form [formGroup]="validateForm">
+
     <nz-form-item>
       <nz-form-label [nzSpan]="5">题目名称</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzRequired nzErrorTip="请输入2-100个字符">
-        <input nz-input [(ngModel)]="modalData.exerciseName"  formControlName="exerciseName" pattern=".{2,100}" />
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <textarea rows="4" nz-input [(ngModel)]="modalData.exerciseName" formControlName="exerciseName" ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">题目分值</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <nz-input-number [(ngModel)]="modalData.exerciseScore" style="width: 100%;" [nzMin]="1" [nzMax]="30" [nzStep]="1" formControlName="exerciseScore"></nz-input-number>
       </nz-form-control>
     </nz-form-item>
 
@@ -262,30 +226,9 @@
     </nz-form-item>
 
     <nz-form-item>
-      <nz-form-label [nzSpan]="5">输入样例</nz-form-label>
+      <nz-form-label [nzSpan]="5">参考答案|代码</nz-form-label>
       <nz-form-control [nzSpan]="16" nzRequired>
-        <input nz-input [(ngModel)]="modalData.exerciseInputExample" formControlName="exerciseInputExample" />
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label [nzSpan]="5">输出样例</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzRequired>
-        <input nz-input [(ngModel)]="modalData.exerciseOutputExample" formControlName="exerciseOutputExample"/>
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label [nzSpan]="5">注意事项</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzRequired>
-        <input nz-input [(ngModel)]="modalData.exerciseWarning" formControlName="exerciseWarning"/>
-      </nz-form-control>
-    </nz-form-item>
-
-    <nz-form-item>
-      <nz-form-label [nzSpan]="5">题目描述</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzRequired>
-        <textarea rows="4" nz-input [(ngModel)]="modalData.exerciseDescription" formControlName="exerciseDescription" ></textarea>
+        <textarea rows="4" nz-input style="font-size: 18px" [(ngModel)]="modalData.exerciseCode" formControlName="exerciseCode" ></textarea>
       </nz-form-control>
     </nz-form-item>
   </form>
@@ -311,7 +254,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">题目名称</nz-form-label>
             <nz-form-control [nzSpan]="16" nzRequired>
-              <textarea rows="3" nz-input [(ngModel)]="uploadExercise.exerciseName" formControlName="exerciseName"></textarea>
+              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseName" formControlName="exerciseName"></textarea>
             </nz-form-control>
           </nz-form-item>
 
@@ -367,7 +310,7 @@
           <nz-form-item>
             <nz-form-label [nzSpan]="5">参考代码/答案</nz-form-label>
             <nz-form-control [nzSpan]="16" nzRequired>
-              <textarea rows="6" nz-input [(ngModel)]="uploadExercise.exerciseCode" formControlName="exerciseCode" ></textarea>
+              <textarea rows="6" nz-input [(ngModel)]="uploadExercise.exerciseCode" formControlName="exerciseCode" placeholder="填空题每空答案之间用';xiaaman;'间隔开" ></textarea>
             </nz-form-control>
           </nz-form-item>
         </form>
@@ -403,38 +346,6 @@
             <nz-form-control [nzSpan]="16" nzRequired >
               <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseWarning"
                         placeholder="例如：代码中不要输出任何多余无关字符"></textarea>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
-            <nz-form-label [nzSpan]="5">选项A</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzRequired >
-              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectOne"
-                        placeholder="" ></textarea>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
-            <nz-form-label [nzSpan]="5">选项B</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzRequired >
-              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectTwo"
-                        placeholder="" ></textarea>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
-            <nz-form-label [nzSpan]="5">选项C</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzRequired >
-              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectThree"
-                        placeholder="" ></textarea>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item *ngIf="'选择题'==exerciseTypeValue">
-            <nz-form-label [nzSpan]="5">选项D</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzRequired>
-              <textarea rows="2" nz-input [(ngModel)]="uploadExercise.exerciseSelectFour"
-                        placeholder="" ></textarea>
             </nz-form-control>
           </nz-form-item>
 
