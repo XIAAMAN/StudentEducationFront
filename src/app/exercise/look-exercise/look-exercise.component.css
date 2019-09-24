@@ -1,3 +1,45 @@
+@import "~wangeditor/release/wangEditor.min.css";
+
+.wangeditor-box {
+  padding: 20px;
+  overflow: auto;
+  min-width: 1200px;
+  display: none;
+  margin: 0 auto;
+  width: 90%;
+  height: 100%;
+}
+
+#editor{
+  height: 200px;
+  width: auto;
+  border:1px solid #ccc;
+}
+.w-e-toolbar{
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+}
+
+.btn-group {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.show-message {
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.text-area {
+  width: 50%;
+}
+.margin-l-10 {
+  margin-left: 10px;
+}
+
 /*表格样式*/
 tr th {
   text-align: center;
@@ -96,5 +138,8 @@ nz-table {
   height: 20px;
 }
 
+.showExerciseNameHtml{
+
+}
 
 

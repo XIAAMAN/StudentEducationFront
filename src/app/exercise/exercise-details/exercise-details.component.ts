@@ -40,6 +40,9 @@ export class ExerciseDetailsComponent implements OnInit {
   sysCollectionData: any = [];
   programExercise: any = [];
   chooseExercise: any = [];
+  multiChooseExercise: any = [];
+  selfExercise: any = [];
+  multiChooseValue:string[] = [];
   judgeExercise: any = [];
   blankExercise: any = [];
   loading: boolean = false;
@@ -59,7 +62,8 @@ export class ExerciseDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private constUrl: ConstUrlService
+    private constUrl: ConstUrlService,
+
   ) { }
 
   // 加载表格数据
@@ -70,6 +74,7 @@ export class ExerciseDetailsComponent implements OnInit {
       url = this.constUrl.DETAILEXERCISEURL + '?exerciseId='+this.exerciseId;
       this.http.get(url,this.constUrl.httpOptions).subscribe((data: any) => {
         this.sysDetailsData = data;
+        // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
         this.sysDetailsData.exerciseCode = this.exerciseCode;
         if(this.exerciseCode.length>0 && this.exerciseType==4) {
           this.exerciseBlankAnswer = this.exerciseCode.split(";xiaaman;");
@@ -77,6 +82,7 @@ export class ExerciseDetailsComponent implements OnInit {
             this.tempExerciseBlank[t] = this.exerciseBlankAnswer[t];
           }
         }
+
         this.loading = false;
       })
     } else {
@@ -92,8 +98,12 @@ export class ExerciseDetailsComponent implements OnInit {
               this.chooseExercise.push(this.sysCollectionData[i]);
             }else if(this.sysCollectionData[i].exerciseType == 3) {
               this.judgeExercise.push(this.sysCollectionData[i]);
-            }else{
+            }else if(this.sysCollectionData[i].exerciseType == 4) {
               this.blankExercise.push(this.sysCollectionData[i]);
+            }else if(this.sysCollectionData[i].exerciseType == 5) {
+              this.multiChooseExercise.push(this.sysCollectionData[i]);
+            }else{
+              this.selfExercise.push(this.sysCollectionData[i]);
             }
           }
 
@@ -101,6 +111,10 @@ export class ExerciseDetailsComponent implements OnInit {
             this.sysDetailsData = this.chooseExercise[this.exerciseIndex];
             this.exerciseLength = this.chooseExercise.length;
             this.exerciseType = 2;
+          }else if(this.multiChooseExercise.length > 0) {
+            this.sysDetailsData = this.multiChooseExercise[this.exerciseIndex];
+            this.exerciseLength = this.multiChooseExercise.length;
+            this.exerciseType = 5;
           }else if(this.judgeExercise.length > 0) {
             this.sysDetailsData = this.judgeExercise[this.exerciseIndex];
             this.exerciseLength = this.judgeExercise.length;
@@ -117,11 +131,17 @@ export class ExerciseDetailsComponent implements OnInit {
                 }
                 console.log(this.exerciseBlank)
               })
+          }else if(this.selfExercise.length > 0) {
+            this.sysDetailsData = this.selfExercise[this.exerciseIndex];
+            this.exerciseLength = this.selfExercise.length;
+            this.exerciseType = 6;
           } else {
             this.sysDetailsData = this.programExercise[this.exerciseIndex];
             this.exerciseLength = this.programExercise.length;
             this.exerciseType = 1;
           }
+
+          // document.getElementById("exerciseNameHtml").innerHTML= this.sysDetailsData.exerciseName;
         }
         this.loading = false;
       })
@@ -178,6 +198,10 @@ export class ExerciseDetailsComponent implements OnInit {
       this.sysDetailsData = this.chooseExercise[this.exerciseIndex];
     }else if(this.exerciseType == 3) {
       this.sysDetailsData = this.judgeExercise[this.exerciseIndex];
+    }else if(this.exerciseType == 5) {
+      this.sysDetailsData = this.multiChooseExercise[this.exerciseIndex];
+    }else if(this.exerciseType == 6) {
+      this.sysDetailsData = this.selfExercise[this.exerciseIndex];
     } else {
       this.sysDetailsData = this.blankExercise[this.exerciseIndex];
       this.http.get(this.constUrl.GETBLANKNUMBERURL + "?exerciseId=" + this.sysDetailsData.exerciseId, this.constUrl.httpOptions)
@@ -189,6 +213,7 @@ export class ExerciseDetailsComponent implements OnInit {
           console.log(this.exerciseBlank)
         })
     }
+    // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
   }
 
   nextExercise() {
@@ -200,6 +225,10 @@ export class ExerciseDetailsComponent implements OnInit {
       this.sysDetailsData = this.chooseExercise[this.exerciseIndex];
     }else if(this.exerciseType == 3) {
       this.sysDetailsData = this.judgeExercise[this.exerciseIndex];
+    }else if(this.exerciseType == 5) {
+      this.sysDetailsData = this.multiChooseExercise[this.exerciseIndex];
+    }else if(this.exerciseType == 6) {
+      this.sysDetailsData = this.selfExercise[this.exerciseIndex];
     } else {
       this.sysDetailsData = this.blankExercise[this.exerciseIndex];
       this.http.get(this.constUrl.GETBLANKNUMBERURL + "?exerciseId=" + this.sysDetailsData.exerciseId, this.constUrl.httpOptions)
@@ -208,9 +237,9 @@ export class ExerciseDetailsComponent implements OnInit {
           for(let tt=0; tt<data; tt++) {
             this.exerciseBlank[tt] = "";
           }
-          console.log(this.exerciseBlank)
         })
     }
+    // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
   }
 
   backCollections() {
@@ -317,6 +346,7 @@ export class ExerciseDetailsComponent implements OnInit {
       this.exerciseIndex = 0;
       this.exerciseLength = this.chooseExercise.length;
       this.sysDetailsData = this.chooseExercise[0];
+      // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
     }
   }
 
@@ -326,7 +356,9 @@ export class ExerciseDetailsComponent implements OnInit {
       this.exerciseType = 3;
       this.exerciseIndex = 0;
       this.exerciseLength = this.judgeExercise.length;
-      this.sysDetailsData = this.judgeExercise[0]
+      this.sysDetailsData = this.judgeExercise[0];
+      // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
+
     }
   }
 
@@ -345,6 +377,8 @@ export class ExerciseDetailsComponent implements OnInit {
           }
           console.log(this.exerciseBlank)
         })
+      // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
+
     }
   }
 
@@ -355,7 +389,44 @@ export class ExerciseDetailsComponent implements OnInit {
       this.exerciseIndex = 0;
       this.exerciseLength = this.programExercise.length;
       this.sysDetailsData = this.programExercise[0];
+      // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
     }
   }
+
+  multiChange() {
+    if(this.exerciseType != 5) {
+      this.isSubmit = false;
+      this.exerciseType = 5;
+      this.exerciseIndex = 0;
+      this.exerciseLength = this.multiChooseExercise.length;
+      this.sysDetailsData = this.multiChooseExercise[0];
+      // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
+    }
+  }
+
+  selfChange() {
+    if(this.exerciseType != 6) {
+      this.isSubmit = false;
+      this.exerciseType = 6;
+      this.exerciseIndex = 0;
+      this.exerciseLength = this.selfExercise.length;
+      this.sysDetailsData = this.selfExercise[0];
+      // document.getElementById("exerciseNameHtml").innerHTML = this.sysDetailsData.exerciseName;
+    }
+  }
+
+  log($event: string[]) {
+    this.multiChooseValue = $event;
+    this.sysDetailsData.exerciseCode = "";
+    if(this.multiChooseValue.length > 0) {
+      for(let i=0; i<this.multiChooseValue.length; i++) {
+        this.sysDetailsData.exerciseCode += this.multiChooseValue[i];
+      }
+    }
+
+    // console.log("multiValue : ",this.multiChooseValue)
+    // console.log("code: ",this.sysDetailsData.exerciseCode)
+  }
+
 
 }

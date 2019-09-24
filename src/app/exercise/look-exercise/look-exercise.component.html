@@ -1,4 +1,21 @@
 <!--表格-->
+<div class="wangeditor-box" id="wangEditor">
+  <div id="editorMenu"></div>
+  <div id="editor">
+    <p>{{defaultMessage}}</p>
+  </div>
+  <div class="btn-group">
+    <button class="btn-search" nz-button [nzType]="'primary'" [nzSize]="'normal'"
+            (click)="getContent()">
+      <span>下一步</span>
+    </button>
+    <button class="btn-search" style="margin-left: 10px" nz-button [nzType]="'default'" [nzSize]="'normal'"
+            (click)="closeEditor()">
+      <span>关闭</span>
+    </button>
+  </div>
+</div>
+
 <div style="background-color: #F0F2F5">
   <div style="width: 100%; height: 30px"></div>
 <!--  <div class="topStyle">-->
@@ -41,10 +58,11 @@
     <tbody>
     <tr *ngFor="let data of sysExerciseTable.data">
       <td>
-        <span *ngIf="data.exerciseType==1 && data.exerciseName.length > 15" title="{{data.exerciseDescription}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
-        <span *ngIf="data.exerciseType==1 && data.exerciseName.length <= 15" title="{{data.exerciseDescription}}">{{ data.exerciseName}}</span>
-        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length > 15" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
-        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length <= 15" title="{{data.exerciseName}}">{{ data.exerciseName}}</span>
+        <pre style="text-align: left" [innerHTML]="data.exerciseName"></pre>
+<!--        <span *ngIf="data.exerciseType==1 && data.exerciseName.length > 15" title="{{data.exerciseDescription}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>-->
+<!--        <span *ngIf="data.exerciseType==1 && data.exerciseName.length <= 15" title="{{data.exerciseDescription}}">{{ data.exerciseName}}</span>-->
+<!--        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length > 15" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>-->
+<!--        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length <= 15" title="{{data.exerciseName}}">{{ data.exerciseName}}</span>-->
       </td>
 
       <td>{{ data.exerciseLabel }}</td>
@@ -57,9 +75,11 @@
 <!--      </td>-->
       <td>
         <span *ngIf="1==data.exerciseType">编程题</span>
-        <span *ngIf="2==data.exerciseType">选择题</span>
+        <span *ngIf="2==data.exerciseType">单选题</span>
         <span *ngIf="3==data.exerciseType">判断题</span>
         <span *ngIf="4==data.exerciseType">填空题</span>
+        <span *ngIf="5==data.exerciseType">多选题</span>
+        <span *ngIf="6==data.exerciseType">主观题</span>
       </td>
 <!--      <td>-->
 <!--        <label *ngIf="(''+data.exerciseDifficultValue)==='简单'" style="color:white; background-color: lightseagreen; padding: 2px">-->
@@ -94,7 +114,7 @@
     <div nz-col nzSpan="24">
       <div class="item-wrap">
         <p class="label" >题目名称: </p>
-        {{this.data.exerciseName}}
+        <pre id="exerciseNameHtml"></pre>
       </div>
     </div>
   </div>
@@ -118,14 +138,14 @@
     </div>
   </div>
 
-  <div nz-row *ngIf="data.exerciseType == 1">
-    <div nz-col nzSpan="24">
-      <div class="item-wrap">
-        <p class="label">题目描述: </p>
-        {{this.data.exerciseDescription}}
-      </div>
-    </div>
-  </div>
+<!--  <div nz-row *ngIf="data.exerciseType == 1">-->
+<!--    <div nz-col nzSpan="24">-->
+<!--      <div class="item-wrap">-->
+<!--        <p class="label">题目描述: </p>-->
+<!--        {{this.data.exerciseDescription}}-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
 
   <div *ngIf="data.exerciseType == 1">
@@ -199,12 +219,12 @@
            nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelModify()" (nzOnOk)="submitModify()">
   <form nz-form [formGroup]="validateForm">
 
-    <nz-form-item>
-      <nz-form-label [nzSpan]="5">题目名称</nz-form-label>
-      <nz-form-control [nzSpan]="16" nzRequired>
-        <textarea rows="4" nz-input [(ngModel)]="modalData.exerciseName" formControlName="exerciseName" ></textarea>
-      </nz-form-control>
-    </nz-form-item>
+<!--    <nz-form-item>-->
+<!--      <nz-form-label [nzSpan]="5">题目名称</nz-form-label>-->
+<!--      <nz-form-control [nzSpan]="16" nzRequired>-->
+<!--        <textarea id="updateExerciseNameHtml" rows="4" nz-input  formControlName="exerciseName" ></textarea>-->
+<!--      </nz-form-control>-->
+<!--    </nz-form-item>-->
 
     <nz-form-item>
       <nz-form-label [nzSpan]="5">题目分值</nz-form-label>
@@ -249,14 +269,16 @@
 
     <div class="steps-content">
       <div *ngIf="index===1">
+
         <form nz-form [formGroup]="exerciseForm">
 
-          <nz-form-item>
-            <nz-form-label [nzSpan]="5">题目名称</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzRequired>
-              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseName" formControlName="exerciseName"></textarea>
-            </nz-form-control>
-          </nz-form-item>
+<!--          <nz-form-item>-->
+<!--            <nz-form-label [nzSpan]="5">题目名称</nz-form-label>-->
+<!--            <nz-form-control [nzSpan]="16" nzRequired>-->
+
+<!--              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseName" formControlName="exerciseName"></textarea>-->
+<!--            </nz-form-control>-->
+<!--          </nz-form-item>-->
 
           <nz-form-item>
             <nz-form-label [nzSpan]="5">题目标签</nz-form-label>
@@ -318,12 +340,12 @@
       </div>
       <div *ngIf="index===2">
 
-          <nz-form-item *ngIf="'编程题'==exerciseTypeValue">
-            <nz-form-label [nzSpan]="5">题目描述</nz-form-label>
-            <nz-form-control [nzSpan]="16" nzRequired>
-              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseDescription" ></textarea>
-            </nz-form-control>
-          </nz-form-item>
+<!--          <nz-form-item *ngIf="'编程题'==exerciseTypeValue">-->
+<!--            <nz-form-label [nzSpan]="5">题目描述</nz-form-label>-->
+<!--            <nz-form-control [nzSpan]="16" nzRequired>-->
+<!--              <textarea rows="4" nz-input [(ngModel)]="uploadExercise.exerciseDescription" ></textarea>-->
+<!--            </nz-form-control>-->
+<!--          </nz-form-item>-->
 
           <nz-form-item *ngIf="'编程题'==exerciseTypeValue">
             <nz-form-label [nzSpan]="5" >输入样例</nz-form-label>
@@ -398,4 +420,3 @@
     </div>
   </div>
 </nz-modal>
-

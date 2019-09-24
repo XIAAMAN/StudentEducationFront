@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, Renderer, ViewChild} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../utils/notification.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Observable, Observer} from 'rxjs';
 import {ConstUrlService} from '../../const/const-url.service';
+import 'codemirror/mode/sql/sql.js';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/sql-hint.js';
+import * as wangEditor from '../../../../node_modules/wangeditor/release/wangEditor.js';
 @Component({
   selector: 'app-look-exercise',
   templateUrl: './look-exercise.component.html',
@@ -25,7 +29,8 @@ export class LookExerciseComponent implements OnInit {
     exerciseDeletePermis: string = "exercises:management:delete";     //删除题目权限值
    judgePermis: boolean = false; //表示用户是否拥有查看详情、修改、删除题目之一的权限
   constructor(private http: HttpClient, private notify: NotificationService,
-              private fb:FormBuilder, private constUrl: ConstUrlService) {
+              private fb:FormBuilder, private constUrl: ConstUrlService,
+              private el: ElementRef, private renderer: Renderer) {
 
   }
 
@@ -48,22 +53,59 @@ export class LookExerciseComponent implements OnInit {
     url = this.constUrl.GETEXERCISEURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize;
     this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
       this.sysData = JSON.parse(JSON.stringify(data.content));
+
       this.totalSize = <number> data.totalElements;
       this.loading=false;
     })
   }
 
+  //  decodeHtml(s) {
+  //   var HTML_DECODE = {
+  //     "&lt;": "<",
+  //     "&gt;": ">",
+  //     "&amp;": "&",
+  //     "&nbsp;": " ",
+  //     "&quot;": "\"",
+  //     "&copy;": ""
+  //
+  //     // Add more
+  //   };
+  //
+  //   var REGX_HTML_ENCODE = /"|&|'|<|>|[\x00-\x20]|[\x7F-\xFF]|[\u0100-\u2700]/g;
+  //
+  //   var REGX_HTML_DECODE = /&\w+;|&#(\d+);/g;
+  //
+  //   var REGX_TRIM = /(^\s*)|(\s*$)/g;
+  //
+  //   s = (s != undefined) ? s : "";
+  //   return (typeof s != "string") ? s :
+  //     s.replace(REGX_HTML_DECODE,
+  //       function ($0, $1) {
+  //         var c = HTML_DECODE[$0];
+  //         if (c == undefined) {
+  //           // Maybe is Entity Number
+  //           if (!isNaN($1)) {
+  //             c = String.fromCharCode(($1 == 160) ? 32 : $1);
+  //           } else {
+  //             c = $0;
+  //           }
+  //         }
+  //         return c;
+  //       });
+  // };
+
   ngOnInit() {
+
     //题目修改验证框
     this.validateForm = this.fb.group({
-      exerciseName: ['', [Validators.required]],
+      // exerciseName: ['', [Validators.required]],
       exerciseLabel: ['', [Validators.required]],
       exerciseScore: ['', [Validators.required]],
       exerciseCode: ['', [Validators.required]]
     });
     //上传题目验证框
     this.exerciseForm = this.fb.group({
-      exerciseName: ['', [Validators.required]],
+      // exerciseName: ['', [Validators.required]],
       exerciseLabel: ['', [Validators.required]],
       exerciseType: ['', [Validators.required]],
       // exerciseDifficult: ['', [Validators.required]],
@@ -90,7 +132,14 @@ export class LookExerciseComponent implements OnInit {
     }
     this.loadData();
     this.loadLabelList();
+    this.editor = new wangEditor('#editorMenu', '#editor');
+    console.log(this.editor);
+    // 设置编辑器配置
+    this.setEditorConfig();
+    // 创建编辑器
+    this.editor.create();
   }
+
 
   //**********************************************************************************************//
   // 抽屉
@@ -100,6 +149,9 @@ export class LookExerciseComponent implements OnInit {
   //打开抽屉
   lookExerciseDetail(data: any): void {
     this.data = data;
+    document.getElementById("wangEditor").style.display = "none";
+    this.editor.txt.html("");
+    document.getElementById("exerciseNameHtml").innerHTML = this.data.exerciseName;
     this.visible = true;
   }
 
@@ -110,6 +162,8 @@ export class LookExerciseComponent implements OnInit {
 
   // 删除题目
   deleteExercise(exerciseId: string) {
+    document.getElementById("wangEditor").style.display = "none";
+    this.editor.txt.html("");
     let url:string;
     url = this.constUrl.DELETEEXERCISEURL + '?exerciseId=' + exerciseId;
     this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
@@ -183,6 +237,9 @@ export class LookExerciseComponent implements OnInit {
     this.modifyExerciseOutput = data.exerciseOutputExample;
     this.modifyExerciseDescription = data.exerciseDescription;
     this.modifyExerciseWarning = data.exerciseWarning;
+    document.getElementById("wangEditor").style.display = "none";
+    this.editor.txt.html("");
+    // document.getElementById("updateExerciseNameHtml").innerHTML = this.modalData.exerciseName;
     this.listOfSelectedValue = [];
     for(let tt of (""+this.modalData.exerciseLabel).split(' ')){
       this.listOfSelectedValue.push(tt);
@@ -206,7 +263,7 @@ export class LookExerciseComponent implements OnInit {
   exerciseForm: FormGroup;
   exampleForm: FormGroup;
   exerciseTypeValue:string = "";
-  listOfType: string[] = ["编程题","选择题","判断题","填空题"];
+  listOfType: string[] = ["编程题","单选题","判断题","填空题","多选题", "主观题"];
   isFree: boolean = true;
   uploadExerciseVisible: boolean = false;
   labelValue:string[] = [];
@@ -244,6 +301,7 @@ export class LookExerciseComponent implements OnInit {
   }
 
   done(): void {
+
     if("编程题"==this.exerciseTypeValue) {
       if(this.uploadExercise.exerciseFileUrl.length>0) {
         this.uploadExercise.exerciseType = 1;
@@ -251,7 +309,7 @@ export class LookExerciseComponent implements OnInit {
       } else {
         alert("请先上传文件");
       }
-    }else if("选择题"==this.exerciseTypeValue) {
+    }else if("单选题"==this.exerciseTypeValue) {
       this.uploadExercise.exerciseDescription = "";
       this.uploadExercise.exerciseWarning = "";
       this.uploadExercise.exerciseInputExample = "";
@@ -265,12 +323,26 @@ export class LookExerciseComponent implements OnInit {
       this.uploadExercise.exerciseOutputExample = "";
       this.uploadExercise.exerciseType = 3;
       this.submitExercise();
-    } else {
+    } else if("填空题" == this.exerciseTypeValue){
       this.uploadExercise.exerciseDescription = "";
       this.uploadExercise.exerciseWarning = "";
       this.uploadExercise.exerciseInputExample = "";
       this.uploadExercise.exerciseOutputExample = "";
       this.uploadExercise.exerciseType = 4;
+      this.submitExercise();
+    } else if("多选题" == this.exerciseTypeValue){
+      this.uploadExercise.exerciseDescription = "";
+      this.uploadExercise.exerciseWarning = "";
+      this.uploadExercise.exerciseInputExample = "";
+      this.uploadExercise.exerciseOutputExample = "";
+      this.uploadExercise.exerciseType = 5;
+      this.submitExercise();
+    } else if("主观题" == this.exerciseTypeValue){
+      this.uploadExercise.exerciseDescription = "";
+      this.uploadExercise.exerciseWarning = "";
+      this.uploadExercise.exerciseInputExample = "";
+      this.uploadExercise.exerciseOutputExample = "";
+      this.uploadExercise.exerciseType = 6;
       this.submitExercise();
     }
 
@@ -298,9 +370,10 @@ export class LookExerciseComponent implements OnInit {
   }
 
   changeVisible() {
-    this.uploadExerciseVisible=true;
+
     this.exerciseTypeValue = this.listOfType[0];
-    // document.getElementById("uploadExercise").style.display = "block"
+    document.getElementById("wangEditor").style.display = "block";
+    this.defaultMessage = "";
   }
 
   closeModal() {
@@ -310,6 +383,7 @@ export class LookExerciseComponent implements OnInit {
 
   validateExercise() {
     if(this.exerciseForm.valid) {
+      this.uploadExercise.exerciseName = this.editor.txt.html();
       // let url:string;
       // url = this.constUrl.JUDGEEXERCISENAMEURL + "?exerciseName="+this.uploadExercise.exerciseName;
       this.http.post(this.constUrl.JUDGEEXERCISENAMEURL,{
@@ -336,8 +410,8 @@ export class LookExerciseComponent implements OnInit {
   validateExample() {
     console.log(this.uploadExercise)
     if("编程题" == this.exerciseTypeValue) {
-      if(this.uploadExercise.exerciseWarning.length>0 && this.uploadExercise.exerciseDescription.length>0
-          && this.uploadExercise.exerciseInputExample.length>0 && this.uploadExercise.exerciseOutputExample.length> 0) {
+      if(this.uploadExercise.exerciseWarning.length>0 && this.uploadExercise.exerciseInputExample.length>0
+        && this.uploadExercise.exerciseOutputExample.length> 0) {
         this.next();
       }else {
         alert("存在非法数据，请检查所有填写数据是否为空");
@@ -494,4 +568,162 @@ export class LookExerciseComponent implements OnInit {
   //
   // }
 
+
+  public sign = 'wang_editor';
+
+  private editor: any;
+
+  // 展示api获取到的数据
+  public showMessage = 'Waiting for display';
+
+  // 默认显示
+  public defaultMessage = '';
+
+  // 编辑器相关配置设置
+  setEditorConfig () {
+    // 使用 base64 保存图片
+    this.editor.customConfig.uploadImgShowBase64 = true;
+    // 菜单展示项配置
+    // this.editor.customConfig.menus = this.getMenuConfig();
+    // 自定义配置颜色（字体颜色、背景色）
+    this.editor.customConfig.colors = this.getColorConfig();
+    // 表情面板可以有多个 tab ，因此要配置成一个数组。数组每个元素代表一个 tab 的配置
+    this.editor.customConfig.emotions = this.getEmotionsConfig();
+    // 自定义字体
+    this.editor.customConfig.fontNames = this.getFontFamilyConfig();
+    // 编辑区域的z-index默认为10000
+    // this.editor.customConfig.zIndex = 100;
+    // 配置编辑器内容改变触发方法
+    this.editor.customConfig.onchange = this.editorContentChange;
+    // 编辑器获取到焦点触发方法
+    this.editor.customConfig.onfocus = this.editorOnFocus;
+    // 编辑器失去焦点触发方法
+    this.editor.customConfig.onblur = this.editorOnBlur;
+  }
+
+  // 获取显示菜单项
+  getMenuConfig (): string[] {
+    return [
+      'bold',  // 粗体
+      'italic',  // 斜体
+      'underline',  // 下划线
+      'head',  // 标题
+      'fontName',  // 字体
+      'fontSize',  // 字号
+      'strikeThrough',  // 删除线
+      'foreColor',  // 文字颜色
+      'backColor',  // 背景颜色
+      'link',  // 插入链接
+      'list',  // 列表
+      'justify',  // 对齐方式
+      'quote',  // 引用
+      'emoticon',  // 表情
+      'table',  // 表格
+      'image',  // 插入图片
+      'video',  // 插入视频
+      'code',  // 插入代码
+      'undo',  // 撤销
+      'redo'  // 重复
+    ];
+  }
+
+  // 获取字体、背景颜色列表配置
+  getColorConfig(): string[] {
+    return [
+      '#000000',
+      '#eeece0',
+      '#1c487f',
+      '#4d80bf',
+      '#c24f4a',
+      '#8baa4a',
+      '#7b5ba1',
+      '#46acc8',
+      '#f9963b',
+      '#ffffff'
+    ];
+  }
+
+  // 获取表情配置
+  getEmotionsConfig() {
+    return [
+      {
+        // tab 的标题
+        title: '默认',
+        // type -> 'emoji' / 'image'
+        type: 'image',
+        // content -> 数组
+        content: [
+          {
+            alt: '[坏笑]',
+            src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/50/pcmoren_huaixiao_org.png'
+          },
+          {
+            alt: '[舔屏]',
+            src: 'http://img.t.sinajs.cn/t4/appstyle/expression/ext/normal/40/pcmoren_tian_org.png'
+          }
+        ]
+      },
+      {
+        // tab 的标题
+        title: 'emoji',
+        // type -> 'emoji' / 'image'
+        type: 'emoji',
+        // content -> 数组
+        content: ['😀', '😃', '😄', '😁', '😆']
+      }
+    ];
+  }
+
+  // 获取字体列表配置
+  getFontFamilyConfig(): string[] {
+    return [
+      '宋体',
+      '微软雅黑',
+      'Arial',
+      'Tahoma',
+      'Verdana'
+    ];
+  }
+
+  // 富文本编辑器内容变化触发方法
+  editorContentChange = (html) => {
+    console.log(html);
+  }
+
+  // 编辑器获取到焦点触发事件
+  editorOnFocus = () => {
+    console.log('on focus');
+  }
+
+  // 编辑器失去焦点触发事件
+  editorOnBlur = (html) => {
+    console.log('on blur');
+    console.log(html);
+  }
+
+
+  // 获取编辑器内容，带html
+  getContent() {
+    document.getElementById("wangEditor").style.display="none";
+    this.uploadExerciseVisible=true;
+    this.showMessage = this.editor.txt.html();
+
+
+  }
+
+  // 获取编辑器文字内容
+  getContentText() {
+    this.showMessage = this.editor.txt.text();
+  }
+
+
+  test() {
+    document.getElementById("wangEditor").style.display = "block";
+  }
+
+
+  closeEditor() {
+    document.getElementById("wangEditor").style.display = "none";
+    this.editor.txt.html("");
+  }
 }

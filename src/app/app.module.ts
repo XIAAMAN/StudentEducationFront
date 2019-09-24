@@ -47,6 +47,8 @@ import { LookScoreComponent } from './course/look-score/look-score.component';
 import { CodemirrorModule } from 'ng2-codemirror';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { HomePageComponent } from './home-page/home-page.component';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+
 registerLocaleData(zh);
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
 @NgModule({
@@ -96,7 +98,8 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     NzTreeSelectModule,
     NzSwitchModule,
     CodemirrorModule,
-    NzRadioModule
+    NzRadioModule,
+    NzCheckboxModule
 
   ],
   exports: [RouterModule],

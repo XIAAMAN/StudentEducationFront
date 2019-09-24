@@ -187,7 +187,7 @@ export class ManageCollectionComponent implements OnInit {
     exerciseType: 1,
   };
   exerciseTypeValue:string = "";
-  listOfType: string[] = ["编程题","选择题","判断题","填空题"];
+  listOfType: string[] = ["编程题","单选题","判断题","填空题","多选题", "主观题"];
   addExerciseVisible:boolean = false;
   addExerciseForm: FormGroup;
   // exerciseListValue:string[] = [];
@@ -225,12 +225,16 @@ export class ManageCollectionComponent implements OnInit {
   exerciseTypeChange($event: any) {
     if(this.exerciseTypeValue=="编程题") {
       this.collectionExercise.exerciseType = 1;
-    } else if(this.exerciseTypeValue=="选择题") {
+    } else if(this.exerciseTypeValue=="单选题") {
       this.collectionExercise.exerciseType = 2;
     } else if(this.exerciseTypeValue=="判断题") {
       this.collectionExercise.exerciseType = 3;
-    } else {
+    } else if(this.exerciseTypeValue=="填空题") {
       this.collectionExercise.exerciseType = 4;
+    } else if(this.exerciseTypeValue=="多选题") {
+      this.collectionExercise.exerciseType = 5;
+    } else {
+      this.collectionExercise.exerciseType = 6;
     }
     this.http.get(this.constUrl.GETHAVEDXERCISENAMEURL + '?collectionId='+ this.collectionExercise.collectionId+"&exerciseType=" + this.collectionExercise.exerciseType,this.constUrl.httpOptions)
       .subscribe((data:any)=>{

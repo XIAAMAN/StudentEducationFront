@@ -7,10 +7,8 @@
   <thead>
   <tr>
     <th>名称</th>
-    <th>描述</th>
+    <th>类型</th>
     <th>标签</th>
-    <th>输入样例</th>
-    <th>输出样例</th>
     <th>状态</th>
     <!--      <th>难度</th>-->
     <th>上传人</th>
@@ -20,22 +18,25 @@
   <tbody>
   <tr *ngFor="let data of sysExerciseTable.data">
     <td>
-      <span *ngIf="data.exerciseName.length >15; else userName" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,15)+"..."}}</span>
-      <ng-template #userName>{{ data.exerciseName}}</ng-template>
+      <pre style="text-align: left" [innerHTML]="data.exerciseName"></pre>
     </td>
     <td>
-      <span *ngIf="data.exerciseDescription.length >15; else description" title="{{data.exerciseDescription}}">{{ data.exerciseDescription.substring(0,15)+"..."}}</span>
-      <ng-template #description>{{ data.exerciseDescription}}</ng-template>
+      <span *ngIf="1==data.exerciseType">编程题</span>
+      <span *ngIf="2==data.exerciseType">单选题</span>
+      <span *ngIf="3==data.exerciseType">判断题</span>
+      <span *ngIf="4==data.exerciseType">填空题</span>
+      <span *ngIf="5==data.exerciseType">多选题</span>
+      <span *ngIf="6==data.exerciseType">主观题</span>
     </td>
     <td>{{ data.exerciseLabel }}</td>
-    <td>
-      <span *ngIf="data.exerciseInputExample.length >15; else inputExample" title="{{data.exerciseInputExample}}">{{ data.exerciseInputExample.substring(0,15)+"..."}}</span>
-      <ng-template #inputExample>{{ data.exerciseInputExample}}</ng-template>
-    </td>
-    <td>
-      <span *ngIf="data.exerciseOutputExample.length >15; else exerciseOutputExample" title="{{data.exerciseOutputExample}}">{{ data.exerciseOutputExample.substring(0,15)+"..."}}</span>
-      <ng-template #exerciseOutputExample>{{ data.exerciseOutputExample}}</ng-template>
-    </td>
+<!--    <td>-->
+<!--      <span *ngIf="data.exerciseInputExample.length >15; else inputExample" title="{{data.exerciseInputExample}}">{{ data.exerciseInputExample.substring(0,15)+"..."}}</span>-->
+<!--      <ng-template #inputExample>{{ data.exerciseInputExample}}</ng-template>-->
+<!--    </td>-->
+<!--    <td>-->
+<!--      <span *ngIf="data.exerciseOutputExample.length >15; else exerciseOutputExample" title="{{data.exerciseOutputExample}}">{{ data.exerciseOutputExample.substring(0,15)+"..."}}</span>-->
+<!--      <ng-template #exerciseOutputExample>{{ data.exerciseOutputExample}}</ng-template>-->
+<!--    </td>-->
     <td><label style="color:white; background-color: red; padding: 2px">待审核</label></td>
     <td>{{data.exerciseUploadUserName}}</td>
     <td *ngIf="judgePermis">

@@ -5,10 +5,12 @@
       <a (click)="backCollections()"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
     </div>
     <div style="margin-top: 10px;">
-      <button *ngIf="chooseExercise.length > 0" (click)="chooseChange()" nz-button nzType="default">选择题</button>
-      <button *ngIf="judgeExercise.length > 0" (click)="judgeChange()" nz-button nzType="default">判断题</button>
-      <button *ngIf="blankExercise.length > 0" (click)="blankChange()" nz-button nzType="default">填空题</button>
-      <button *ngIf="programExercise.length > 0" (click)="programChange()" nz-button nzType="default">编程题</button>
+      <button *ngIf="chooseExercise.length > 0" (click)="chooseChange()" nz-button nzType="default">单选题 ({{chooseExercise.length}}题)</button>
+      <button *ngIf="multiChooseExercise.length > 0" (click)="multiChange()" nz-button nzType="default">多选题 ({{multiChooseExercise.length}}题)</button>
+      <button *ngIf="judgeExercise.length > 0" (click)="judgeChange()" nz-button nzType="default">判断题 ({{judgeExercise.length}}题)</button>
+      <button *ngIf="blankExercise.length > 0" (click)="blankChange()" nz-button nzType="default">填空题 ({{blankExercise.length}}题)</button>
+      <button *ngIf="programExercise.length > 0" (click)="programChange()" nz-button nzType="default">编程题 ({{programExercise.length}}题)</button>
+      <button *ngIf="selfExercise.length > 0" (click)="selfChange()" nz-button nzType="default">主观题 ({{selfExercise.length}}题)</button>
     </div>
       <nz-card style="width:98%;">
         <div nz-col [nzSpan]="8" class="messageTips">
@@ -23,11 +25,10 @@
         </div>
 
         <div>
-           <pre *ngIf="exerciseType==1"><h2>{{ this.sysDetailsData.exerciseName }}</h2></pre>
-           <pre *ngIf="exerciseType!=1"><h3>{{ this.sysDetailsData.exerciseName }}</h3></pre>
+<!--           <pre *ngIf="exerciseType==1"><h2>{{ this.sysDetailsData.exerciseName }}</h2></pre>-->
+           <pre style="font-size: 20px; font-weight: 600" [innerHTML]="sysDetailsData.exerciseName"></pre>
           <!--        <h2 *ngIf="collectionId!=null">{{ this.sysDetailsData.exerciseName }} ({{sysDetailsData.exerciseScore}}分) </h2>-->
           <div *ngIf="exerciseType == 1">
-            <h3>题目描述：</h3> <p>{{ this.sysDetailsData.exerciseDescription}}</p>
             <h3>输入样例：</h3> <p>{{ this.sysDetailsData.exerciseInputExample}}</p>
             <h3>输出样例：</h3> <p>{{ this.sysDetailsData.exerciseOutputExample}}</p>
             <h3>提示信息：</h3> <p class="hint">{{ this.sysDetailsData.exerciseWarning}}</p>
@@ -44,7 +45,7 @@
                        [config]="cmOptions">
           </codemirror>
         </div>
-<!--        选择题-->
+<!--        单选题-->
         <div *ngIf="exerciseType==2" style="margin-top: 20px; margin-bottom: 20px">
           <nz-radio-group [(ngModel)]="sysDetailsData.exerciseCode">
             <label nz-radio nzValue="A">A</label>
@@ -67,6 +68,21 @@
           <div *ngFor="let tt of exerciseBlank; let i=index">
             <input class="inputStyle" [(ngModel)]="tempExerciseBlank[i]" placeholder="（{{i+1}}）">
           </div>
+        </div>
+
+<!--        多选题-->
+        <div *ngIf="exerciseType==5" style="margin-top: 20px; margin-bottom: 20px">
+          <nz-checkbox-wrapper (nzOnChange)="log($event)">
+              <label nz-checkbox nzValue="A">A</label>
+              <label nz-checkbox nzValue="B">B</label>
+              <label nz-checkbox nzValue="C">C</label>
+              <label nz-checkbox nzValue="D">D</label>
+          </nz-checkbox-wrapper>
+        </div>
+
+        <!--          主观题-->
+        <div *ngIf="exerciseType==6" style="margin-top: 20px; margin-bottom: 20px;width: 98%">
+          <textarea rows="6" nz-input [(ngModel)]="sysDetailsData.exerciseCode"></textarea>
         </div>
 
         <div class="result" *ngIf="isSubmit">

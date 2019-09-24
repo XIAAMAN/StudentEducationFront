@@ -23,18 +23,20 @@
     <tr *ngFor="let data of sysExerciseTable.data">
       <td>
         <a [title]="'点击跳转'" [routerLink]="['/home/practiceExercise', data.exerciseId, '0000']">
-
-        <span *ngIf="data.exerciseType==1 && data.exerciseName.length > 20" title="{{data.exerciseDescription}}">{{ data.exerciseName.substring(0,20)+"..."}}</span>
-        <span *ngIf="data.exerciseType==1 && data.exerciseName.length <= 20" title="{{data.exerciseDescription}}">{{ data.exerciseName}}</span>
-        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length > 20" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,20)+"..."}}</span>
-        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length <= 20" title="{{data.exerciseName}}">{{ data.exerciseName}}</span>
+          <pre style="text-align: left" [innerHTML]="data.exerciseName"></pre>
+<!--        <span *ngIf="data.exerciseType==1 && data.exerciseName.length > 20" title="{{data.exerciseDescription}}">{{ data.exerciseName.substring(0,20)+"..."}}</span>-->
+<!--        <span *ngIf="data.exerciseType==1 && data.exerciseName.length <= 20" title="{{data.exerciseDescription}}">{{ data.exerciseName}}</span>-->
+<!--        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length > 20" title="{{data.exerciseName}}">{{ data.exerciseName.substring(0,20)+"..."}}</span>-->
+<!--        <span *ngIf="data.exerciseType!=1 && data.exerciseName.length <= 20" title="{{data.exerciseName}}">{{ data.exerciseName}}</span>-->
         </a>
       </td>
       <td>
         <span *ngIf="data.exerciseType == 1">编程题</span>
-        <span *ngIf="data.exerciseType == 2">选择题</span>
+        <span *ngIf="data.exerciseType == 2">单选题</span>
         <span *ngIf="data.exerciseType == 3">判断题</span>
         <span *ngIf="data.exerciseType == 4">填空题</span>
+        <span *ngIf="data.exerciseType == 5">多选题</span>
+        <span *ngIf="data.exerciseType == 6">主观题</span>
       </td>
       <td>{{ data.exerciseLabel }}</td>
       <td>{{ data.exerciseLanguage}}</td>

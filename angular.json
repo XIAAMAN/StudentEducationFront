@@ -30,7 +30,8 @@
               "node_modules/codemirror/addon/hint/show-hint.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.js"
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/wangeditor/release/wangEditor.js"
             ]
           },
           "configurations": {
