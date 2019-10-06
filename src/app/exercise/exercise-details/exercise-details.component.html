@@ -1,4 +1,5 @@
 <div style="width: 100%; height: 30px"></div>
+
 <div  class="content">
   <div class="exerciseDetails">
     <div style="width: 60px">
@@ -12,14 +13,27 @@
       <button *ngIf="programExercise.length > 0" (click)="programChange()" nz-button nzType="default">编程题 ({{programExercise.length}}题)</button>
       <button *ngIf="selfExercise.length > 0" (click)="selfChange()" nz-button nzType="default">主观题 ({{selfExercise.length}}题)</button>
     </div>
+
       <nz-card style="width:98%;">
         <div nz-col [nzSpan]="8" class="messageTips">
-          <nz-card nzType="inner" nzTitle="题目相关信息">
+          <nz-card *ngIf="exerciseId!=null" nzType="inner" nzTitle="题目相关信息">
             <div>
+              <label *ngIf="chooseExercise.le"></label>
               <label>题目标签：{{ this.sysDetailsData.exerciseLabel }}</label><br>
               <label>作者：{{ this.sysDetailsData.exerciseUploadUserName }}</label><br>
               <label>审查人：{{ this.sysDetailsData.exerciseCheckUserName }}</label><br>
               <label>上传时间：{{ this.sysDetailsData.exerciseTime }}</label>
+            </div>
+          </nz-card>
+
+          <nz-card *ngIf="collectionId!=null" nzType="inner" nzTitle="答题相关信息">
+            <div>
+              <div *ngIf="chooseExercise.length > 0">单选题：已提交 {{chooseDecided}} 题</div>
+              <div *ngIf="multiChooseExercise.length > 0">多选题：已提交 {{multiChooseDecided}} 题</div>
+              <div *ngIf="judgeExercise.length > 0">判断题：已提交 {{judgeDecided}} 题</div>
+              <div *ngIf="blankExercise.length > 0">填空题：已提交 {{blankDecided}} 题</div>
+              <div *ngIf="programExercise.length > 0">编程题：已提交 {{programDecided}} 题</div>
+              <div *ngIf="selfExercise.length > 0">主观题：已提交 {{selfDecided}} 题</div>
             </div>
           </nz-card>
         </div>
@@ -36,6 +50,7 @@
         </div>
 
     </nz-card>
+
 
       <h3 style="margin-top: 5px">答题区</h3>
       <div class="compiler">
@@ -66,24 +81,37 @@
 <!--        填空题-->
         <div *ngIf="exerciseType == 4">
           <div *ngFor="let tt of exerciseBlank; let i=index">
-            <input class="inputStyle" [(ngModel)]="tempExerciseBlank[i]" placeholder="（{{i+1}}）">
+            <input class="inputStyle" [(ngModel)]="tempExerciseBlank[i]" (ngModelChange)="dealBlankChange($event)" placeholder="（{{i+1}}）">
           </div>
         </div>
 
 <!--        多选题-->
         <div *ngIf="exerciseType==5" style="margin-top: 20px; margin-bottom: 20px">
           <nz-checkbox-wrapper (nzOnChange)="log($event)">
-              <label nz-checkbox nzValue="A">A</label>
-              <label nz-checkbox nzValue="B">B</label>
-              <label nz-checkbox nzValue="C">C</label>
-              <label nz-checkbox nzValue="D">D</label>
+              <label nz-checkbox nzValue="A" [(ngModel)]="multiAbleOne">A</label>
+              <label nz-checkbox nzValue="B" [(ngModel)]="multiAbleTwo">B</label>
+              <label nz-checkbox nzValue="C" [(ngModel)]="multiAbleThree">C</label>
+              <label nz-checkbox nzValue="D" [(ngModel)]="multiAbleFour">D</label>
           </nz-checkbox-wrapper>
         </div>
 
+          <div class="wangeditor-box" id="wangEditor">
+            <div id="editorMenu"></div>
+            <div id="editor">
+              <p>{{defaultMessage}}</p>
+            </div>
+          </div>
+
         <!--          主观题-->
-        <div *ngIf="exerciseType==6" style="margin-top: 20px; margin-bottom: 20px;width: 98%">
-          <textarea rows="6" nz-input [(ngModel)]="sysDetailsData.exerciseCode"></textarea>
-        </div>
+<!--        <div *ngIf="exerciseType==6" style="margin-top: 20px; margin-bottom: 20px;width: 98%">-->
+<!--          <textarea rows="6" nz-input [(ngModel)]="sysDetailsData.exerciseCode"></textarea>-->
+<!--        </div>-->
+<!--        <div *ngIf="exerciseType == 6" class="wangeditor-box" id="wangEditor">-->
+<!--          <div id="editorMenu"></div>-->
+<!--          <div id="editor">-->
+<!--            <p>{{defaultMessage}}</p>-->
+<!--          </div>-->
+<!--        </div>-->
 
         <div class="result" *ngIf="isSubmit">
           <textarea
@@ -102,4 +130,5 @@
       </div>
   </div>
 </div>
+
 <div style="width: 100%; height: 30px"></div>

@@ -18,33 +18,41 @@ export class LookScoreComponent implements OnInit {
   sysData: any[];
   classValue: string = "";
   courseValue: string = "";
+  collectionValue: string = "";
   courseName: string = null;
   userNumber: string = null;
   classListOfOption: string[] = [];
   courseListOfOption: string[] = [];
+  collectionListOfOption: string[] = [];
   constructor( private http: HttpClient, private constUrl: ConstUrlService, private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(params => {
-      this.userNumber = params.get('userNumber');
-      this.courseName = params.get('courseName');
-    });
-    this.judgeUrl();
+   if(this.rankValue>= 8) {
+
+     this.loadClass();
+     this.loadCollection();
+     this.loadCourse();
+     // this.studentLook();
+   }
+   if(this.rankValue == 6) {
+     this.studentLook();
+   }
+
   }
 
-  judgeUrl() {
-    if(this.userNumber==null && this.courseName==null) {
-      if(this.rankValue == 6) {
-        this.studentLook();
-      } else if(this.rankValue>7){
-        this.loadClass();
-        this.loadCourse()
-      }
-    } else {
-      this.loadStudentDetail();
-    }
-  }
+  // judgeUrl() {
+  //   if(this.userNumber==null && this.courseName==null) {
+  //     if(this.rankValue == 6) {
+  //       this.studentLook();
+  //     } else if(this.rankValue>7){
+  //       this.loadClass();
+  //       this.loadCourse()
+  //     }
+  //   } else {
+  //     this.loadStudentDetail();
+  //   }
+  // }
 
   //当每页数据大小发生改变
   pageSizeChange($event: number) {
@@ -71,14 +79,19 @@ export class LookScoreComponent implements OnInit {
   }
 
   loadData() {
-    if(this.userNumber==null && this.courseName==null) {
-      if(this.rankValue == 6) {
-        this.studentLook();
-      } else if(this.rankValue>7){
-        this.teacherLook();
-      }
-    } else {
-      this.loadStudentDetail();
+    // if(this.userNumber==null && this.courseName==null) {
+    //   if(this.rankValue == 6) {
+    //     this.studentLook();
+    //   } else if(this.rankValue>7){
+    //     this.teacherLook();
+    //   }
+    // } else {
+    //   this.loadStudentDetail();
+    // }
+    if(this.rankValue == 6) {
+      this.studentLook();
+    } else if(this.rankValue>8){
+      this.teacherLook();
     }
 
   }
@@ -89,6 +102,29 @@ export class LookScoreComponent implements OnInit {
         for(let tt of data) {
           this.classListOfOption.push(""+tt);
           this.classValue = this.classListOfOption[0];
+        }
+      })
+  }
+
+  loadCourse() {
+    this.http.get(this.constUrl.TEACHERGETCOURSEURL,this.constUrl.httpOptions)
+      .subscribe((data:any)=>{
+        for(let tt of data) {
+          this.courseListOfOption.push(""+tt);
+          this.courseValue = this.courseListOfOption[0];
+        }
+        setTimeout(()=>{
+          this.teacherLook();
+        })
+      })
+  }
+
+  loadCollection() {
+    this.http.get(this.constUrl.TEACHERGETCOLLECTIONURL,this.constUrl.httpOptions)
+      .subscribe((data:any)=>{
+        for(let tt of data) {
+          this.collectionListOfOption.push(""+tt);
+          this.collectionValue = this.collectionListOfOption[0];
         }
       })
   }
@@ -107,7 +143,7 @@ export class LookScoreComponent implements OnInit {
   teacherLook() {
     let url: string;
     this.loading=true;
-    url = this.constUrl.TEACHERLOOKSCOREURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize +"&classNumber="+this.classValue +"&courseName=" + this.courseValue;
+    url = this.constUrl.TEACHERLOOKSCOREURL + '?page=' + this.currentPageIndex + "&size=" + this.pageSize +"&classNumber="+this.classValue +"&courseName=" + this.courseValue +"&collectionName=" + this.collectionValue;
     this.http.get(url,this.constUrl.httpOptions).subscribe((data:any) => {
       if(data != "400") {
         this.sysData = JSON.parse(JSON.stringify(data.content));
@@ -122,18 +158,7 @@ export class LookScoreComponent implements OnInit {
     })
   }
 
-  loadCourse() {
-    this.http.get(this.constUrl.TEACHERGETCOURSEURL,this.constUrl.httpOptions)
-      .subscribe((data:any)=>{
-        for(let tt of data) {
-          this.courseListOfOption.push(""+tt);
-          this.courseValue = this.courseListOfOption[0];
-        }
-        setTimeout(()=>{
-          this.teacherLook();
-        })
-      })
-  }
+
 
   //课程值变化回调函数
   courseChange($event: any[]) {
@@ -141,6 +166,10 @@ export class LookScoreComponent implements OnInit {
   }
 
   classChange($event: any[]) {
+    this.teacherLook();
+  }
+
+  collectionChange($event: any[]) {
     this.teacherLook();
   }
 

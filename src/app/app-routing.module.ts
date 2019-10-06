@@ -17,6 +17,7 @@ import {ManageCourseComponent} from './course/manage-course/manage-course.compon
 import {ManagePermisComponent} from './user/manage-permis/manage-permis.component';
 import {LookScoreComponent} from './course/look-score/look-score.component';
 import {HomePageComponent} from './home-page/home-page.component';
+import {ScoreDetailComponent} from './course/score-detail/score-detail.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -31,9 +32,11 @@ const appRoutes: Routes = [
       {path: 'checkExercise', component: CheckExerciseComponent, canActivate: [CanActivateGuard]},
       {path: 'manageCollection', component: ManageCollectionComponent, canActivate: [CanActivateGuard]},
       {path: 'manageCollection/:courseId', component: ManageCollectionComponent, canActivate: [CanActivateGuard]},
+      // {path: 'scoreDetail/:collectionId', component: ScoreDetailComponent, canActivate: [CanActivateGuard]},
+      {path: 'scoreDetail/:collectionId/:userNumber', component: ScoreDetailComponent, canActivate: [CanActivateGuard]},
       {path: 'practiceExercise', component: PracticeExerciseComponent, canActivate: [CanActivateGuard]},
       {path: 'lookScore', component: LookScoreComponent, canActivate: [CanActivateGuard]},
-      {path: 'lookScore/:userNumber/:courseName', component: LookScoreComponent, canActivate: [CanActivateGuard]},
+      // {path: 'lookScore/:userNumber/:courseName', component: LookScoreComponent, canActivate: [CanActivateGuard]},
       {path: 'practiceExercise/:exerciseId/:collectionId', component: ExerciseDetailsComponent, canActivate: [CanActivateGuard]},
       {path: 'manageCourse', component: ManageCourseComponent, canActivate: [CanActivateGuard]},
       {path: 'managePermis', component: ManagePermisComponent, canActivate: [CanActivateGuard]},

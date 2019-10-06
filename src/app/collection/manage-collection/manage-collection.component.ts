@@ -11,7 +11,6 @@ import {ActivatedRoute} from '@angular/router';
   styleUrls: ['./manage-collection.component.css']
 })
 export class ManageCollectionComponent implements OnInit {
-
    loading:boolean=true;
    totalSize: number;
    currentPageIndex: number=1;
@@ -33,12 +32,13 @@ export class ManageCollectionComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.courseId = params.get('courseId');
     });
-    console.log(this.courseId)
     this.loadData();
     //获取所有题目名称
     this.http.get(this.constUrl.GETEXERCISENAMEURL+"?exerciseType=1", this.constUrl.httpOptions)
       .subscribe((data:any)=> {
         this.exerciseOptionList = data;
+        // this.testOptionList = data;
+
       })
     //上传题目验证框
     this.addCollectionForm = this.fb.group({
@@ -149,10 +149,11 @@ export class ManageCollectionComponent implements OnInit {
     this.addModalVisible = true;
   }
 
-
+  mendOpen:boolean=false;
   disabledStartDate = (current: Date): boolean => {
     return differenceInCalendarDays(current, this.today) < 0;
   };
+
 
   disabledEndDate = (endValue: Date): boolean => {
     if (!endValue || !this.addCollectionData.collectionStartTime) {
@@ -176,6 +177,38 @@ export class ManageCollectionComponent implements OnInit {
 
   handleEndOpenChange(open: boolean): void {
     this.endOpen = open;
+  }
+// 修改时间
+
+  mdisabledStartDate = (current: Date): boolean => {
+    return differenceInCalendarDays(current, this.today) < 0;
+  };
+
+
+  mdisabledEndDate = (endValue: Date): boolean => {
+    if (!endValue || !this.modifyData.collectionStartTime) {
+      return false;
+    }
+    return endValue.getTime() < this.modifyData.collectionStartTime.getTime();
+  };
+
+  monStartChange(date: Date): void {
+    this.modifyData.collectionStartTime = date;
+  }
+
+  monEndChange(date: Date): void {
+    this.modifyData.collectionEndTime = date;
+  }
+  mhandleStartOpenChange(open: boolean): void {
+    if (!open) {
+      this.mendOpen = true;
+    }
+  }
+
+  mhandleEndOpenChange(open: boolean): void {
+    if (!open) {
+      this.mendOpen = true;
+    }
   }
 
 
@@ -221,7 +254,34 @@ export class ManageCollectionComponent implements OnInit {
         })
     }
   }
+// 修改题目集
+  modalVisible:boolean=false;
+  modifyData:any={};
+  modifyCollection(data:any) {
+    this.modalVisible = true;
+    this.modifyData.collectionId = data.collectionId;
+    this.modifyData.collectionName = data.collectionName;
+    this.modifyData.collectionStartTime = data.collectionStartTime;
+    this.modifyData.collectionEndTime = data.collectionEndTime;
+    console.log(this.modifyData);
+  }
 
+  cancelModify() {
+    this.modalVisible = false;
+  }
+
+  submitModify() {
+    this.modifyData.collectionStartTime = format(this.modifyData.collectionStartTime, 'YYYY-MM-DD HH:mm:ss');
+    this.modifyData.collectionEndTime = format(this.modifyData.collectionEndTime, 'YYYY-MM-DD HH:mm:ss');
+    this.http.post(this.constUrl.UPDATECOLLECTIONURL, this.modifyData, this.constUrl.httpOptions)
+      .subscribe((data:any)=>{
+        if(data == 200) {
+          this.modalVisible = false;
+          this.notify.showSuccess("修改成功");
+          this.loadData();
+        }
+      })
+  }
   exerciseTypeChange($event: any) {
     if(this.exerciseTypeValue=="编程题") {
       this.collectionExercise.exerciseType = 1;

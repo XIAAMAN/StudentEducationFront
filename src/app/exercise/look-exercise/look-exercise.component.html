@@ -219,12 +219,12 @@
            nzMaskClosable="false" nzWidth="600px" (nzOnCancel)="cancelModify()" (nzOnOk)="submitModify()">
   <form nz-form [formGroup]="validateForm">
 
-<!--    <nz-form-item>-->
-<!--      <nz-form-label [nzSpan]="5">题目名称</nz-form-label>-->
-<!--      <nz-form-control [nzSpan]="16" nzRequired>-->
-<!--        <textarea id="updateExerciseNameHtml" rows="4" nz-input  formControlName="exerciseName" ></textarea>-->
-<!--      </nz-form-control>-->
-<!--    </nz-form-item>-->
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">题目名称</nz-form-label>
+      <nz-form-control [nzSpan]="16" nzRequired>
+        <textarea rows="4" nz-input  formControlName="exerciseName" [(ngModel)]="modalData.exerciseDescription"></textarea>
+      </nz-form-control>
+    </nz-form-item>
 
     <nz-form-item>
       <nz-form-label [nzSpan]="5">题目分值</nz-form-label>

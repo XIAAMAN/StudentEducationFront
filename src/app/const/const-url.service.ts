@@ -41,6 +41,7 @@ export class ConstUrlService {
   GETCOLLECTIONURL = this.BASEURL + "/sys_collection/get"; //查询题目集
   DELETECOLLECTIONURL = this.BASEURL + "/sys_collection/delete";   //删除题目集
   ADDCOLLECTIONURL = this.BASEURL + "/sys_collection/add";  //增加题目集
+  UPDATECOLLECTIONURL = this.BASEURL + "/sys_collection/update";  //修改题目集
   ADDDELETEEXERCISEURL = this.BASEURL + "/sys_collection/addExercise";  //增删题目
   GETHAVEDXERCISENAMEURL = this.BASEURL + "/sys_collection/getProgramExerciseName";  //获得题目集已有题目
   JUDGECOLLECTIONURL = this.BASEURL + "/sys_collection/judgeCollection";  //获得题目集已有题目
@@ -90,6 +91,7 @@ export class ConstUrlService {
   STUDENTDETAILSCOREURL = this.BASEURL + "/score/studentDetail";     //教师查看学生成绩详情
   TEACHERGETCLASSURL = this.BASEURL + "/score/getClass";     //获得教师管理班级
   TEACHERGETCOURSEURL = this.BASEURL + "/score/getCourse";     //获得教师所授课程
+  TEACHERGETCOLLECTIONURL = this.BASEURL + "/score/getCollection";     //获得教师所授课程
 
   //首页
   GETSAMETEACHERUSERURL = this.BASEURL + "/sys_user/getSameTeacherUser"; //获得相同教师的班级学生
@@ -97,5 +99,8 @@ export class ConstUrlService {
   SAVERELATIONSHIPURL = this.BASEURL + "/user_relationship/save"; //提交
   JUDGEDATEURL = this.BASEURL + "/user_relationship/judgeDate"; //判断是否能够提交
 
+  //查看题目得分详情
+  STUDENTSCOREDETAILURL = this.BASEURL + "/score/scoreDetail";     //学生查看成绩
+  TEACHERSCOREDETAILURL = this.BASEURL + "/score/teacherScoreDetail";     //学生查看成绩
   constructor() { }
 }
