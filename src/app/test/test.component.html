@@ -1,20 +1,16 @@
-<nz-date-picker
-  [nzDisabledDate]="disabledStartDate"
-  nzShowTime
-  nzFormat="yyyy-MM-dd HH:mm:ss"
-  [(ngModel)]="startValue"
-  nzPlaceHolder="Start"
-  (ngModelChange)="onStartChange($event)"
-  (nzOnOpenChange)="handleStartOpenChange($event)"
+<h3>上传文件说明：上传文件必须为.xls或.xlsx文件，大小不能超过10M，每次只能上传单个文件。
+  文件内容格式要求：excel文件中不需要有任何与学生信息无关的内容，第一列为学生姓名、第二列为学号、第三列为班级。如果格式错误将会导致学生信息注册失败</h3>
+<nz-upload
+  nzType="drag"
+  [(nzFileList)]="fileList"
+  [nzBeforeUpload]="beforeUpload"
+  nzAccept=".docx,.doc"
 >
-</nz-date-picker>
-<nz-date-picker
-  [nzDisabledDate]="disabledEndDate"
-  nzShowTime
-  nzFormat="yyyy-MM-dd HH:mm:ss"
-  [(ngModel)]="endValue"
-  nzPlaceHolder="End"
-  (ngModelChange)="onEndChange($event)"
-  (nzOnOpenChange)="handleEndOpenChange($event)"
->
-</nz-date-picker>
+  <p class="ant-upload-drag-icon">
+    <i nz-icon nzType="inbox"></i>
+  </p>
+  <p class="ant-upload-text">Click or drag file to this area to upload</p>
+  <p class="ant-upload-hint">
+    只支持zip文件上传，大小不能超过10M
+  </p>
+</nz-upload>

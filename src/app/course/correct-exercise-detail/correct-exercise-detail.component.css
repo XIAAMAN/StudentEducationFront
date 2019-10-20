@@ -1,0 +1,121 @@
+@import "~wangeditor/release/wangEditor.min.css";
+
+.wangeditor-box {
+  padding: 20px;
+  overflow: auto;
+  /*min-width: 1200px;*/
+  margin: 0 auto;
+  width: 98%;
+  height: 100%;
+}
+
+#editor{
+  height: 200px;
+  width: auto;
+  border:1px solid #ccc;
+}
+.w-e-toolbar{
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+}
+
+.btn-group {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.show-message {
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.text-area {
+  width: 50%;
+}
+.margin-l-10 {
+  margin-left: 10px;
+}
+
+.content {
+  margin: 0px auto;
+  min-width: 600px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #000;
+  width: 60%;
+}
+.exerciseDetails {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+.messageTips {
+  float: right;
+  font-size: 18px;
+  text-align: left;
+  /*padding-left: 2px;*/
+}
+.messageTips label {
+  font-size: 15px;
+}
+.hint {
+  color: orange;
+}
+a {
+  font-size: 20px;
+  color: #0a4991;
+  /*#00005f*/
+}
+h2 {
+  margin-top: 10px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+p {
+  font-size: 17px;
+}
+.textStyle {
+  margin-bottom: 10px;
+  width: 98%;
+}
+.buttonStyle {
+  text-align: center;
+  width: 100%;
+  padding-top:10px;
+  padding-bottom: 20px;
+}
+.buttonStyle button {
+  margin-right: 30px;
+}
+
+.codeStyle{
+  font-family: "微软雅黑";
+  font-size: 18px;
+  font-weight: 500;
+}
+/*pre{ overflow: auto; overflow-y:hidden; overflow-x: hidden}*/
+
+pre{
+  white-space: pre-wrap;           /* css-3 */
+  white-space: -moz-pre-wrap;      /* Mozilla, since 1999 */
+  white-space: -o-pre-wrap;        /* Opera 7 */
+  word-wrap: break-word;           /* Internet Explorer 5.5+ */
+}
+
+.inputStyle {
+  width:300px;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  font-weight: 600;
+  font-size: 18px;
+  outline: none;
+  border-bottom: thin solid;
+}

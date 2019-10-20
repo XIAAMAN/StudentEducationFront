@@ -1,0 +1,145 @@
+@import "~wangeditor/release/wangEditor.min.css";
+
+.wangeditor-box {
+  padding: 20px;
+  overflow: auto;
+  min-width: 1200px;
+  display: none;
+  margin: 0 auto;
+  width: 90%;
+  height: 100%;
+}
+
+#editor{
+  height: 200px;
+  width: auto;
+  border:1px solid #ccc;
+}
+.w-e-toolbar{
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+}
+
+.btn-group {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.show-message {
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  height: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.text-area {
+  width: 50%;
+}
+.margin-l-10 {
+  margin-left: 10px;
+}
+
+/*表格样式*/
+tr th {
+  text-align: center;
+  font-size: 16px;
+}
+
+tr td {
+  text-align: center;
+  min-width: 100px;
+  max-width: 250px;
+}
+tr td span:hover {
+  cursor: pointer;
+}
+nz-table {
+  margin: 0 auto;
+  min-width: 1200px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #000;
+  width: 90%;
+}
+
+
+/*抽屉样式*/
+.title {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.85);
+  line-height: 24px;
+  display: block;
+  margin-bottom: 16px;
+}
+.item-wrap {
+  font-size: 14px;
+  line-height: 22px;
+  margin-bottom: 7px;
+  color: rgba(0, 0, 0, 0.65);
+}
+.label {
+  margin-right: 8px;
+  display: inline-block;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.uploadExerciseBtn{
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.steps-content {
+  margin-top: 16px;
+  border: 1px dashed #e9e9e9;
+  border-radius: 6px;
+  background-color: #fafafa;
+  min-height: 200px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.steps-action {
+  margin-top: 24px;
+}
+
+.buttonActionStyle {
+  margin: 0 2px;
+}
+
+.topStyle{
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.topSelectStyle {
+  width: 200px;
+}
+
+.topInput {
+  position: relative;
+  display: inline-block;
+  height: 32px;
+  width: 200px;
+  padding: 4px 11px;
+  color: rgba(0,0,0,.65);
+  font-size: 14px;
+  line-height: 32px;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+}
+
+.validateTop {
+  width: 100%;
+  height: 20px;
+}
+
+.showExerciseNameHtml{
+
+}
+
+

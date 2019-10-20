@@ -679,7 +679,7 @@ export class LookExerciseComponent implements OnInit {
 
   // 富文本编辑器内容变化触发方法
   editorContentChange = (html) => {
-    // console.log(this.editor.txt.text())
+    console.log(this.editor.txt.html())
     // console.log(html);
   }
 

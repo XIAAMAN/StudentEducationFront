@@ -1,0 +1,43 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-select style="width: 200px;margin-left: 100px;" [(ngModel)]="courseValue" (ngModelChange)="courseChange($event)" nzSize="default">
+  <nz-option *ngFor="let option of courseListOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+</nz-select>
+<nz-select style="width: 100px;margin-left: 10px;margin-bottom: 10px" [(ngModel)]="classValue" (ngModelChange)="classChange($event)" nzSize="default">
+  <nz-option *ngFor="let option of classListOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+</nz-select>
+<nz-select style="width: 150px;margin-left: 10px;margin-bottom: 10px" [(ngModel)]="collectionValue" (ngModelChange)="collectionChange($event)" nzSize="default">
+  <nz-option *ngFor="let option of collectionListOfOption" [nzLabel]="option" [nzValue]="option"></nz-option>
+</nz-select>
+<nz-table #sysLogTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+  <tr>
+    <th>名称</th>
+    <th>标签</th>
+    <th>语言</th>
+    <th>类型</th>
+    <th>分值</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysLogTable.data">
+    <td><a [title]="'点击批改题目'" [routerLink]="['/home/correctDetail', data.exerciseId, classValue, collectionValue]"><pre style="text-align: left" [innerHTML]="data.exerciseName"></pre></a></td>
+    <td>{{ data.exerciseLabel }}</td>
+    <td>{{ data.exerciseLanguage}}</td>
+    <td>
+      <span *ngIf="1==data.exerciseType">编程题</span>
+      <span *ngIf="2==data.exerciseType">单选题</span>
+      <span *ngIf="3==data.exerciseType">判断题</span>
+      <span *ngIf="4==data.exerciseType">填空题</span>
+      <span *ngIf="5==data.exerciseType">多选题</span>
+      <span *ngIf="6==data.exerciseType">主观题</span>
+    </td>
+    <td>{{data.exerciseScore}}</td>
+
+  </tr>
+  </tbody>
+</nz-table>
+<div style="width: 100%; height: 30px"></div>

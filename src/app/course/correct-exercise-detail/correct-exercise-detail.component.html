@@ -1,0 +1,52 @@
+<div style="width: 100%; height: 30px"></div>
+
+<div  class="content">
+  <div class="exerciseDetails">
+    <div style="width: 60px">
+      <a (click)="backCollections()"><i nz-icon nzType="left" nzTheme="outline"></i>返回</a>
+    </div>
+
+    <nz-card style="width:98%;">
+      <div nz-col [nzSpan]="8" class="messageTips">
+        <nz-card nzType="inner" nzTitle="学生相关信息">
+          <div>
+            <label>姓名：{{ this.sysDetailsData.userRealName }}</label><br>
+            <label>学号：{{ this.sysDetailsData.userNumber }}</label><br>
+            <label>班级：{{ classNumber }}</label><br>
+            <label>批改次数：{{ this.sysDetailsData.times }}</label>
+          </div>
+        </nz-card>
+
+      </div>
+
+      <div>
+        <pre style="font-size: 20px; font-weight: 600" [innerHTML]="sysDetailsData.exerciseName"></pre>
+      </div>
+
+    </nz-card>
+
+
+    <h3 style="margin-top: 5px">答题区</h3>
+    <div class="compiler">
+
+
+      <div class="wangeditor-box" id="wangEditor">
+        <div id="editorMenu"></div>
+        <div id="editor">
+<!--          <p>{{defaultMessage}}</p>-->
+        </div>
+      </div>
+      <div>评分</div>
+
+      <nz-input-number style="width: 200px" [nzMin]="0" [nzStep]="0.5" [(ngModel)]="sysDetailsData.exerciseScore"></nz-input-number>
+
+      <div class="buttonStyle">
+        <button nz-button nzType="primary" (click)="submit()">提交</button>
+        <button nz-button nzType="default" (click)="backExercise()" [disabled]="userIndex==0">上一个</button>
+        <button nz-button nzType="default" (click)="nextExercise()" [disabled]="userIndex==userLength-1">下一个</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="width: 100%; height: 30px"></div>

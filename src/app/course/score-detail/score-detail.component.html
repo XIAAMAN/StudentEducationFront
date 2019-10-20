@@ -10,9 +10,11 @@
   </div>
   <tr>
     <th>题目名称</th>
-    <th>题目标签</th>
+<!--    <th>题目标签</th>-->
     <th>题目类型</th>
-    <th>提交次数</th>
+<!--    <th>提交次数</th>-->
+    <th>我的答案</th>
+    <th>参考答案</th>
     <th>得分</th>
     <th>总分</th>
   </tr>
@@ -22,7 +24,7 @@
     <td>
       <pre style="text-align: left" [innerHTML]="data.exerciseName"></pre>
     </td>
-    <td>{{ data.exerciseLabel }}</td>
+<!--    <td>{{ data.exerciseLabel }}</td>-->
     <td>
       <span *ngIf="1==data.exerciseType">编程题</span>
       <span *ngIf="2==data.exerciseType">单选题</span>
@@ -31,7 +33,17 @@
       <span *ngIf="5==data.exerciseType">多选题</span>
       <span *ngIf="6==data.exerciseType">主观题</span>
     </td>
-    <td>{{ data.times }}次</td>
+<!--    <td>{{ data.times }}次</td>-->
+    <td>
+      <pre *ngIf="data.exerciseCode.length > 50" style="text-align: left" [innerHTML]="data.myAnswer"></pre>
+      <pre *ngIf="data.exerciseCode.length <= 50"  [innerHTML]="data.myAnswer"></pre>
+    </td>
+
+    <td>
+      <pre *ngIf="data.exerciseCode.length > 50" style="text-align: left" [innerHTML]="data.exerciseCode"></pre>
+      <pre *ngIf="data.exerciseCode.length <= 50"  [innerHTML]="data.exerciseCode"></pre>
+    </td>
+
     <td>{{ data.rightScore }}（分）</td>
     <td>{{ data.totalScore }}（分）</td>
   </tr>

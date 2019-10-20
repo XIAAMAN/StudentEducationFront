@@ -1,15 +1,16 @@
 
 
 <div class="headerStyle">
-  <div class="showStyle">
-    <img src="././assets/images/school_logo.png" class="imageStyle">
-  </div>
+
+<!--  <div class="showStyle">-->
+<!--    <img src="././assets/images/school_logo.png" class="imageStyle">-->
+<!--  </div>-->
 
 
   <div class="showStyle">
-    <span class="specialFontStyle">南昌航空大学软件学院</span>
-    <span class="fontStyle"> | </span>
-    <span class="normalFontStyle">在线实验课程中心</span>
+    <span *ngIf="userName" class="specialFontStyle">南昌航空大学软件学院</span>
+    <span *ngIf="userName" class="fontStyle"> | </span>
+    <span *ngIf="userName" class="normalFontStyle">在线实验课程中心</span>
 
 
     <div *ngIf="userName" class="loginState">

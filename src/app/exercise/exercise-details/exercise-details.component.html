@@ -18,7 +18,6 @@
         <div nz-col [nzSpan]="8" class="messageTips">
           <nz-card *ngIf="exerciseId!=null" nzType="inner" nzTitle="题目相关信息">
             <div>
-              <label *ngIf="chooseExercise.le"></label>
               <label>题目标签：{{ this.sysDetailsData.exerciseLabel }}</label><br>
               <label>作者：{{ this.sysDetailsData.exerciseUploadUserName }}</label><br>
               <label>审查人：{{ this.sysDetailsData.exerciseCheckUserName }}</label><br>
@@ -43,8 +42,8 @@
            <pre style="font-size: 20px; font-weight: 600" [innerHTML]="sysDetailsData.exerciseName"></pre>
           <!--        <h2 *ngIf="collectionId!=null">{{ this.sysDetailsData.exerciseName }} ({{sysDetailsData.exerciseScore}}分) </h2>-->
           <div *ngIf="exerciseType == 1">
-            <h3>输入样例：</h3> <p>{{ this.sysDetailsData.exerciseInputExample}}</p>
-            <h3>输出样例：</h3> <p>{{ this.sysDetailsData.exerciseOutputExample}}</p>
+            <h3>输入样例：</h3> <pre style="font-size: 18px">{{ this.sysDetailsData.exerciseInputExample}}</pre>
+            <h3>输出样例：</h3> <pre style="font-size: 18px">{{ this.sysDetailsData.exerciseOutputExample}}</pre>
             <h3>提示信息：</h3> <p class="hint">{{ this.sysDetailsData.exerciseWarning}}</p>
           </div>
         </div>
@@ -53,6 +52,7 @@
 
 
       <h3 style="margin-top: 5px">答题区</h3>
+
       <div class="compiler">
 <!--        编程题-->
         <div *ngIf="exerciseType==1" style="border: 1px solid silver;width: 98%">
@@ -94,7 +94,7 @@
               <label nz-checkbox nzValue="D" [(ngModel)]="multiAbleFour">D</label>
           </nz-checkbox-wrapper>
         </div>
-
+        <!--          主观题-->
           <div class="wangeditor-box" id="wangEditor">
             <div id="editorMenu"></div>
             <div id="editor">
@@ -102,7 +102,12 @@
             </div>
           </div>
 
-        <!--          主观题-->
+
+
+
+
+
+
 <!--        <div *ngIf="exerciseType==6" style="margin-top: 20px; margin-bottom: 20px;width: 98%">-->
 <!--          <textarea rows="6" nz-input [(ngModel)]="sysDetailsData.exerciseCode"></textarea>-->
 <!--        </div>-->
@@ -121,13 +126,37 @@
             disabled>
           </textarea>
         </div>
+
+        <div *ngIf="exerciseType==6">
+          <h3>实验报告只需要上传文件，不用在编辑框中填写</h3>
+          <h3>上传文件说明：上传文件必须为.docx或.doc文件，大小不能超过10M，每次只能上传单个文件。</h3>
+            <h3>文件命名格式：学号-姓名-第几次实验报告</h3>
+            <h3>如果已经上传过实验报告想要更改，请在后面加序号：学号-姓名-第几次实验报告（1）</h3>
+          <nz-upload
+            nzType="drag"
+            [(nzFileList)]="fileList"
+            [nzLimit]="1"
+            [nzBeforeUpload]="beforeUpload"
+            nzAccept=".docx,.doc"
+          >
+            <p class="ant-upload-drag-icon">
+              <i nz-icon nzType="inbox"></i>
+            </p>
+            <p class="ant-upload-text">Click or drag file to this area to upload</p>
+            <p class="ant-upload-hint">
+              只支持.docx或.doc文件上传，大小不能超过10M
+            </p>
+          </nz-upload>
+        </div>
         <div class="buttonStyle">
           <button nz-button nzType="primary" id="submitId" [nzLoading]="compileSubmitLoading" [disabled]="submitDisable" (click)="submitCode()">提交</button>
           <button *ngIf="collectionId!=null && exerciseType==1" nz-button nzType="primary" [disabled]="testDisable" [nzLoading]="compileTestLoading" (click)="onlineTest()">在线运行</button>
           <button *ngIf="collectionId!=null" nz-button nzType="default" [disabled]="exerciseIndex==0" (click)="backExercise()">上一题</button>
           <button *ngIf="collectionId!=null" nz-button nzType="default" [disabled]="exerciseIndex==exerciseLength-1" (click)="nextExercise()">下一题</button>
         </div>
+
       </div>
+
   </div>
 </div>
 

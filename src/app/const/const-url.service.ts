@@ -58,6 +58,7 @@ export class ConstUrlService {
   DETAILEXERCISEURL = this.BASEURL + "/sys_exercise/practiceDetails";   //题目详细页面
   GETEXERCISETYPEURL = this.BASEURL + "/sys_exercise/getExerciseType";   //得到题目类型
   GETCOLLECTIONEXERCISEURL = this.BASEURL + "/sys_collection/getExerciseList"; //查询题目集中所有题目
+  FILELABWORDURL = this.BASEURL + "/file/labWord";    //上传实验报告
 
   //查看用户
   GETUSERURL = this.BASEURL + "/sys_user/get";
@@ -101,6 +102,11 @@ export class ConstUrlService {
 
   //查看题目得分详情
   STUDENTSCOREDETAILURL = this.BASEURL + "/score/scoreDetail";     //学生查看成绩
-  TEACHERSCOREDETAILURL = this.BASEURL + "/score/teacherScoreDetail";     //学生查看成绩
+  TEACHERSCOREDETAILURL = this.BASEURL + "/score/teacherScoreDetail";     //教师查看成绩
+
+  //批改作业
+  CORRECTEXERCISEURL = this.BASEURL + "/correct/getExercise";     //获得有哪些需要批改的题目
+  CORRECTEXERCISEDETAILURL = this.BASEURL + "/correct/exerciseDetail";     //批改题目详细
+  CORRECTEXERCISESUBMITURL = this.BASEURL + "/correct/submit";     //批改题目详细
   constructor() { }
 }

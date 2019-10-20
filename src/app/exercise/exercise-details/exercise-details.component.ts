@@ -1,11 +1,14 @@
 import {Component, ElementRef, OnInit, Renderer} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpRequest, HttpResponse} from '@angular/common/http';
 import {ConstUrlService} from '../../const/const-url.service';
 import 'codemirror/mode/sql/sql.js';
 import 'codemirror/addon/hint/show-hint.js';
 import 'codemirror/addon/hint/sql-hint.js';
 import * as wangEditor from '../../../../node_modules/wangeditor/release/wangEditor.js';
+import {UploadFile} from 'ng-zorro-antd';
+import {filter} from 'rxjs/operators';
+import {NotificationService} from '../../utils/notification.service';
 
 @Component({
   selector: 'app-exercise-details',
@@ -81,6 +84,7 @@ export class ExerciseDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private constUrl: ConstUrlService,
+    private notify: NotificationService,
     private el: ElementRef, private renderer: Renderer
 
   ) { }
@@ -177,14 +181,14 @@ export class ExerciseDetailsComponent implements OnInit {
                 }
               })
             this.dealBlank();
-          }else if(this.selfExercise.length > 0) {
-            this.sysDetailsData = this.selfExercise[this.exerciseIndex];
-            this.exerciseLength = this.selfExercise.length;
-            this.exerciseType = 6;
-          } else {
+          }else if(this.programExercise.length > 0) {
             this.sysDetailsData = this.programExercise[this.exerciseIndex];
             this.exerciseLength = this.programExercise.length;
             this.exerciseType = 1;
+          } else {
+            this.sysDetailsData = this.selfExercise[this.exerciseIndex];
+            this.exerciseLength = this.selfExercise.length;
+            this.exerciseType = 6;
           }
 
           // document.getElementById("exerciseNameHtml").innerHTML= this.sysDetailsData.exerciseName;
@@ -333,64 +337,70 @@ export class ExerciseDetailsComponent implements OnInit {
 
   //提交代码
   submitCode() {
-    if(this.exerciseType == 6) {
-      if((""+this.editor.txt.text()).length == 0 && this.editor.txt.html().length==11) {
-        this.sysDetailsData.exerciseCode = "";
-      }
-    }
-    if(this.exerciseType == 4) {
-      // this.sysDetailsData.exerciseCode = "";
-      for(let i=0; i<this.exerciseBlank.length; i++) {
-        if(this.tempExerciseBlank[i].length == 0) {
-          this.sysDetailsData.exerciseCode = "";
-          break;
-        }
-        this.exerciseBlank[i] = this.tempExerciseBlank[i];
-      }
-
-    }
-    if(this.sysDetailsData.exerciseCode.length > 0) {
-      let url="";
-      this.compileSubmitLoading = true;
-      this.testDisable = true;
-      this.isSubmit = true;
-      this.compilerResult = "";
-      if(this.exerciseId == null) {
-        url = this.constUrl.SUBMITCOMPILEURL;
-        this.unionData.collectionId = <string> this.collectionId;
-        this.unionData.exercise = <any> this.sysDetailsData;
-        this.http.post(url, this.unionData,this.constUrl.httpOptions)
-          .subscribe((data:string)=> {
-            this.compileSubmitLoading = false;
-            this.testDisable = false;
-            this.isSubmit = true;
-            this.compilerResult = data;
-            this.dealDeciedNumber();
-            // if(data.state === "600") {
-            //   this.submitDisable = true;
-            // }
-          })
-      } else {
-        url = this.constUrl.PRACTICECOMPILEURL;
-        this.http.post(url, this.sysDetailsData,this.constUrl.httpOptions)
-          .subscribe((data:any)=> {
-            this.compileSubmitLoading = false;
-            this.testDisable = false;
-            if(data.state === "200") {
-              document.getElementById("submitId").textContent = "已通过";
-              this.submitDisable = true;
-            }
-            if(data.state === "600") {
-              this.submitDisable = true;
-            }
-            this.isSubmit = true;
-            this.compilerResult = data.result;
-          })
-      }
-
+    if(this.exerciseType==6 && this.sysDetailsData.exerciseName.length<30&&this.sysDetailsData.exerciseName.includes("实验报告")) {
+      //上传实验报告
+      this.handleUploadExcelOk();
     } else {
-      alert("答案不能为空");
+      if(this.exerciseType == 6) {
+        if((""+this.editor.txt.text()).length == 0 && this.editor.txt.html().length==11) {
+          this.sysDetailsData.exerciseCode = "";
+        }
+      }
+      if(this.exerciseType == 4) {
+        // this.sysDetailsData.exerciseCode = "";
+        for(let i=0; i<this.exerciseBlank.length; i++) {
+          if(this.tempExerciseBlank[i].length == 0) {
+            this.sysDetailsData.exerciseCode = "";
+            break;
+          }
+          this.exerciseBlank[i] = this.tempExerciseBlank[i];
+        }
+
+      }
+      if(this.sysDetailsData.exerciseCode.length > 0) {
+        let url="";
+        this.compileSubmitLoading = true;
+        this.testDisable = true;
+        this.isSubmit = true;
+        this.compilerResult = "";
+        if(this.exerciseId == null) {
+          url = this.constUrl.SUBMITCOMPILEURL;
+          this.unionData.collectionId = <string> this.collectionId;
+          this.unionData.exercise = <any> this.sysDetailsData;
+          this.http.post(url, this.unionData,this.constUrl.httpOptions)
+            .subscribe((data:string)=> {
+              this.compileSubmitLoading = false;
+              this.testDisable = false;
+              this.isSubmit = true;
+              this.compilerResult = data;
+              this.dealDeciedNumber();
+              // if(data.state === "600") {
+              //   this.submitDisable = true;
+              // }
+            })
+        } else {
+          url = this.constUrl.PRACTICECOMPILEURL;
+          this.http.post(url, this.sysDetailsData,this.constUrl.httpOptions)
+            .subscribe((data:any)=> {
+              this.compileSubmitLoading = false;
+              this.testDisable = false;
+              if(data.state === "200") {
+                document.getElementById("submitId").textContent = "已通过";
+                this.submitDisable = true;
+              }
+              if(data.state === "600") {
+                this.submitDisable = true;
+              }
+              this.isSubmit = true;
+              this.compilerResult = data.result;
+            })
+        }
+
+      } else {
+        alert("答案不能为空");
+      }
     }
+
 
   }
 
@@ -405,7 +415,7 @@ export class ExerciseDetailsComponent implements OnInit {
           .subscribe((data:any)=> {
             this.compileTestLoading = false;
             this.isSubmit = true;
-            this.compilerResult = data.result;
+            this.compilerResult = data;
           })
       } else {
         this.http.post(this.constUrl.TESTCOMPILEURL, this.sysDetailsData,this.constUrl.httpOptions)
@@ -413,7 +423,7 @@ export class ExerciseDetailsComponent implements OnInit {
             this.compileTestLoading = false;
             this.isSubmit = true;
             this.submitDisable = false;
-            this.compilerResult = data.result;
+            this.compilerResult = data;
           })
       }
 
@@ -685,7 +695,7 @@ export class ExerciseDetailsComponent implements OnInit {
   // 富文本编辑器内容变化触发方法
   editorContentChange = (html) => {
     this.sysDetailsData.exerciseCode = this.editor.txt.html();
-    console.log(this.sysDetailsData.exerciseCode);
+    // console.log(this.sysDetailsData.exerciseCode);
     // console.log(this.editor.txt.text())
     // console.log(html);
   }
@@ -749,5 +759,78 @@ export class ExerciseDetailsComponent implements OnInit {
       }
     }
   // }
+
+
+
+
+  //*******************************************************************************//
+  // 上传学生Excel表模态框
+  fileList: UploadFile[] = [];
+
+  // 提交上传实验报告
+  handleUploadExcelOk():void {
+    const formData = new FormData();
+    // tslint:disable-next-line:no-any
+    if(this.fileList.length != 1) {
+      this.notify.showError("请上传一个文件，有且只能上传一个文件")
+      return;
+    }
+    this.fileList.forEach((file: any) => {
+      formData.append('file', file);
+    });
+
+    // You can use any AJAX library you like
+    const req = new HttpRequest('POST', this.constUrl.FILELABWORDURL, formData, {
+      // reportProgress: true
+    });
+    this.http
+      .request(req)
+      .pipe(filter(e => e instanceof HttpResponse))
+      .subscribe(
+        (data:any) => {
+          this.notify.showInfo("实验报告上传成功")
+          this.compileSubmitLoading = false;
+          this.testDisable = false;
+          // this.isSubmit = true;
+          // this.compilerResult = data;
+
+          let ss = data.body
+          let url;
+          this.fileList = [];
+          url = this.constUrl.SUBMITCOMPILEURL;
+          this.unionData.collectionId = <string> this.collectionId;
+          this.sysDetailsData.exerciseCode = "实验报告文件已交";
+          this.unionData.exercise = <any> this.sysDetailsData;
+
+          this.http.post(url, this.unionData,this.constUrl.httpOptions).subscribe((data:any)=>{
+            this.editor.txt.text("实验报告文件已交");
+            if(this.exerciseId == null) {
+              this.dealDeciedNumber();
+            }
+
+          })
+
+        },
+        () => {
+          this.notify.showError('文件上传失败');
+        }
+      );
+  }
+
+  beforeUpload = (file: UploadFile): boolean => {
+    this.fileList = this.fileList.concat(file);
+    let isExcel = file.type;
+    console.log(isExcel)
+    if (isExcel !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && isExcel !== 'application/msword') {
+      this.notify.showError('只能上传word(.docx,.doc)文件');
+      return;
+    }
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      this.notify.showError('文件大小不能超过10M');
+      return;
+    }
+    return false;
+  };
 
   }
