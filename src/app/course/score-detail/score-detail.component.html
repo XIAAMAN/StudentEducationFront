@@ -35,13 +35,13 @@
     </td>
 <!--    <td>{{ data.times }}次</td>-->
     <td>
-      <pre *ngIf="data.exerciseCode.length > 50" style="text-align: left" [innerHTML]="data.myAnswer"></pre>
-      <pre *ngIf="data.exerciseCode.length <= 50"  [innerHTML]="data.myAnswer"></pre>
+      <pre *ngIf="data.exerciseType != 1"  [innerHTML]="data.myAnswer"></pre>
+      <pre *ngIf="data.exerciseType == 1" style="text-align: left" [innerText]="data.myAnswer"></pre>
     </td>
 
     <td>
-      <pre *ngIf="data.exerciseCode.length > 50" style="text-align: left" [innerHTML]="data.exerciseCode"></pre>
-      <pre *ngIf="data.exerciseCode.length <= 50"  [innerHTML]="data.exerciseCode"></pre>
+      <pre *ngIf="data.exerciseType != 1"  [innerHTML]="data.exerciseCode"></pre>
+      <pre *ngIf="data.exerciseType == 1" style="text-align: left" [innerText]="data.exerciseCode"></pre>
     </td>
 
     <td>{{ data.rightScore }}（分）</td>

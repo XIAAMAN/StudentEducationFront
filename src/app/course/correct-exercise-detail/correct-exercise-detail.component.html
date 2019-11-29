@@ -38,7 +38,7 @@
       </div>
       <div>评分</div>
 
-      <nz-input-number style="width: 200px" [nzMin]="0" [nzStep]="0.5" [(ngModel)]="sysDetailsData.exerciseScore"></nz-input-number>
+      <nz-input-number style="width: 200px" [nzMin]="0" [nzStep]="0.5" [nzMax]="50" [(ngModel)]="sysDetailsData.exerciseScore"></nz-input-number>
 
       <div class="buttonStyle">
         <button nz-button nzType="primary" (click)="submit()">提交</button>

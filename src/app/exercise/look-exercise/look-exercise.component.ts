@@ -165,13 +165,21 @@ export class LookExerciseComponent implements OnInit {
     document.getElementById("wangEditor").style.display = "none";
     this.editor.txt.html("");
     let url:string;
-    url = this.constUrl.DELETEEXERCISEURL + '?exerciseId=' + exerciseId;
-    this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
-      if(data===200) {
-        this.notify.showSuccess("已删除");
-        this.loadData();
-      }
-    })
+    this.http.get(this.constUrl.ISDELETEEXERCISEURL+"?exerciseId=" + exerciseId, this.constUrl.httpOptions)
+      .subscribe((resp:any)=>{
+          if(resp === 200) { //可以删除
+            url = this.constUrl.DELETEEXERCISEURL + '?exerciseId=' + exerciseId;
+            this.http.get(url, this.constUrl.httpOptions).subscribe((data:any) => {
+              if(data===200) {
+                this.notify.showSuccess("已删除");
+                this.loadData();
+              }
+            })
+          } else {
+            this.notify.showError("该题已经被添加到题目集中，不可删除");
+          }
+      })
+
   }
 
   //*********************************************************************************************//

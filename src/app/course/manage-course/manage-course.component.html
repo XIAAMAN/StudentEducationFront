@@ -91,7 +91,7 @@
       <nz-form-label [nzSpan]="5">增删题目集</nz-form-label>
       <nz-form-control [nzSpan]="16" >
         <nz-select nzMode="multiple" nzPlaceHolder="请选择题目集" [(ngModel)]="collectionListValue"
-                   formControlName="collectionName" nzMaxTagCount="10" nzMaxMultipleCount="10" >
+                   formControlName="collectionName" nzMaxTagCount="40" nzMaxMultipleCount="40" >
           <ng-container *ngFor="let option of collectionOptionList">collection
             <nz-option [nzLabel]="option" [nzValue]="option"></nz-option>
           </ng-container>

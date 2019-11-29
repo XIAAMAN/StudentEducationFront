@@ -20,6 +20,7 @@ import {HomePageComponent} from './home-page/home-page.component';
 import {ScoreDetailComponent} from './course/score-detail/score-detail.component';
 import {CorrectComponent} from './course/correct/correct.component';
 import {CorrectExerciseDetailComponent} from './course/correct-exercise-detail/correct-exercise-detail.component';
+import {ReportComponent} from './course/report/report.component';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginPageComponent},
@@ -43,6 +44,7 @@ const appRoutes: Routes = [
       {path: 'correctDetail/:exerciseId/:classNumber/:collectionName', component: CorrectExerciseDetailComponent, canActivate: [CanActivateGuard]},
       {path: 'manageCourse', component: ManageCourseComponent, canActivate: [CanActivateGuard]},
       {path: 'managePermis', component: ManagePermisComponent, canActivate: [CanActivateGuard]},
+      {path: 'report', component: ReportComponent, canActivate: [CanActivateGuard]},
       {path: 'correct', component: CorrectComponent, canActivate: [CanActivateGuard]},
     ]
   },

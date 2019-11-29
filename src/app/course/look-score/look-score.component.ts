@@ -115,7 +115,7 @@ export class LookScoreComponent implements OnInit {
         }
         setTimeout(()=>{
           this.teacherLook();
-        })
+        },2000)
       })
   }
 

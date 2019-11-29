@@ -37,12 +37,12 @@ export class BodyComponent implements OnInit {
             window.sessionStorage.setItem('userName', this.user.userName);
             window.sessionStorage.setItem("permisAll", res.permisValueList);
             window.sessionStorage.setItem("rankValue", res.rankValue);
-            this.router.navigateByUrl('/home/homePage');
+            this.router.navigateByUrl('/home/manageCourse');
             this.notify.showSuccess(this.user.userName + '  登录成功');
           } else if(res.state === 600){
             this.user.userName = "";
             this.user.password = "";
-            this.notify.showWarning("该浏览器已有账号登录");
+            this.notify.showWarning("该浏览器已有账号登录,请关闭浏览器重新登录");
           } else {
             this.user.userName = "";
             this.user.password = "";
@@ -80,6 +80,31 @@ export class BodyComponent implements OnInit {
           document.getElementById("bodyLoginHeight").style.paddingTop = (divHeight - loginHeight)/2 - 20 +"px";
         }
       }
+
+      // window.onunload = function(event){
+      //   if(window.innerWidth>document.body.clientWidth&&window.innerHeight<0)
+      //   {
+      //     // alert("点关闭按钮");
+      //     window.sessionStorage.clear();
+      //     // window.event.returnValue="确定要退出本页吗?";
+      //   }
+      //   //用户点击任务栏，右键关闭。s或是按alt+F4关闭
+      //   else if(window.innerHeight> document.body.clientHeight )
+      //   {
+      //     // alert("任务栏右击关闭");
+      //     window.sessionStorage.clear();
+      //     // window.event.returnValue="确定要退出本页吗?";
+      //   }
+      //
+      // }
+
+      // 关闭浏览器，清除localStorage
+      // window.onbeforeunload = function() {
+      //   window.
+      //     window.sessionStorage.clear();
+      //
+      //
+      // }
     });
 
   }

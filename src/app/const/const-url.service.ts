@@ -35,6 +35,7 @@ export class ConstUrlService {
   ADDEXERCISEURL = this.BASEURL + "/sys_exercise/add";  //增加题目
   JUDGEEXERCISENAMEURL = this.BASEURL + "/sys_exercise/judgeExerciseName";  //判断题目名称是否已经存在
   DYNAMICGETGETEXERCISEURL = this.BASEURL + "/sys_exercise/dynamicGet";   //动态查询题目
+  ISDELETEEXERCISEURL = this.BASEURL + "/sys_exercise/judgeDelete";   //判断题目是否可以删除
 
   //题目集
   GETEXERCISENAMEURL = this.BASEURL + "/sys_exercise/getName";     //获得所有题目名称
@@ -57,6 +58,7 @@ export class ConstUrlService {
   //题目详情
   DETAILEXERCISEURL = this.BASEURL + "/sys_exercise/practiceDetails";   //题目详细页面
   GETEXERCISETYPEURL = this.BASEURL + "/sys_exercise/getExerciseType";   //得到题目类型
+  GETCOLLECTIONNAME = this.BASEURL + "/sys_collection/getACollectionName";   //得到题目集名称
   GETCOLLECTIONEXERCISEURL = this.BASEURL + "/sys_collection/getExerciseList"; //查询题目集中所有题目
   FILELABWORDURL = this.BASEURL + "/file/labWord";    //上传实验报告
 
@@ -108,5 +110,8 @@ export class ConstUrlService {
   CORRECTEXERCISEURL = this.BASEURL + "/correct/getExercise";     //获得有哪些需要批改的题目
   CORRECTEXERCISEDETAILURL = this.BASEURL + "/correct/exerciseDetail";     //批改题目详细
   CORRECTEXERCISESUBMITURL = this.BASEURL + "/correct/submit";     //批改题目详细
+
+  //补交实验报告
+  GETREPORTURL = this.BASEURL + "/sys_collection/getReport";   //获得所有需要提交的实验报告题目
   constructor() { }
 }

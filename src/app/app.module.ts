@@ -51,6 +51,7 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { ScoreDetailComponent } from './course/score-detail/score-detail.component';
 import { CorrectComponent } from './course/correct/correct.component';
 import { CorrectExerciseDetailComponent } from './course/correct-exercise-detail/correct-exercise-detail.component';
+import { ReportComponent } from './course/report/report.component';
 
 registerLocaleData(zh);
 const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOutline ];
@@ -79,6 +80,7 @@ const icons: IconDefinition[] = [ LockOutline, UserOutline, PlusOutline, InboxOu
     ScoreDetailComponent,
     CorrectComponent,
     CorrectExerciseDetailComponent,
+    ReportComponent,
 
   ],
   imports: [

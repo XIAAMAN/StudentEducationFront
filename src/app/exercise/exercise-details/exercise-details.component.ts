@@ -44,7 +44,7 @@ export class ExerciseDetailsComponent implements OnInit {
     theme: 'default', // 设置黑色主题
 
     extraKeys: {
-      'Ctrl': 'autocomplete', // 提示快捷键
+      // 'Ctrl': 'autocomplete', // 提示快捷键
       Tab: function (cm) {
         const spaces = Array(cm.getOption('indentUnit') + 1).join(' ');
         cm.replaceSelection(spaces);
@@ -80,6 +80,7 @@ export class ExerciseDetailsComponent implements OnInit {
   submitDisable:boolean = false;
   compileTestLoading:boolean = false;
   compileSubmitLoading:boolean = false;
+  collectionName:string="";
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -110,6 +111,11 @@ export class ExerciseDetailsComponent implements OnInit {
       })
     } else {
       url = this.constUrl.GETCOLLECTIONEXERCISEURL + '?collectionId='+this.collectionId;
+      this.http.get(this.constUrl.GETCOLLECTIONNAME+"?collectionId="+this.collectionId,this.constUrl.httpOptions)
+        .subscribe((data:any)=>{
+          this.collectionName = data;
+          console.log("test ",this.collectionName)
+        })
       this.http.get(url,this.constUrl.httpOptions).subscribe((data: any) => {
         this.sysCollectionData = data;
 
@@ -409,11 +415,13 @@ export class ExerciseDetailsComponent implements OnInit {
     if(this.sysDetailsData.exerciseCode.length > 0) {
       this.compileTestLoading = true;
       this.isSubmit = false;
+      this.submitDisable = true;
       this.compilerResult = "";
       if(this.submitDisable) {
         this.http.post(this.constUrl.TESTCOMPILEURL, this.sysDetailsData,this.constUrl.httpOptions)
           .subscribe((data:any)=> {
             this.compileTestLoading = false;
+            this.submitDisable = false;
             this.isSubmit = true;
             this.compilerResult = data;
           })
@@ -820,7 +828,6 @@ export class ExerciseDetailsComponent implements OnInit {
   beforeUpload = (file: UploadFile): boolean => {
     this.fileList = this.fileList.concat(file);
     let isExcel = file.type;
-    console.log(isExcel)
     if (isExcel !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' && isExcel !== 'application/msword') {
       this.notify.showError('只能上传word(.docx,.doc)文件');
       return;
@@ -830,6 +837,7 @@ export class ExerciseDetailsComponent implements OnInit {
       this.notify.showError('文件大小不能超过10M');
       return;
     }
+
     return false;
   };
 

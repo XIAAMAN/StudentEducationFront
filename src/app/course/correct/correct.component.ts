@@ -73,7 +73,7 @@ export class CorrectComponent implements OnInit {
         }
         setTimeout(()=>{
           this.loadData();
-        })
+        },2000)
       })
   }
 

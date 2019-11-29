@@ -1,0 +1,59 @@
+<div style="width: 100%; height: 30px"></div>
+<nz-table #sysLogTable [nzData]="sysData" [nzFrontPagination]="false"
+          [nzShowSizeChanger]="true" [nzLoading]="loading" [nzPageSize]="pageSize"
+          [nzPageSizeOptions]="[10,20,50,100]" [nzTotal]="totalSize" nzTitle=" "
+          (nzPageSizeChange)="pageSizeChange($event)" (nzPageIndexChange)="pageIndexChange($event)"
+          nzSize="default">
+  <thead>
+  <tr>
+    <th>实验名称</th>
+    <th>实验报告名称</th>
+    <th>题目类型</th>
+    <th>分值</th>
+    <th>上传人</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let data of sysLogTable.data">
+    <td>{{ data.exerciseInputExample }}</td>
+    <td>{{ data.exerciseDescription }}</td>
+    <td>
+      <span *ngIf="1==data.exerciseType">编程题</span>
+      <span *ngIf="2==data.exerciseType">单选题</span>
+      <span *ngIf="3==data.exerciseType">判断题</span>
+      <span *ngIf="4==data.exerciseType">填空题</span>
+      <span *ngIf="5==data.exerciseType">多选题</span>
+      <span *ngIf="6==data.exerciseType">主观题</span>
+    </td>
+
+    <td>{{data.exerciseScore}}</td>
+    <td>{{data.exerciseUploadUserName}}</td>
+    <td>
+      <button class="buttonActionStyle"  nz-button nzType="primary" (click)="uploadFile(data)">上传文档</button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<nz-modal [(nzVisible)]="isVisible" nzTitle="上传实验报告" [nzWidth]="800" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+  <h3 style="color: red">实验报告命名格式一定要正确，否则可能会导致找不到文件或文件被覆盖</h3>
+  <h3>上传文件说明：上传文件必须为.docx或.doc文件，大小不能超过10M，每次只能上传单个文件。</h3>
+  <h3>文件命名格式：学号-姓名-第几次实验报告</h3>
+
+  <nz-upload
+    nzType="drag"
+    [(nzFileList)]="fileList"
+    [nzLimit]="1"
+    [nzBeforeUpload]="beforeUpload"
+    nzAccept=".docx,.doc"
+  >
+    <p class="ant-upload-drag-icon">
+      <i nz-icon nzType="inbox"></i>
+    </p>
+    <p class="ant-upload-text">Click or drag file to this area to upload</p>
+    <p class="ant-upload-hint">
+      只支持.docx或.doc文件上传，大小不能超过10M
+    </p>
+  </nz-upload>
+</nz-modal>
+<div style="width: 100%; height: 30px"></div>
